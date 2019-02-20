@@ -50,7 +50,7 @@ All development for Smaily for Opencart is [handled via GitHub](https://github.c
 ## Installation
 
 1. Upload or extract the `opencart-[version]/upload` folder content to your site's `root` directory.
-2. If you have configured your FTP-settings in `system->settings->FTP` you can also use built in extension installer.
+2. If you have configured your FTP-settings in `system->settings->FTP` you can also use built in extension installer. For Opencart 3+ there is no need to configure FTP settings-
 3. Upload `smailyforopencart.ocmod.zip` file under **Extensions->Extension Installer**.
 4. Install the plugin from the **Extensions->Modules** - menu in Opencart.
 
