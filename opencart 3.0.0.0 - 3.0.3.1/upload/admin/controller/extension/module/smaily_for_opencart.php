@@ -376,7 +376,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                     return;
             }
 
-            $subdomain = $this->db->escape($this->request->post['subdomain']);
+            $subdomain = $this->request->post['subdomain'];
             // Normalize subdomain.
             // First, try to parse as full URL. If that fails, try to parse as subdomain.sendsmaily.net, and
             // if all else fails, then clean up subdomain and pass as is.
@@ -389,7 +389,8 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 $subdomain = $parts[0];
             }
             $subdomain = preg_replace('/[^a-zA-Z0-9]+/', '', $subdomain);
-        
+            
+            $subdomain = $this->db->escape($subdomain);
             $username =  $this->db->escape($this->request->post['username']);
             $password = $this->db->escape($this->request->post['password']);
             // Validate credentials with a call to Smaily.

@@ -1,6 +1,6 @@
 # Smaily for Opencart
 
-> Simple and flexible Smaily integration for Opencart.
+Simple and flexible Smaily integration for Opencart.
 
 ## Description
 
@@ -70,7 +70,7 @@ To use cron for customer synchronization and for sending abandoned carts emails 
 
 You need to provide a **token** as a parameter for security reasons so that only you can run cronjobs. Cron token is an url-parameter that is checked when cron runs. Enter your token in Smaily admin page under **Subscriber Synchronization->Customer Cron Token** and **Abandoned Cart->Abandoned Cart Token** fields. Token can be any random text/number combination.
 
-We recoment to run Customer Synchronization daily and Abandoned Carts not more often than every hour.
+We recommend to run Customer Synchronization daily and Abandoned Carts not more often than every hour.
 
 ## Frequently Asked Questions
 
