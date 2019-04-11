@@ -24,11 +24,6 @@
       <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
     </div>
     {% endif %}
-    {% if error_autoresponder %}
-      <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>{{ error_autoresponder }}
-      <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
-    </div>
-    {% endif %}
     {% if error_delay %}
       <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>{{ error_delay }}
       <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
@@ -121,18 +116,6 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="col-sm-2 control-label" for="module_smaily_for_opencart_api_key">{{ api_key_title }}</label>
-              <div class="col-sm-10">
-                <input type="text"
-                       name="module_smaily_for_opencart_api_key"
-                       placeholder="{{ api_key_placeholder }}"
-                       id="api-key"
-                       value="{{ api_key }}"
-                       class="form-control" />
-                <small>{{ small_api_key }}</small>
-              </div>
-            </div>
-            <div class="form-group">
               <label class="col-sm-2 control-label">{{ rss_feed_title }}</label>
               <div class="col-sm-10">
                 <p><strong>{{ smaily_rss_url }}</strong></p>
@@ -167,25 +150,6 @@
                     <option value="0" selected="selected">{{ text_disabled }}</option>
                     {% endif %}
                   </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="autoresponder">{{ entry_autoresponder_title }}</label>
-                <div class="col-sm-10">
-                  <select name="module_smaily_for_opencart_autoresponder" id="autoresponder" class="form-control">
-                    {% if autoresponder %}
-                      <option value='{{ autoresponder|json_encode() }}'>
-                        {{ autoresponder.name }} - (selected)
-                      </option>
-                    {% else %}
-                      <option value="">Select autoresponder</option>
-                    {% endif %}
-                  </select>
-                <small>
-                  <a href="http://help.smaily.com/en/support/solutions/articles/16000017234-creating-an-autoresponder" target="_blank">
-                    {{ small_autoresponder }}
-                  </a>
-                </small>
                 </div>
               </div>
               <div class="form-group">
@@ -292,7 +256,7 @@
                   <div class="input-group">
                     <input type="number"
                           name="module_smaily_for_opencart_cart_delay"
-                          min="30"
+                          min="15"
                           id="module_smaily_for_opencart_cart_delay"
                           value="{{ cart_delay }}"
                           class="form-control" />

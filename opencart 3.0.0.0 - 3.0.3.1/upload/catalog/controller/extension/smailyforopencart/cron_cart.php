@@ -19,16 +19,16 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
             empty($this->request->get['token']) ||
             $settings['module_smaily_for_opencart_cart_token'] !== $this->request->get['token']
             ) {
-                die('Unathorized');
+                die('Unauthorized');
         }
 
         if (array_key_exists('module_smaily_for_opencart_enable_abandoned', $settings) &&
             (int) $settings['module_smaily_for_opencart_enable_abandoned'] === 1) {
-
+            // Get abandoned carts.
             $abandoned_carts = $this->model_extension_smailyforopencart_helper->getAbandonedCarts();
+
             if (!empty($abandoned_carts)) {
                 foreach ($abandoned_carts as $cart) {
-
                     // Addresses array for smaily api call.
                     $addresses = array(
                         'email' => $cart['email'],
@@ -38,11 +38,11 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
                     // Sync values selected from admin panel.
                     $cart_sync_values = $this->model_extension_smailyforopencart_helper->getAbandonedSyncFields();
                     // Populate products list with empty values for legacy api.
-                        foreach ($cart_sync_values as $sync_value){
-                            for ($i=1; $i < 11; $i++) { 
-                                $addresses['product_' . $sync_value . '_' . $i] = '';
-                            }
+                    foreach ($cart_sync_values as $sync_value) {
+                        for ($i=1; $i < 11; $i++) {
+                            $addresses['product_' . $sync_value . '_' . $i] = '';
                         }
+                    }
 
                     // Populate addresses fields with up to 10 products.
                     $j = 1;

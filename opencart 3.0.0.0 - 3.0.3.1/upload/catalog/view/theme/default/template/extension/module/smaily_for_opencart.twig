@@ -9,8 +9,6 @@
       <div class="alert alert-danger" role="alert">{{ error_message }}</div>
       {% endif %}
       <form class="form" action='https://{{ subdomain }}.sendsmaily.net/api/opt-in/' method="post" autocomplete="off">
-            <input type="hidden" name="key" value="{{ api_key }}" />
-            <input type="hidden" name="autoresponder" value='{{ autoresponder_id }}' />
             <input type="hidden" name="success_url" value='{{ current_url }}' />
             <input type="hidden" name="failure_url" value='{{ current_url }}' />
             <div class="form-group">
