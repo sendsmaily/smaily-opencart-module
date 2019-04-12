@@ -1,7 +1,5 @@
 # Smaily for Opencart
 
-> DISCLAIMER Plugin is still in development and currently being reviewed by Opencart. Use at your own discretion before fully finished. All bug reports are welcome under issues tab.
-
 Simple and flexible Smaily integration for Opencart.
 
 ## Description
@@ -66,6 +64,14 @@ All development for Smaily for Opencart is [handled via GitHub](https://github.c
 8. To add subscription form to your homepage go to **Design->Layouts->Home** and add `Smaily for Opencart` to your prefered position.
 9. That's it, your Opencart store is now integrated with Smaily Plugin!
 
+## Using Cron to Automate Customer Synchronization and Sending Abandoned Carts Emails
+
+To use cron for customer synchronization and for sending abandoned carts emails automatically follow opencart instructions for [setting up cron](http://docs.opencart.com/en-gb/extension/cron/). Url for cron is provided in Smaily settings.
+
+You need to provide a **token** as a parameter for security reasons so that only you can run cronjobs. Cron token is an url-parameter that is checked when cron runs. Enter your token in Smaily admin page under **Subscriber Synchronization->Customer Cron Token** and **Abandoned Cart->Abandoned Cart Token** fields. Token can be any random text/number combination.
+
+We recommend to run Customer Synchronization daily and Abandoned Carts not more often than every hour.
+
 ## Frequently Asked Questions
 
 ### Why RSS-feed is not displaying products from category?
@@ -103,6 +109,14 @@ Up to 10 products can be received in Smaily templating engine. You can refrence 
 5. Opencart Smaily form screen.
 
 ## Changelog
+
+### 1.1.0
+
+- Changes due to Smaily workflows automation
+- No autoresponder needed for sign up form
+- Subdomain parsed when full url entered in subdomain field
+- Abandoned cart delay time 15 minutes
+- Cron tokens automatically genereted when empty
 
 ### 1.0.0
 

@@ -10,7 +10,6 @@
       var username = $("#username").val();
       var password = $("#password").val();
       var user_token = $("#user_token").val();
-      console.log(user_token);
       if (subdomain != "" && username != "" && password != "") {
         $.ajax({
           url:
@@ -25,12 +24,6 @@
           },
           success: function(response) {
             $.each(response, function(index, value) {
-              $("#autoresponder").append(
-                $("<option>", {
-                  value: JSON.stringify({ name: value, id: index }),
-                  text: value
-                })
-              );
               $("#abandoned-autoresponder").append(
                 $("<option>", {
                   value: JSON.stringify({ name: value, id: index }),
@@ -91,8 +84,6 @@
           password: password
         },
         success: function(response) {
-          console.log(response);
-
           // Hide spinner.
           spinner.hide();
           // Error message
