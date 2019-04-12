@@ -265,7 +265,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         }
 
         // Customer sync additional fields.
-        if (isset($this->reqest->post['smaily_for_opencart_syncronize_additional'])) {
+        if (isset($this->request->post['smaily_for_opencart_syncronize_additional'])) {
             $data['syncronize_additional'] = $this->request->post['smaily_for_opencart_syncronize_additional'];
         } else {
             $data['syncronize_additional'] = $this->config->get('smaily_for_opencart_syncronize_additional') ? $this->config->get('smaily_for_opencart_syncronize_additional') : [];
@@ -290,7 +290,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             $data['abandoned_autoresponder'] = json_decode(html_entity_decode($this->config->get('smaily_for_opencart_abandoned_autoresponder')), true);
         }
         // Abandoned cart additional fields.
-        if (isset($this->reqest->post['smaily_for_opencart_abandoned_additional'])) {
+        if (isset($this->request->post['smaily_for_opencart_abandoned_additional'])) {
             $data['abandoned_additional'] = $this->request->post['smaily_for_opencart_abandoned_additional'];
         } else {
             $data['abandoned_additional'] = $this->config->get('smaily_for_opencart_abandoned_additional') ? $this->config->get('smaily_for_opencart_abandoned_additional') : [];
