@@ -13,8 +13,6 @@
       </div>
       <?php endif; ?>
       <form class="form" action='https://<?php echo $subdomain; ?>.sendsmaily.net/api/opt-in/' method="post" autocomplete="off">
-            <input type="hidden" name="key" value='<?php echo $api_key; ?>' />
-            <input type="hidden" name="autoresponder" value='<?php echo $autoresponder_id ?>' />
             <input type="hidden" name="success_url" value='<?php echo $current_url ?>' />
             <input type="hidden" name="failure_url" value='<?php echo $current_url ?>' />
             <div class="form-group">

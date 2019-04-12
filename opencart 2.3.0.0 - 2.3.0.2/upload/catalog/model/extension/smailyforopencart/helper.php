@@ -41,7 +41,7 @@ class ModelExtensionSmailyForOpencartHelper extends Model{
         } elseif ($method === 'POST') {
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            $api_call = json_decode(curl_exec($ch),true);
+            $api_call = json_decode(curl_exec($ch), true);
             // Response code from Smaily API.
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             // Validate response
@@ -56,11 +56,11 @@ class ModelExtensionSmailyForOpencartHelper extends Model{
         if ($http_code === 200) {
             // POST.
             if ($method === 'POST') {
-                if (array_key_exists('code',$api_call) && (int) $api_call['code'] === 101){
+                if (array_key_exists('code', $api_call) && (int) $api_call['code'] === 101) {
                     $response = $api_call;
                 }
             // GET.
-            } else { 
+            } else {
                 $response = $api_call;
             }
         } else {
@@ -109,7 +109,7 @@ class ModelExtensionSmailyForOpencartHelper extends Model{
      *
      * @return array $cart_additional Additional fields to sync.
      */
-    public function getAbandonedSyncFields(){
+    public function getAbandonedSyncFields() {
         $fields = [];
         $this->load->model('setting/setting');
         // Null if no additional fields provided.
@@ -186,5 +186,4 @@ class ModelExtensionSmailyForOpencartHelper extends Model{
             "VALUES (" . "'" . (int) $customer_id . "', NOW())"
         );
     }
-
 }

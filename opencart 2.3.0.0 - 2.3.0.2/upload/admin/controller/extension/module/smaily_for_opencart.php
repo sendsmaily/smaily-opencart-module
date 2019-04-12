@@ -11,7 +11,7 @@
  *
  * Plugin Name: Smaily for Opencart
  * Description: Smaily email marketing and automation extension plugin for Opencart.
- * Version: 1.0.0
+ * Version: 1.1.0
  * License: GPL3
  * Author: Smaily
  * Author URI: https://smaily.com/
@@ -52,6 +52,10 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             if ($validated) {
                 $data['smaily_for_opencart_validated'] = $validated;
             }
+            // Get credentials.
+            $data['smaily_for_opencart_subdomain'] = $this->model_setting_setting->getSettingValue('smaily_for_opencart_subdomain');
+            $data['smaily_for_opencart_username'] = $this->model_setting_setting->getSettingValue('smaily_for_opencart_username');
+            $data['smaily_for_opencart_password'] = $this->model_setting_setting->getSettingValue('smaily_for_opencart_password');
             // Save settings
             $this->model_setting_setting->editSetting('smaily_for_opencart', $data);
             // Redirect to module settings page.
@@ -99,9 +103,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         // Password.
         $data['password_title'] = $this->language->get('entry_password_title');
         $data['password_placeholder'] = $this->language->get('placeholder_password');
-        // Api key.
-        $data['api_key_title'] = $this->language->get('api_key_title');
-        $data['api_key_placeholder'] = $this->language->get('placeholder_api_key');
+        // Credentials validated status.
         $data['validated'] = $this->model_setting_setting->getSettingValue('smaily_for_opencart_validated');
         // Validate button.
         $data['button_validate'] = $this->language->get('button_validate');
@@ -141,11 +143,9 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $data['product_price'] = $this->language->get('product_price');
 
         // Small texts.
-        $data['small_api_key'] = $this->language->get('small_api_key');
         $data['small_subdomain'] = $this->language->get('small_subdomain');
         $data['smaily_rss_url'] = $this->config->get('config_url') . 'index.php?route=extension/smailyforopencart/rss';
         $data['small_password'] = $this->language->get('small_password');
-        $data['small_autoresponder'] = $this->language->get('small_autoresponder');
         $data['small_sync_additional'] = $this->language->get('small_sync_additional');
         $data['small_cart_additional'] = $this->language->get('small_cart_additional');
         $data['small_cart_delay']      = $this->language->get('small_cart_delay');
@@ -244,12 +244,6 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         } else {
             $data['password'] = $this->config->get('smaily_for_opencart_password');
         }
-        // Api key.
-        if (isset($this->request->post['smaily_for_opencart_api_key'])) {
-            $data['api_key'] = $this->request->post['smaily_for_opencart_api_key'];
-        } else {
-            $data['api_key'] = $this->config->get('smaily_for_opencart_api_key');
-        }
 
         // Module enabled.
         if (isset($this->request->post['smaily_for_opencart_status'])) {
@@ -270,23 +264,23 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             $data['abandoned_status'] = $this->config->get('smaily_for_opencart_enable_abandoned');
         }
 
-        // Customer sync autoresponder.
-        if (isset($this->request->post['smaily_for_opencart_autoresponder'])) {
-            $data['autoresponder'] = json_decode(html_entity_decode($this->request->post['smaily_for_opencart_autoresponder']), true);
-        } else {
-            $data['autoresponder'] = json_decode(html_entity_decode($this->config->get('smaily_for_opencart_autoresponder')), true);
-        }
         // Customer sync additional fields.
-        if (isset($this->reqest->post['smaily_for_opencart_syncronize_additional'])) {
+        if (isset($this->request->post['smaily_for_opencart_syncronize_additional'])) {
             $data['syncronize_additional'] = $this->request->post['smaily_for_opencart_syncronize_additional'];
         } else {
             $data['syncronize_additional'] = $this->config->get('smaily_for_opencart_syncronize_additional') ? $this->config->get('smaily_for_opencart_syncronize_additional') : [];
         }
         // Customer sync token.
-        if (isset($this->request->post['smaily_for_opencart_sync_token'])) {
+        if (! empty($this->request->post['smaily_for_opencart_sync_token'])) {
+            // Get sync token if user adds custom one.
             $data['sync_token'] = $this->request->post['smaily_for_opencart_sync_token'];
         } else {
-            $data['sync_token'] = $this->config->get('smaily_for_opencart_sync_token');
+            if (! empty($this->config->get('smaily_for_opencart_sync_token'))) {
+                $data['sync_token'] = $this->config->get('smaily_for_opencart_sync_token');
+            } else {
+                // Generate random token if not saved in db.
+                $data['sync_token'] = bin2hex(random_bytes(6));
+            }
         }
 
         // Abandoned cart autoresponder.
@@ -296,7 +290,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             $data['abandoned_autoresponder'] = json_decode(html_entity_decode($this->config->get('smaily_for_opencart_abandoned_autoresponder')), true);
         }
         // Abandoned cart additional fields.
-        if (isset($this->reqest->post['smaily_for_opencart_abandoned_additional'])) {
+        if (isset($this->request->post['smaily_for_opencart_abandoned_additional'])) {
             $data['abandoned_additional'] = $this->request->post['smaily_for_opencart_abandoned_additional'];
         } else {
             $data['abandoned_additional'] = $this->config->get('smaily_for_opencart_abandoned_additional') ? $this->config->get('smaily_for_opencart_abandoned_additional') : [];
@@ -308,10 +302,16 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             $data['cart_delay'] = $this->config->get('smaily_for_opencart_cart_delay');
         }
         // Abandoned cart token.
-        if (isset($this->request->post['smaily_for_opencart_cart_token'])) {
+        if (! empty($this->request->post['smaily_for_opencart_cart_token'])) {
+            // Get sync token if user adds custom one.
             $data['cart_token'] = $this->request->post['smaily_for_opencart_cart_token'];
         } else {
-            $data['cart_token'] = $this->config->get('smaily_for_opencart_cart_token');
+            if (! empty($this->config->get('smaily_for_opencart_cart_token'))) {
+                $data['cart_token'] = $this->config->get('smaily_for_opencart_cart_token');
+            } else {
+                // Generate random token if not saved in db.
+                $data['cart_token'] = bin2hex(random_bytes(6));
+            }
         }
 
 
@@ -339,14 +339,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         if (empty(trim($this->request->post['smaily_for_opencart_password']))) {
             $this->error['password'] = $this->language->get('error_password');
         }
-        // Validate autoresponder selected for subscriber sync.
-        if (isset($this->request->post['smaily_for_opencart_enable_subscribe'])
-            && (int) $this->request->post['smaily_for_opencart_enable_subscribe'] === 1
-            ){
-                if (empty($this->request->post['smaily_for_opencart_autoresponder'])){
-                    $this->error['autoresponder'] = $this->language->get('autoresponder_error');
-                }
-        }
+
         // Validate abanconed cart.
         if (isset($this->request->post['smaily_for_opencart_enable_abandoned'])
             && (int) $this->request->post['smaily_for_opencart_enable_abandoned'] === 1
@@ -356,25 +349,15 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 $this->error['autoresponder'] = $this->language->get('abandoned_autoresponder_error');
             }
             // Delay time.
-            if ($this->request->post['smaily_for_opencart_cart_delay'] < 30) {
+            if ($this->request->post['smaily_for_opencart_cart_delay'] < 15) {
                 $this->error['cart_delay'] = $this->language->get('cart_delay_error');
             }
         }
-        // Validate credentials when saving settings.
-        // Previously saved settings.
-        $prev_settings = $this->model_setting_setting->getSetting('smaily_for_opencart');
-        // Credentials.
-        $smaily_subdomain = $this->db->escape($this->request->post['smaily_for_opencart_subdomain']);
-        $smaily_username =  $this->db->escape($this->request->post['smaily_for_opencart_username']);
-        $smaily_password = $this->db->escape($this->request->post['smaily_for_opencart_password']);
-        // Check if credentials validation passes.
-        $credentials_status = $this->validateSmailyCredentials($smaily_subdomain, $smaily_username, $smaily_password);
-        if (! array_key_exists('success', $credentials_status)) {
+        // Check if credentials are validated.
+        $validated = $this->config->get('smaily_for_opencart_validated');
+        if (! $validated) {
             // Error message.
             $this->error['validate'] = $this->language->get('error_validate');
-            // Write validation status to 0.
-            $prev_settings['smaily_for_opencart_validated'] = 0;
-            $this->model_setting_setting->editSetting('smaily_for_opencart', $prev_settings);
         }
 
         return !$this->error;
@@ -388,23 +371,40 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
     public function ajaxValidateCredentials() {
         if ($this->request->server['REQUEST_METHOD'] == 'POST') {
             $response = [];
-            // Language for resonse.
+            // Language for response.
             $this->load->language('extension/module/smaily_for_opencart');
             // Check if all fields are set.
-            if( !empty($this->request->post['subdomain'] &&
-                !empty($this->request->post['username']) &&
-                !empty($this->request->post['password']))) {
-                    $subdomain = $this->db->escape($this->request->post['subdomain']);
-                    $username =  $this->db->escape($this->request->post['username']);
-                    $password = $this->db->escape($this->request->post['password']);
-                    // Validate credentials with a call to Smaily.
-                    $validate = $this->validateSmailyCredentials($subdomain, $username, $password);
-                } else {
+            if (empty($this->request->post['subdomain']) ||
+                empty($this->request->post['username']) ||
+                empty($this->request->post['password'])) {
                     // Show empty field error message.
                     $response['error'] = $this->language->get('error_validate_empty');
-                }
+                    echo json_encode($response);
+                    return;
+            }
+
+            $subdomain = $this->request->post['subdomain'];
+            // Normalize subdomain.
+            // First, try to parse as full URL. If that fails, try to parse as subdomain.sendsmaily.net, and
+            // if all else fails, then clean up subdomain and pass as is.
+            if (filter_var($subdomain, FILTER_VALIDATE_URL)) {
+                $url = parse_url($subdomain);
+                $parts = explode('.', $url['host']);
+                $subdomain = count($parts) >= 3 ? $parts[0] : '';
+            } elseif (preg_match('/^[^\.]+\.sendsmaily\.net$/', $subdomain)) {
+                $parts = explode('.', $subdomain);
+                $subdomain = $parts[0];
+            }
+            $subdomain = preg_replace('/[^a-zA-Z0-9]+/', '', $subdomain);
+
+            $subdomain = $this->db->escape($subdomain);
+            $username =  $this->db->escape($this->request->post['username']);
+            $password = $this->db->escape($this->request->post['password']);
+            // Validate credentials with a call to Smaily.
+            $validate = $this->validateSmailyCredentials($subdomain, $username, $password);
+
             // If validated, save validated status to db.
-            if(array_key_exists('success', $validate)) {
+            if (array_key_exists('success', $validate)) {
                 if ($this->user->hasPermission('modify', 'extension/module/smaily_for_opencart')) {
                     $this->load->model('setting/setting');
                     $settings = $this->model_setting_setting->getSetting('smaily_for_opencart');
@@ -417,15 +417,15 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                     $this->model_setting_setting->editSetting('smaily_for_opencart', $settings);
                     $response['success'] = $validate['success'];
                 }
-            } elseif(array_key_exists('error', $validate)) {
+            } elseif (array_key_exists('error', $validate)) {
                 $response['error'] = $validate['error'];
             } else {
                 $response['error'] = $this->language->get('validated_error');
             }
             // Return to ajax call.
             echo json_encode($response);
-            }
         }
+    }
 
     /**
      * Runs when validate button is pressed.
@@ -435,26 +435,29 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
      * @param string $password
      * @return void
      */
-    public function validateSmailyCredentials( string $subdomain, string $username, string $password ) {
+    public function validateSmailyCredentials(string $subdomain, string $username, string $password) {
         // Response.
         $response = [];
         // cUrl
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://' . $subdomain . '.sendsmaily.net/api/autoresponder.php');
+        curl_setopt($ch, CURLOPT_URL, 'https://' . $subdomain . '.sendsmaily.net/api/workflows.php?trigger_type=form_submitted');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
         $output = curl_exec($ch);
         if (!curl_errno($ch)) {
             switch ($http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
-              case 200:  # OK
-                $response['success'] = $this->language->get('validated_success');
-                break;
-              case 401:
-                $response['error'] = $this->language->get('validated_unauthorized');
-                break;
-              default:
-                $response['error'] = $this->language->get('validated_error');
+                case 200:  # OK
+                    $response['success'] = $this->language->get('validated_success');
+                    break;
+                case 401:
+                    $response['error'] = $this->language->get('validated_unauthorized');
+                    break;
+                case 404:
+                    $response['error'] = $this->language->get('validated_subdomain_error');
+                    break;
+                default:
+                    $response['error'] = $this->language->get('validated_error');
             }
         }
         curl_close($ch);
@@ -477,13 +480,17 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             // Language for resonse.
             $this->load->language('extension/module/smaily_for_opencart');
             // Check if autoresponders are validated.
-            if ( (int) $this->model_setting_setting->getSettingValue('smaily_for_opencart_validated') === 1) {
-                $autoresponders = $this->model_extension_smailyforopencart_admin->apiCall('autoresponder');
+            if ((int) $this->model_setting_setting->getSettingValue('smaily_for_opencart_validated') === 1) {
+                $autoresponders = $this->model_extension_smailyforopencart_admin->apiCall(
+                    'workflows',
+                    ['trigger_type' => 'form_submitted'],
+                    'GET'
+                );
                 // Return autoresponders
                 if (!empty($autoresponders)) {
                     foreach ($autoresponders as $autoresponder) {
-                        if (!empty($autoresponder['id']) && !empty($autoresponder['name'])) {
-                            $list[$autoresponder['id']] = trim($autoresponder['name']);
+                        if (!empty($autoresponder['id']) && !empty($autoresponder['title'])) {
+                            $list[$autoresponder['id']] = trim($autoresponder['title']);
                         }
                     }
                 }
