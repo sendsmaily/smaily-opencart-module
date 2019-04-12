@@ -53,9 +53,9 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 $data['smaily_for_opencart_validated'] = $validated;
             }
             // Get credentials.
-            $data['module_smaily_for_opencart_subdomain'] = $this->model_setting_setting->getSettingValue('module_smaily_for_opencart_subdomain');
-            $data['module_smaily_for_opencart_username'] = $this->model_setting_setting->getSettingValue('module_smaily_for_opencart_username');
-            $data['module_smaily_for_opencart_password'] = $this->model_setting_setting->getSettingValue('module_smaily_for_opencart_password');
+            $data['smaily_for_opencart_subdomain'] = $this->model_setting_setting->getSettingValue('smaily_for_opencart_subdomain');
+            $data['smaily_for_opencart_username'] = $this->model_setting_setting->getSettingValue('smaily_for_opencart_username');
+            $data['smaily_for_opencart_password'] = $this->model_setting_setting->getSettingValue('smaily_for_opencart_password');
             // Save settings
             $this->model_setting_setting->editSetting('smaily_for_opencart', $data);
             // Redirect to module settings page.
