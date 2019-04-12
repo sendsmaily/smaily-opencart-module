@@ -120,18 +120,6 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="col-sm-2 control-label" for="smaily_for_opencart_api_key"><?php echo $api_key_title ?></label>
-              <div class="col-sm-10">
-                <input type="text"
-                       name="smaily_for_opencart_api_key"
-                       placeholder="<?php echo $api_key_placeholder; ?>"
-                       id="api-key"
-                       value="<?php echo $api_key; ?>"
-                       class="form-control" />
-                <small><?php echo $small_api_key ?></small>
-              </div>
-            </div>
-            <div class="form-group">
               <label class="col-sm-2 control-label"><?php echo $rss_feed_title ?></label>
               <div class="col-sm-10">
                 <p><strong><?php echo $smaily_rss_url ?></strong></p>
@@ -166,25 +154,6 @@
                     <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
                     <?php } ?>
                   </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="autoresponder"><?php echo $entry_autoresponder_title; ?></label>
-                <div class="col-sm-10">
-                  <select name="smaily_for_opencart_autoresponder" id="autoresponder" class="form-control">
-                    <?php if($autoresponder) { ?>
-                      <option value="<?php echo htmlentities(json_encode($autoresponder)); ?>">
-                        <?php echo $autoresponder['name'] ?> - (selected)
-                      </option>
-                    <?php } else { ?>
-                      <option value="">Select autoresponder</option>
-                    <?php } ?>
-                  </select>
-                <small>
-                  <a href="http://help.smaily.com/en/support/solutions/articles/16000017234-creating-an-autoresponder" target="_blank">
-                    <?php echo $small_autoresponder; ?>
-                  </a>
-                </small>
                 </div>
               </div>
               <div class="form-group">
@@ -286,7 +255,7 @@
                   <div class="input-group">
                     <input type="number"
                           name="smaily_for_opencart_cart_delay"
-                          min="30"
+                          min="15"
                           id="smaily_for_opencart_cart_delay"
                           value="<?php echo $cart_delay; ?>"
                           class="form-control" />
@@ -334,7 +303,6 @@
     // Populate autoresponders list
     getAutoresponders();
     function getAutoresponders() {
-        console.log('in get autoresponders');
         // Smaily credentials.
         var subdomain = $("#subdomain").val();
         var username = $("#username").val();
@@ -351,12 +319,6 @@
             },
             success: function(response) {
               $.each(response, function(index,value){
-                $("#autoresponder").append(
-                  $("<option>", {
-                    value : JSON.stringify({'name':value, 'id': index}),
-                    text : value
-                  })
-                );
                 $("#abandoned-autoresponder").append(
                   $("<option>", {
                     value : JSON.stringify({'name':value, 'id': index}),
@@ -409,8 +371,6 @@
           password:password
         },
         success: function(response) {
-          console.log(response)
-
           // Hide spinner.
           spinner.hide();
           // Error message
