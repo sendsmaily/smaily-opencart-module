@@ -22,10 +22,9 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             // Form settings.
             $data['subdomain'] = $settings['module_smaily_for_opencart_subdomain'];
             // Get current url.
-            $url = isset($this->request->get['route']) ? $this->request->get['route'] : null ;
-            // If not on route page return to homepage.
-            $link = $url ? $this->url->link($url, '', 'SSL') : $this->url->link('common/home');
-            $data['current_url'] =  $link;
+            $request_scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+            $url = $request_scheme .'://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ;
+            $data['current_url'] =  $url;
             // Get smaily response from url.
             $response_code = isset($this->request->get['code']) ? (int) $this->request->get['code'] : null;
             if ($response_code && $response_code === 101) {

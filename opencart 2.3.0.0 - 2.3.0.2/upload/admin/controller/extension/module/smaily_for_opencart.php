@@ -11,7 +11,7 @@
  *
  * Plugin Name: Smaily for Opencart
  * Description: Smaily email marketing and automation extension plugin for Opencart.
- * Version: 1.1.0
+ * Version: 1.1.1
  * License: GPL3
  * Author: Smaily
  * Author URI: https://smaily.com/
@@ -149,6 +149,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $data['small_sync_additional'] = $this->language->get('small_sync_additional');
         $data['small_cart_additional'] = $this->language->get('small_cart_additional');
         $data['small_cart_delay']      = $this->language->get('small_cart_delay');
+        $data['small_token'] = $this->language->get('small_token');
 
         $data['button_save'] = $this->language->get('button_save');
         $data['button_cancel'] = $this->language->get('button_cancel');
@@ -191,7 +192,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         } else {
             $data['error_validate'] = '';
         }
-        // Subscriber autoresponder error.
+        // Abandoned cart autoresponder error.
         if (isset($this->error['autoresponder'])) {
             $data['error_autoresponder'] = $this->error['autoresponder'];
         } else {

@@ -24,6 +24,11 @@
       <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
     </div>
     {% endif %}
+    {% if error_autoresponder %}
+      <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>{{ error_autoresponder }}
+      <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
     {% if error_delay %}
       <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>{{ error_delay }}
       <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
@@ -186,6 +191,7 @@
                         id="sync-token"
                         value="{{ sync_token }}"
                         class="form-control" />
+                  <small>{{ small_token }}</small>
                 </div>
               </div>
               <div class="form-group">
@@ -277,6 +283,7 @@
                         id="cart-token"
                         value="{{ cart_token }}"
                         class="form-control" />
+                  <small>{{ small_token }}</small>
                 </div>
               </div>
               <div class="form-group">
