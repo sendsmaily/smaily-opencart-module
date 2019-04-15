@@ -1,6 +1,6 @@
 <?php
 
-class ControllerSmailyForOpencartRss extends Controller{
+class ControllerSmailyForOpencartRss extends Controller {
 
     public function index() {
         // Load models.
@@ -16,7 +16,7 @@ class ControllerSmailyForOpencartRss extends Controller{
         }
         if (isset($this->request->get['limit'])) {
             $limit = (int) $this->request->get['limit'];
-        }else {
+        } else {
             $limit = 50;
         }
 
@@ -29,7 +29,7 @@ class ControllerSmailyForOpencartRss extends Controller{
             $data['store_url'] = $this->config->get('config_url');
         }
         // Build date.
-        $data['last_build_date'] = date( 'D, d M Y H:i:s' );
+        $data['last_build_date'] = date('D, d M Y H:i:s');
         // Currency symbol.
         $data['currency'] = $this->session->data['currency'];
         // Filter for query.
@@ -59,7 +59,7 @@ class ControllerSmailyForOpencartRss extends Controller{
             // Description.
             $item['description'] = $product['description'];
             // Enclosure.
-            $item['enclosure'] = $this->model_tool_image->resize($product['image'], 300,300);
+            $item['enclosure'] = $this->model_tool_image->resize($product['image'], 300, 300);
             // Price.
             $item['price'] = round($product['price'], 2);
             // Check if product is on sale.
@@ -82,13 +82,13 @@ class ControllerSmailyForOpencartRss extends Controller{
      * @param string $name Category name
      * @return string $id  Category id.
      */
-    public function getCategoryIdByName(string $name){
+    public function getCategoryIdByName(string $name) {
         $this->load->model('catalog/category');
         $id = '';
         // All categories.
         $categories = $this->model_catalog_category->getCategories();
-        foreach($categories as $category) {
-            if( $category['name'] == $name) {
+        foreach ($categories as $category) {
+            if ($category['name'] == $name) {
                 // Get id if name matches.
                 $id = $category['category_id'];
             }
