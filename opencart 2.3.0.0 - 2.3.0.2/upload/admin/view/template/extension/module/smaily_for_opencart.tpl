@@ -187,6 +187,7 @@
                         id="sync-token"
                         value="<?php echo $sync_token; ?>"
                         class="form-control" />
+                  <small><?php echo $small_token ?></small>
                 </div>
               </div>
               <div class="form-group">
@@ -276,6 +277,7 @@
                         id="cart-token"
                         value="<?php echo $cart_token; ?>"
                         class="form-control" />
+                  <small><?php echo $small_token ?></small>
                 </div>
               </div>
               <div class="form-group">

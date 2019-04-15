@@ -38,16 +38,16 @@ $_['validate_title']                   = 'Validate credentials';
 $_['rss_feed_title']                   = 'Product RSS feed';
 $_['rss_feed_text']                    = "Copy this URL into your template editor's RSS block, to receive RSS-feed";
 // Customer sync form
-$_['entry_autoresponder_title']        = 'Autoresponder ID';
 $_['entry_customer_sync_fields_title'] = 'Customer Synchronization fields';
-$_['sync_token_title']                 = 'Customer Cron Token';
+$_['sync_token_title']                 = 'Customer Cron Token*';
 $_['sync_customer_url_title']          = 'Cron url';
 $_['customer_cron_text']               = 'Use this url to run cron. Token must be provided';
 // Abandoned cart form
+$_['entry_autoresponder_title']        = 'Autoresponder ID*';
 $_['abandoned_sync_fields_title']      = 'Abandoned Cart additional fields';
 $_['delay_title']                      = 'Abandoned cart delay time';
 $_['abandoned_minutes']                = 'minutes';
-$_['cart_token_title']                 = 'Abandoned Cart Token';
+$_['cart_token_title']                 = 'Abandoned Cart Token*';
 $_['sync_cart_url_title']              = 'Abandoned Cart Url';
 $_['cart_cron_text']                   = 'Use this url to run cron. Token must be provided';
 
@@ -85,3 +85,4 @@ $_['small_password']        = 'How to create API credentials?';
 $_['small_sync_additional'] = 'Select fields you wish to synchronize';
 $_['small_cart_additional'] = 'Select fields wish to send to Smaily template along with customer first- and lastname';
 $_['small_cart_delay']      = 'Time when cart is considered abandoned. Minimum 15 minutes.';
+$_['small_token']           = 'Token is required for cron security. Use this auto generated one or replace with your own.';

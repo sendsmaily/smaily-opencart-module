@@ -186,5 +186,4 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
             "VALUES (" . "'" . (int) $customer_id . "', NOW())"
         );
     }
-
 }

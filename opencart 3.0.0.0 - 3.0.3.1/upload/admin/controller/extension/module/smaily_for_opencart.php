@@ -11,7 +11,7 @@
  *
  * Plugin Name: Smaily for Opencart
  * Description: Smaily email marketing and automation extension plugin for Opencart.
- * Version: 1.1.0
+ * Version: 1.1.1
  * License: GPL3
  * Author: Smaily
  * Author URI: https://smaily.com/
@@ -150,6 +150,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $data['small_sync_additional'] = $this->language->get('small_sync_additional');
         $data['small_cart_additional'] = $this->language->get('small_cart_additional');
         $data['small_cart_delay']      = $this->language->get('small_cart_delay');
+        $data['small_token'] = $this->language->get('small_token');
 
         $data['button_save'] = $this->language->get('button_save');
         $data['button_cancel'] = $this->language->get('button_cancel');
@@ -191,6 +192,12 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             $data['error_validate'] = $this->error['validate'];
         } else {
             $data['error_validate'] = '';
+        }
+        // Abandoned cart autoresponder error.
+        if (isset($this->error['autoresponder'])) {
+            $data['error_autoresponder'] = $this->error['autoresponder'];
+        } else {
+            $data['error_autoresponder'] = '';
         }
         // Abandoned cart delay error.
         if (isset($this->error['cart_delay'])) {
@@ -260,7 +267,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         }
 
         // Customer sync additional fields.
-        if (isset($this->reqest->post['module_smaily_for_opencart_syncronize_additional'])) {
+        if (isset($this->request->post['module_smaily_for_opencart_syncronize_additional'])) {
             $data['syncronize_additional'] = $this->request->post['module_smaily_for_opencart_syncronize_additional'];
         } else {
             $data['syncronize_additional'] = $this->config->get('module_smaily_for_opencart_syncronize_additional') ? $this->config->get('module_smaily_for_opencart_syncronize_additional') : [];
@@ -284,7 +291,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             $data['abandoned_autoresponder'] = json_decode(html_entity_decode($this->config->get('module_smaily_for_opencart_abandoned_autoresponder')), true);
         }
         // Abandoned cart additional fields.
-        if (isset($this->reqest->post['module_smaily_for_opencart_abandoned_additional'])) {
+        if (isset($this->request->post['module_smaily_for_opencart_abandoned_additional'])) {
             $data['abandoned_additional'] = $this->request->post['module_smaily_for_opencart_abandoned_additional'];
         } else {
             $data['abandoned_additional'] = $this->config->get('module_smaily_for_opencart_abandoned_additional') ? $this->config->get('module_smaily_for_opencart_abandoned_additional') : [];
