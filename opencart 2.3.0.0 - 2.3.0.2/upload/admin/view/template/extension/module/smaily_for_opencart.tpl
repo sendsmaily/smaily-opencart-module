@@ -170,7 +170,7 @@
                     ];
                     // Add options for select.
                     foreach ($sync_options as $value => $name) {
-                      $selected = in_array($value, $syncronize_additional) ? 'selected' : '';
+                      $selected = is_array($syncronize_additional) && in_array($value, $syncronize_additional) ? 'selected' : '';
                       echo("<option value='$value' $selected>$name</option>");
                     }
                     ?>
@@ -219,7 +219,7 @@
                 <div class="col-sm-10">
                   <select name="smaily_for_opencart_abandoned_autoresponder" id="abandoned-autoresponder" class="form-control">
                     <?php if($abandoned_autoresponder) { ?>
-                      <option value="<?php echo htmlentities(json_encode($autoresponder)); ?>">
+                      <option value="<?php echo htmlentities(json_encode($abandoned_autoresponder)); ?>">
                         <?php echo $abandoned_autoresponder['name'] ?> - (selected)
                       </option>
                     <?php } else { ?>
@@ -242,7 +242,7 @@
                     ];
                     // Add options for select.
                     foreach ($cart_options as $value => $name) {
-                      $selected = in_array($value, $abandoned_additional) ? 'selected' : '';
+                      $selected = is_array($abandoned_additional) && in_array($value, $abandoned_additional) ? 'selected' : '';
                       echo("<option value='$value' $selected>$name</option>");
                     }
                     ?>
