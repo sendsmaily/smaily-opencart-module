@@ -110,6 +110,13 @@ Up to 10 products can be received in Smaily templating engine. You can refrence 
 
 ## Changelog
 
+### 1.1.2
+
+Bugfix
+
+- Abandoned cart autoresponder saving wrong value
+- Additional fields list generating error log when no values selected
+
 ### 1.1.1
 
 Bugfixes:
