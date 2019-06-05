@@ -11,7 +11,7 @@
  *
  * Plugin Name: Smaily for Opencart
  * Description: Smaily email marketing and automation extension plugin for Opencart.
- * Version: 1.1.2
+ * Version: 1.1.3
  * License: GPL3
  * Author: Smaily
  * Author URI: https://smaily.com/
