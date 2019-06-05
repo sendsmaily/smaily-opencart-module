@@ -110,6 +110,10 @@ Up to 10 products can be received in Smaily templating engine. You can refrence 
 
 ## Changelog
 
+### 1.1.3
+
+- Add support for PHP 5.6
+
 ### 1.1.2
 
 Bugfix
