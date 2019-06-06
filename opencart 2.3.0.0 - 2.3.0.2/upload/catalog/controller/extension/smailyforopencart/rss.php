@@ -82,7 +82,7 @@ class ControllerExtensionSmailyForOpencartRss extends Controller{
      * @param string $name Category name
      * @return string $id  Category id.
      */
-    public function getCategoryIdByName(string $name) {
+    public function getCategoryIdByName($name) {
         $this->load->model('catalog/category');
         $id = '';
         // All categories.

@@ -35,7 +35,7 @@ class ModelSmailyForOpencartAdmin extends Model {
      * @param string $method   POST or GET
      * @return array $response Response body for success, empty if error.
      */
-    public function apiCall(string $endpoint, array $data = [], $method = 'GET') {
+    public function apiCall($endpoint, array $data = [], $method = 'GET') {
         // Response.
         $response = [];
         // Smaily settings from database.
