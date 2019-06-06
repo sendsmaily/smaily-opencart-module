@@ -281,7 +281,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 $data['sync_token'] = $this->config->get('module_smaily_for_opencart_sync_token');
             } else {
                 // Generate random token if not saved in db.
-                $data['sync_token'] = bin2hex(openssl_random_pseudo_bytes(6));
+                $data['sync_token'] = uniqid();
             }
         }
         // Abandoned cart autoresponder.
@@ -310,7 +310,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 $data['cart_token'] = $this->config->get('module_smaily_for_opencart_cart_token');
             } else {
                 // Generate random token if not saved in db.
-                $data['cart_token'] = bin2hex(openssl_random_pseudo_bytes(6));
+                $data['cart_token'] = uniqid();
             }
         }
 
