@@ -1,0 +1,12 @@
+## Installation
+
+1. Upload or extract the "/upload" folder content to your site's `root` directory.
+2. Install the plugin from the **Extensions->Modules** - menu in Opencart.
+
+## Usage
+
+1. Go to Extensions -> Modules -> Smaily for Opencart
+2. Insert your Smaily API authentication information to get started.
+3. Click Validate button to validate credentials.
+4. To add the subscription form to your homepage go to **Smaily for Opencart -> Edit** and click `Add Layout` and edit it to your prefered position.
+5. That's it, your Opencart store is now integrated with Smaily Plugin!
