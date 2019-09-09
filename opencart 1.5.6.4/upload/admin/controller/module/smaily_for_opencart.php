@@ -46,7 +46,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && ($this->validate())) {
 
             // Get validate field from db.
-            $validated = $this->model_setting_setting->getSettingValue('smaily_for_opencart_validated');
+            $validated = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_validated');
 
             // Form data.
             $data = $this->request->post;
@@ -55,9 +55,9 @@ class ControllerModuleSmailyForOpencart extends Controller {
                 $this->data['smaily_for_opencart_validated'] = $validated;
             }
             // Get credentials.
-            $data['smaily_for_opencart_subdomain'] = $this->model_setting_setting->getSettingValue('smaily_for_opencart_subdomain');
-            $data['smaily_for_opencart_username'] = $this->model_setting_setting->getSettingValue('smaily_for_opencart_username');
-            $data['smaily_for_opencart_password'] = $this->model_setting_setting->getSettingValue('smaily_for_opencart_password');
+            $data['smaily_for_opencart_subdomain'] = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_subdomain');
+            $data['smaily_for_opencart_username'] = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_username');
+            $data['smaily_for_opencart_password'] = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_password');
             // Save credential settings
             $this->model_setting_setting->editSetting('smaily_for_opencart', $data);
             // Success after pressing save
@@ -441,7 +441,8 @@ class ControllerModuleSmailyForOpencart extends Controller {
             if (array_key_exists('success', $validate)) {
                 if ($this->user->hasPermission('modify', 'module/smaily_for_opencart')) {
                     $this->load->model('setting/setting');
-                    $settings = $this->model_setting_setting->getSettingValue('smaily_for_opencart');
+                    $this->load->model('smailyforopencart/admin');
+                    $settings = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart');
                     // Used because save button saves whole form.
                     $settings['smaily_for_opencart_validated'] = 1;
                     $settings['smaily_for_opencart_subdomain'] = $subdomain;
