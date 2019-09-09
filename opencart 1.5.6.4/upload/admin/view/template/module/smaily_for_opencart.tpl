@@ -441,6 +441,7 @@
         button.onclick = function() {
           code = this.getAttribute('whenClicked');
           eval($('#validate-div').hide());
+          eval($('#alert').hide());
         }
     }
     // Validate autoresponders.
