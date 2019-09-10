@@ -52,14 +52,14 @@ class ControllerModuleSmailyForOpencart extends Controller {
             $data = $this->request->post;
             // Append validated status to form data.
             if ($validated) {
-                $this->data['smaily_for_opencart_validated'] = $validated;
+                $data['smaily_for_opencart_validated'] = $validated;
             }
             // Get credentials.
             $data['smaily_for_opencart_subdomain'] = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_subdomain');
             $data['smaily_for_opencart_username'] = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_username');
             $data['smaily_for_opencart_password'] = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_password');
             // Save credential settings
-            $this->model_setting_setting->editSetting('smaily_for_opencart', $data);
+            $this->model_setting_setting->editSetting('smaily_for_opencart_validated', $data);
             // Success after pressing save
             $this->session->data['success'] = $this->language->get('text_success');
             // Redirect to module settings page.
