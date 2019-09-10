@@ -69,7 +69,7 @@
               </select>
           </td>
         </tr>
-
+        <!-- API authentication -->
         <tr>
           <div class="form-group <?php echo $validated ? 'has-success':''; ?>">
             <td> <?php echo $subdomain_title; ?></td>
@@ -143,9 +143,6 @@
                 </button>
             </td>
           </tr>
-        
-        <!--Hidden for testing-->
-        <?php if(false) : ?>
         <!-- Customer sync -->
         <tr>
           <td><?php echo $entry_enable_subscriber_title; ?></td>
@@ -201,6 +198,8 @@
             <span class="help"><?php echo $customer_cron_text ?></span>
           </td>
         </tr>
+        <!-- Hidden for testing -->
+      <?php if(false) : ?>
         <!-- Abandoned cart -->
         <tr>
           <td><?php echo $entry_enable_abandoned_title; ?></td>
@@ -290,7 +289,7 @@
             <span class="help"><?php echo $cart_cron_text ?></span>
           </td>
         </tr>
-        <?php endif; ?>
+      <?php endif; ?>
       </table>
       <table id="module" class="list">
           <thead>
