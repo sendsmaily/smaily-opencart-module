@@ -42,45 +42,29 @@ class ControllerModuleSmailyForOpencart extends Controller {
         // Add heading title.
         $this->document->setTitle($this->language->get('heading_title'));
         
-            // When save is pressed.
+        // When save is pressed.
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && ($this->validate())) {
 
             // Get validate field from db.
             $validated = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_validated');
 
-            // Form data.
+            // Read form data.
             $data = $this->request->post;
             // Append validated status to form data.
             if ($validated) {
                 $data['smaily_for_opencart_validated'] = $validated;
             }
-            // Get credentials.
+            // Read validated credentials from database
             $data['smaily_for_opencart_subdomain'] = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_subdomain');
             $data['smaily_for_opencart_username'] = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_username');
             $data['smaily_for_opencart_password'] = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_password');
-            // Save credential settings
-            $this->model_setting_setting->editSetting('smaily_for_opencart_validated', $data);
-            // Success after pressing save
+            // Save settings
+            $this->model_setting_setting->editSetting('smaily_for_opencart', $data);
+            // Display Success after pressing save
             $this->session->data['success'] = $this->language->get('text_success');
             // Redirect to module settings page.
             $this->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'));
         }
-
-        // Form sections.
-        $this->data['sections'] = array(
-            array(
-                'section_id' => 1,
-                'name' => $this->language->get('section_general'),
-            ),
-            array(
-                'section_id' => 2,
-                'name' => $this->language->get('section_customer'),
-            ),
-            array(
-                'section_id' => 3,
-                'name' => $this->language->get('section_abandoned'),
-            ),
-        );
 
         // Text fields
         $this->data['heading_title'] = $this->language->get('heading_title');
@@ -157,7 +141,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->data['button_save'] = $this->language->get('button_save');
         $this->data['button_cancel'] = $this->language->get('button_cancel');
         $this->data['token'] = $this->session->data['token'];
-        //Layout text and buttons
+        // Layout text and buttons
         $this->data['entry_layout'] = $this->language->get('entry_layout');
         $this->data['entry_position'] = $this->language->get('entry_position');
         $this->data['entry_status'] = $this->language->get('entry_status');
@@ -168,11 +152,11 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->data['text_column_right'] = $this->language->get('text_column_right');
         $this->data['button_module'] = $this->language->get('button_module');
         $this->data['button_remove'] = $this->language->get('button_remove');
-        //Get layouts, modules
+        // Get layouts, modules
         $this->load->model('design/layout');
         $this->data['layouts'] = $this->model_design_layout->getLayouts();
         $this->data['modules'] = array();
-        //Fetch modules
+        // Fetch modules
         if (isset($this->request->post['smaily_for_opencart_module'])) {
             $this->data['modules'] = $this->request->post['smaily_for_opencart_module'];
         } elseif ($this->config->get('smaily_for_opencart_module')) { 
@@ -533,32 +517,4 @@ class ControllerModuleSmailyForOpencart extends Controller {
             echo json_encode($list);
         }
     }
-    // Replaced with VQmod, 1.5.6.4 does not support addEvent
-    /**
-     * Creates abandoned carts table and action hook for module.
-     *
-     * @return void
-     */
-    /*public function install() {
-        //$this->load->model('extension/event');
-        $this->load->model('smailyforopencart/admin');
-        // Create database.
-        $this->model_smailyforopencart_admin->install();
-        // Add event listener for order.
-        $this->model_extension_event->addEvent('smaily_order', 'catalog/controller/checkout/confirm/after', 'smailyforopencart/order/removeSent');
-    }*/
-
-    /**
-     * Removes action hook and deletes abandoned cart table.
-     *
-     * @return void
-     */
-    /*public function uninstall() {
-        //$this->load->model('extension/event');
-        $this->load->model('smailyforopencart/admin');
-        // Remove smaily table
-        $this->model_smailyforopencart_admin->uninstall();
-        // Remove event handler.
-        $this->model_extension_event->deleteEvent('smaily_order');
-    }*/
 }

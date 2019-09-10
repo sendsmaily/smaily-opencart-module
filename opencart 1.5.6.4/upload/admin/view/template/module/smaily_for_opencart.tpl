@@ -52,7 +52,7 @@
       <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
     </div>
 </div>
-      <!-- Generate form content -->
+  <!-- Generate form content -->
   <div class="content">
     <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-smaily_for_opencart">
       <table class="form">
@@ -74,12 +74,13 @@
           <div class="form-group <?php echo $validated ? 'has-success':''; ?>">
             <td> <?php echo $subdomain_title; ?></td>
             <td> 
-              <input type="text"
-                         name="smaily_for_opencart_subdomain"
-                         placeholder="<?php echo $subdomain_placeholder; ?>"
-                         id="subdomain"
-                         value="<?php echo $subdomain; ?>"
-                         class="form-control" />
+              <input 
+                type="text"
+                name="smaily_for_opencart_subdomain"
+                placeholder="<?php echo $subdomain_placeholder; ?>"
+                id="subdomain"
+                value="<?php echo $subdomain; ?>"
+                class="form-control" />
               <span class="help"><?php echo $small_subdomain ?></span>
                   <?php if ($error_subdomain) { ?>
                       <div class="warning"><?php echo $error_subdomain; ?></div>
@@ -92,15 +93,16 @@
           <div class="form-group <?php echo $validated ? 'has-success':''; ?>">
             <td> <?php echo $username_title; ?></td>
             <td> 
-              <input type="text"
-                           name="smaily_for_opencart_username"
-                           placeholder="<?php echo $username_placeholder; ?>"
-                           id="username"
-                           value="<?php echo $username; ?>"
-                           class="form-control" /><br>
-                    <?php if ($error_username) { ?>
-                        <div class="warning"><?php echo $error_username; ?></div>
-                    <?php } ?>
+              <input 
+                type="text"
+                name="smaily_for_opencart_username"
+                placeholder="<?php echo $username_placeholder; ?>"
+                id="username"
+                value="<?php echo $username; ?>"
+                class="form-control" /><br>
+                  <?php if ($error_username) { ?>
+                      <div class="warning"><?php echo $error_username; ?></div>
+                  <?php } ?>
             </td>
           </div>
         </tr>
@@ -109,12 +111,13 @@
           <div class="form-group <?php echo $validated ? 'has-success':''; ?>">
             <td><?php echo $password_title; ?></td>
             <td> 
-              <input type="password"
-                           name="smaily_for_opencart_password"
-                           placeholder="<?php echo $password_placeholder; ?>"
-                           id="password"
-                           value="<?php echo $password; ?>"
-                           class="form-control" />
+              <input 
+                type="password"
+                name="smaily_for_opencart_password"
+                placeholder="<?php echo $password_placeholder; ?>"
+                id="password"
+                value="<?php echo $password; ?>"
+                class="form-control" />
               <span class="help">
                 <a href="http://help.smaily.com/en/support/solutions/articles/16000062943-create-api-user" target="_blank"><?php echo $small_password ?>
                 </a> 
@@ -182,15 +185,17 @@
 
         <tr>
           <td><?php echo $sync_token_title; ?></td>
-            <td><input type="text"
-                        name="smaily_for_opencart_sync_token"
-                        placeholder="<?php echo $sync_token_placeholder; ?>"
-                        id="sync-token"
-                        value="<?php echo $sync_token; ?>"
-                        class="form-control" />
+            <td><input 
+                  type="text"
+                  name="smaily_for_opencart_sync_token"
+                  placeholder="<?php echo $sync_token_placeholder; ?>"
+                  id="sync-token"
+                  value="<?php echo $sync_token; ?>"
+                  class="form-control" />
                   <span class="help"><?php echo $small_token ?></span>
             </td>
         </tr>
+
         <tr>
           <td><?php echo $sync_customer_url_title; ?></td>
           <td>
@@ -198,98 +203,6 @@
             <span class="help"><?php echo $customer_cron_text ?></span>
           </td>
         </tr>
-        <!-- Hidden for testing -->
-      <?php if(false) : ?>
-        <!-- Abandoned cart -->
-        <tr>
-          <td><?php echo $entry_enable_abandoned_title; ?></td>
-          <td><select name="smaily_for_opencart_enable_abandoned" id="input-abandoned-status" class="form-control">
-                    <?php if ($abandoned_status) { ?>
-                    <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
-                    <option value="0"><?php echo $text_disabled; ?></option>
-                    <?php } else { ?>
-                    <option value="1"><?php echo $text_enabled; ?></option>
-                    <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
-                    <?php } ?>
-              </select>
-          </td>
-        </tr>
-        
-        <tr>
-          <td><?php echo $entry_autoresponder_title; ?></td>
-          <td> 
-            <select name="smaily_for_opencart_abandoned_autoresponder" id="abandoned-autoresponder" class="form-control">
-                    <?php if($abandoned_autoresponder) { ?>
-                      <option value="<?php echo htmlentities(json_encode($abandoned_autoresponder)); ?>">
-                        <?php echo $abandoned_autoresponder['name'] ?> - (selected)
-                      </option>
-                    <?php } else { ?>
-                      <option value="">Select autoresponder</option>
-                    <?php } ?>
-            </select>
-          </td>
-        </tr>
-        
-        <tr>
-         <td><?php echo $abandoned_sync_fields_title; ?></td>
-            <td>
-              <select class="form-control" name="smaily_for_opencart_abandoned_additional[]" id="abandoned_sync_fields" multiple="multiple">
-                  <?php
-                    // All available options
-                    $cart_options = [
-                      'name'  => $product_name,
-                      'description'  => $product_description,
-                      'quantity'  => $product_quantity,
-                      'price' => $product_price
-                    ];
-                    // Add options for select.
-                    foreach ($cart_options as $value => $name) {
-                      $selected = is_array($abandoned_additional) && in_array($value, $abandoned_additional) ? 'selected' : '';
-                      echo("<option value='$value' $selected>$name</option>");
-                    }?>
-              </select>
-              <span class="help"><?php echo $small_cart_additional; ?></span>
-            </td>
-        </tr>
-
-        <tr>
-          <td><?php echo $delay_title; ?></td>
-          <td> 
-            <input  type="number"
-                    name="smaily_for_opencart_cart_delay"
-                    min="15"
-                    id="smaily_for_opencart_cart_delay"
-                    value="<?php echo $cart_delay; ?>"
-                    class="form-control" />
-            <span class="input-group-addon"><?php echo $abandoned_minutes ?></span><br>
-            <span class="help"><?php echo $small_cart_delay ?></span>
-                <?php if ($error_delay) { ?>
-                  <div class="warning"><?php echo $error_delay; ?></div>
-                <?php } ?>
-          </td>
-        </tr>
-
-        <tr>
-          <td><?php echo $cart_token_title; ?></td>
-          <td> 
-            <input type="text"
-                        name="smaily_for_opencart_cart_token"
-                        placeholder="<?php echo $cart_token_placeholder; ?>"
-                        id="cart-token"
-                        value="<?php echo $cart_token; ?>"
-                        class="form-control" />
-            <span class="help"><?php echo $small_token ?></span>
-          </td>
-        </tr>
-
-        <tr>
-          <td><?php echo $sync_cart_url_title; ?></td>
-          <td> 
-            <p><strong><?php echo $cart_cron_url ?></strong></p>
-            <span class="help"><?php echo $cart_cron_text ?></span>
-          </td>
-        </tr>
-      <?php endif; ?>
       </table>
       <table id="module" class="list">
           <thead>
@@ -351,8 +264,12 @@
                   <?php } ?>
                 </select>
               </td>
-              <td class="right"><input type="text" name="smaily_for_opencart_module[<?php echo $module_row; ?>][sort_order]" 
-                  value="<?php echo $module['sort_order']; ?>" size="3" />
+              <td class="right">
+                <input
+                  type="text"
+                  name="smaily_for_opencart_module[<?php echo $module_row; ?>][sort_order]"
+                  value="<?php echo $module['sort_order']; ?>"
+                  size="3" />
               </td>
               <td class="left">
                 <a onclick="$('#module-row<?php echo $module_row; ?>').remove();" class="button"><?php echo $button_remove; ?></a>
@@ -415,12 +332,12 @@
         var subdomain = $("#subdomain").val();
         var username = $("#username").val();
         var password = $("#password").val();
-        if (subdomain !='' && username !='' && password != '') {
+        if (subdomain != '' && username != '' && password != '') {
           $.post('index.php?route=module/smaily_for_opencart/ajaxGetAutoresponders&token=<?php echo $token ?>',{
-              subdomain:subdomain,
-              username:username,
-              password:password
-          },function(response) {
+              'subdomain' : subdomain,
+              'username'  : username,
+              'password'  : password
+          }, function(response) {
               $.each(response, function(index,value){
                 $("#abandoned-autoresponder").append(
                   $("<option>", {
@@ -475,10 +392,10 @@
       // Start spinner.
       spinner.show();
       $.post( "index.php?route=module/smaily_for_opencart/ajaxValidateCredentials&token=<?php echo $token ?>",{
-          subdomain:subdomain,
-          username:username,
-          password:password
-        },function(response) {
+          'subdomain' : subdomain,
+          'username'  : username,
+          'password'  : password
+        }, function(response) {
           // Hide spinner.
           spinner.hide();
           // Error message

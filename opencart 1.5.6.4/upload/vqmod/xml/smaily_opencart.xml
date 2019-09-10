@@ -7,15 +7,19 @@
 	<file name="catalog/controller/checkout/confirm.php">
 		<operation error="skip">
 			<search position="after"><![CDATA[if ($system) ;]]></search> 
-			<add><![CDATA[
-				$customer_id = $this->customer->getId();
-	        // Continue only if it is a customer order.
-	        if (isset($customer_id)) {
-            $this->db->query(
-                "DELETE FROM " . DB_PREFIX . "smaily_abandoned_carts " .
-                "WHERE customer_id = '" . (int) $customer_id . "'"
-            );			
-			]]></add>
+			<add>
+				<![CDATA[
+					$customer_id = $this->customer->getId();
+			        // Continue only if it is a customer order.
+			        if (isset($customer_id)) {
+			            $this->db->query(
+			                "DELETE FROM " . DB_PREFIX . "smaily_abandoned_carts " .
+			                "WHERE customer_id = '" . (int) $customer_id . "'"
+			            )
+		            };			
+				]]>
+			</add>
 		</operation>
 	</file>
 <modification>
+	

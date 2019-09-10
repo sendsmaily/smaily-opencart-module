@@ -88,6 +88,7 @@ $_['small_sync_additional'] = 'Select fields you wish to synchronize';
 $_['small_cart_additional'] = 'Select fields wish to send to Smaily template along with customer first- and lastname';
 $_['small_cart_delay']      = 'Time when cart is considered abandoned. Minimum 15 minutes.';
 $_['small_token']           = 'Token is required for cron security. Use this auto generated one or replace with your own.';
+
 // Layout
 $_['entry_layout']       				= 'Layout:';
 $_['entry_position']					= 'Position:';
