@@ -35,52 +35,15 @@ class ControllerModuleSmailyForOpencart extends Controller {
     public function index() {
         // Add language file.
         $this->load->language('module/smaily_for_opencart');
-        // Settings model.
-        $this->load->model('setting/setting');
         // Smaily admin page model.
         $this->load->model('smailyforopencart/admin');
         // Add heading title.
         $this->document->setTitle($this->language->get('heading_title'));
         
-        // When save is pressed.
-        if (($this->request->server['REQUEST_METHOD'] == 'POST') && ($this->validate())) {
-
-            // Get validate field from db.
-            $validated = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_validated');
-
-            // Read form data.
-            $data = $this->request->post;
-            // Append validated status to form data.
-            if ($validated) {
-                $data['smaily_for_opencart_validated'] = $validated;
-            }
-            // Read validated credentials from database
-            $data['smaily_for_opencart_subdomain'] = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_subdomain');
-            $data['smaily_for_opencart_username'] = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_username');
-            $data['smaily_for_opencart_password'] = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart_password');
-            // Save settings
-            $this->model_setting_setting->editSetting('smaily_for_opencart', $data);
-            // Display Success after pressing save
-            $this->session->data['success'] = $this->language->get('text_success');
-            // Redirect to module settings page.
-            $this->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'));
-        }
-
         // Text fields
         $this->data['heading_title'] = $this->language->get('heading_title');
         $this->data['text_edit'] = $this->language->get('text_edit');
-        $this->data['text_enabled'] = $this->language->get('text_enabled');
-        $this->data['text_disabled'] = $this->language->get('text_disabled');
-        $this->data['entry_name'] = $this->language->get('entry_name');
-        $this->data['entry_banner'] = $this->language->get('entry_banner');
-        $this->data['entry_width'] = $this->language->get('entry_width');
-        $this->data['entry_height'] = $this->language->get('entry_height');
-        $this->data['entry_status'] = $this->language->get('entry_status');
 
-        // Enable module.
-        $this->data['entry_enable_module_title'] = $this->language->get('entry_enable_module_title');
-        $this->data['entry_enable_subscriber_title'] = $this->language->get('entry_enable_subscriber_title');
-        $this->data['entry_enable_abandoned_title'] = $this->language->get('entry_enable_abandoned_title');
         // Subdomain.
         $this->data['subdomain_title'] = $this->language->get('entry_subdomain_title');
         $this->data['subdomain_placeholder'] = $this->language->get('placeholder_subdomain');
@@ -99,17 +62,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         // Small texts.
         $this->data['small_subdomain'] = $this->language->get('small_subdomain');
         $this->data['small_password'] = $this->language->get('small_password');
-
-        $this->data['button_save'] = $this->language->get('button_save');
-        $this->data['button_cancel'] = $this->language->get('button_cancel');
         $this->data['token'] = $this->session->data['token'];
-
-        // Display success message after save.
-        if (isset($this->session->data['success'])) {
-            $this->data['success'] = $this->language->get('text_success');
-        } else {
-            $this->data['success'] = '';
-        }
 
         // Display warning.
         if (isset($this->error['warning'])) {
@@ -162,10 +115,6 @@ class ControllerModuleSmailyForOpencart extends Controller {
                 ->link('module/smaily_for_opencart', 'token=' . $this->session->data['token'], true),
             'separator' => ' :: '
         );
-
-        // Save and cancel button href-s.
-        $this->data['action'] = $this->url->link('module/smaily_for_opencart', 'token=' . $this->session->data['token'], true);
-        $this->data['cancel'] = $this->url->link('extension/module', 'token=' . $this->session->data['token'], true);
 
         /**
          * Data for fields.
@@ -234,62 +183,63 @@ class ControllerModuleSmailyForOpencart extends Controller {
      */
     public function ajaxValidateCredentials() {
 
-        if ($this->request->server['REQUEST_METHOD'] == 'POST') {
-            $response = [];
-            // Language for resonse.
-            $this->load->language('module/smaily_for_opencart');
-            // Check if all fields are set.
-            if (empty($this->request->post['subdomain']) ||
-                empty($this->request->post['username']) ||
-                empty($this->request->post['password'])) {
-                    // Show empty field error message.
-                    $response['error'] = $this->language->get('error_validate_empty');
-                    echo json_encode($response);
-                    return;
-            }
-
-            $subdomain = $this->request->post['subdomain'];
-            // Normalize subdomain.
-            // First, try to parse as full URL. If that fails, try to parse as subdomain.sendsmaily.net, and
-            // if all else fails, then clean up subdomain and pass as is.
-            if (filter_var($subdomain, FILTER_VALIDATE_URL)) {
-                $url = parse_url($subdomain);
-                $parts = explode('.', $url['host']);
-                $subdomain = count($parts) >= 3 ? $parts[0] : '';
-            } elseif (preg_match('/^[^\.]+\.sendsmaily\.net$/', $subdomain)) {
-                $parts = explode('.', $subdomain);
-                $subdomain = $parts[0];
-            }
-            $subdomain = preg_replace('/[^a-zA-Z0-9]+/', '', $subdomain);
-
-            $subdomain = $this->db->escape($subdomain);
-            $username =  $this->db->escape($this->request->post['username']);
-            $password = $this->db->escape($this->request->post['password']);
-            // Validate credentials with a call to Smaily.
-            $validate = $this->validateSmailyCredentials($subdomain, $username, $password);
-
-            // If validated, save validated status to db.
-            if (array_key_exists('success', $validate)) {
-                if ($this->user->hasPermission('modify', 'module/smaily_for_opencart')) {
-                    $this->load->model('setting/setting');
-                    $this->load->model('smailyforopencart/admin');
-                    $settings = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart');
-                    // Used because save button saves whole form.
-                    $settings['smaily_for_opencart_validated'] = 1;
-                    $settings['smaily_for_opencart_subdomain'] = $subdomain;
-                    $settings['smaily_for_opencart_username'] = $username;
-                    $settings['smaily_for_opencart_password'] = $password;
-                    // Save credentials to db.
-                    $this->model_setting_setting->editSetting('smaily_for_opencart', $settings);
-                    $response['success'] = $validate['success'];
+        if ($this->user->hasPermission('modify', 'module/smaily_for_opencart')) {
+            if ($this->request->server['REQUEST_METHOD'] == 'POST') {
+                $response = [];
+                // Language for resonse.
+                $this->load->language('module/smaily_for_opencart');
+                // Check if all fields are set.
+                if (empty($this->request->post['subdomain']) ||
+                    empty($this->request->post['username']) ||
+                    empty($this->request->post['password'])) {
+                        // Show empty field error message.
+                        $response['error'] = $this->language->get('error_validate_empty');
+                        echo json_encode($response);
+                        return;
                 }
-            } elseif (array_key_exists('error', $validate)) {
-                $response['error'] = $validate['error'];
-            } else {
-                $response['error'] = $this->language->get('validated_error');
+
+                $subdomain = $this->request->post['subdomain'];
+                // Normalize subdomain.
+                // First, try to parse as full URL. If that fails, try to parse as subdomain.sendsmaily.net, and
+                // if all else fails, then clean up subdomain and pass as is.
+                if (filter_var($subdomain, FILTER_VALIDATE_URL)) {
+                    $url = parse_url($subdomain);
+                    $parts = explode('.', $url['host']);
+                    $subdomain = count($parts) >= 3 ? $parts[0] : '';
+                } elseif (preg_match('/^[^\.]+\.sendsmaily\.net$/', $subdomain)) {
+                    $parts = explode('.', $subdomain);
+                    $subdomain = $parts[0];
+                }
+                $subdomain = preg_replace('/[^a-zA-Z0-9]+/', '', $subdomain);
+
+                $subdomain = $this->db->escape($subdomain);
+                $username =  $this->db->escape($this->request->post['username']);
+                $password = $this->db->escape($this->request->post['password']);
+                // Validate credentials with a call to Smaily.
+                $validate = $this->validateSmailyCredentials($subdomain, $username, $password);
+
+                // If validated, save validated status to db.
+                if (array_key_exists('success', $validate)) {
+                    
+                        $this->load->model('setting/setting');
+                        $this->load->model('smailyforopencart/admin');
+                        $settings = $this->model_smailyforopencart_admin->getSettingValue('smaily_for_opencart');
+                        // Used because save button saves whole form.
+                        $settings['smaily_for_opencart_validated'] = 1;
+                        $settings['smaily_for_opencart_subdomain'] = $subdomain;
+                        $settings['smaily_for_opencart_username'] = $username;
+                        $settings['smaily_for_opencart_password'] = $password;
+                        // Save credentials to db.
+                        $this->model_setting_setting->editSetting('smaily_for_opencart', $settings);
+                        $response['success'] = $validate['success'];
+                } elseif (array_key_exists('error', $validate)) {
+                    $response['error'] = $validate['error'];
+                } else {
+                    $response['error'] = $this->language->get('validated_error');
+                }
+                // Return to ajax call.
+                echo json_encode($response);
             }
-            // Return to ajax call.
-            echo json_encode($response);
         }
     }
 

@@ -3,17 +3,22 @@
   <div class="breadcrumb">
     <?php foreach ($breadcrumbs as $breadcrumb) { ?>
     <?php echo $breadcrumb['separator']; ?>
-      <a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a>
+      <a href="<?php echo $breadcrumb['href']; ?>">
+        <?php echo $breadcrumb['text']; ?>
+      </a>
     <?php } ?>
   </div>
   <?php if ($error_warning) { ?>
-    <div class="warning"><?php echo $error_warning; ?></div>
+    <div class="warning">
+      <?php echo $error_warning; ?>
+    </div>
   <?php } ?>
 
 <div class="box">
   <div class="heading">
       <h1>
-        <img alt="" /> <?php echo $heading_title; ?>
+        <img alt="" />
+        <?php echo $heading_title; ?>
       </h1>
   </div>
   <div class="container-fluid">
@@ -29,11 +34,6 @@
       <?php echo $error_validate; ?>
     </div>
     <?php } ?>
-    <?php if ($success) { ?>
-    <div class="alert">
-      <?php echo $success; ?>
-    </div>
-    <?php } ?>
     <div class="alert" id="validate-div" hidden>
       <i class="fa fa-exclamation-circle"></i>
       <span id="validate-message"></span>
@@ -42,16 +42,17 @@
   <!-- Generate form content -->
   <div class="content">
     <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-smaily_for_opencart">
-      <a id="authFormLink" 
-        <?php if($validated) { echo 'style="display:block;"'; } else { echo 'style="display:none;"';} ?>>
+      <a id="authFormLink" style="display: <?php echo $validated ? 'block' : 'none'; ?>">
         Display API validation
       </a>
-      <div id="authForm" <?php if($validated) { echo 'style="display:none;"'; } ?>>
+      <div id="authForm" style="display: <?php echo $validated ? 'none' : 'block'; ?>">
       <table class="form">
         <!-- API authentication -->
         <tr>
-          <div class="form-group <?php echo $validated ? 'has-success':''; ?>">
-            <td> <?php echo $subdomain_title; ?></td>
+          <div class="form-group <?php echo $validated ? 'has-success' : ''; ?>">
+            <td>
+              <?php echo $subdomain_title; ?>
+            </td>
             <td> 
               <input 
                 type="text"
@@ -60,16 +61,22 @@
                 id="subdomain"
                 value="<?php echo $subdomain; ?>"
                 class="form-control" />
-              <span class="help"><?php echo $small_subdomain ?></span>
+              <span class="help">
+                <?php echo $small_subdomain ?>
+              </span>
               <?php if ($error_subdomain) { ?>
-                <div class="warning"><?php echo $error_subdomain; ?></div>
+                <div class="warning">
+                  <?php echo $error_subdomain; ?>
+                </div>
               <?php } ?>           
             </td>
           </div>
         </tr>
         <tr>
-          <div class="form-group <?php echo $validated ? 'has-success':''; ?>">
-            <td><?php echo $username_title; ?></td>
+          <div class="form-group <?php echo $validated ? 'has-success' : ''; ?>">
+            <td>
+              <?php echo $username_title; ?>
+            </td>
             <td> 
               <input 
                 type="text"
@@ -78,15 +85,19 @@
                 id="username"
                 value="<?php echo $username; ?>"
                 class="form-control" /><br>
-                <?php if ($error_username) { ?>
-                  <div class="warning"><?php echo $error_username; ?></div>
-                <?php } ?>
+              <?php if ($error_username) { ?>
+                <div class="warning">
+                  <?php echo $error_username; ?>
+                </div>
+              <?php } ?>
             </td>
           </div>
         </tr>
         <tr>
-          <div class="form-group <?php echo $validated ? 'has-success':''; ?>">
-            <td><?php echo $password_title; ?></td>
+          <div class="form-group <?php echo $validated ? 'has-success' : ''; ?>">
+            <td>
+              <?php echo $password_title; ?>
+            </td>
             <td> 
               <input 
                 type="password"
@@ -103,13 +114,17 @@
                 </a> 
               </span>
                 <?php if ($error_password) { ?>
-                  <div class="warning"><?php echo $error_password; ?></div>
+                  <div class="warning">
+                    <?php echo $error_password; ?>
+                  </div>
                 <?php } ?>             
             </td>
           </div>
         </tr>
         <tr class="form-group" id="validate-form-group">
-          <td><?php echo $validate_title; ?></td>
+          <td>
+            <?php echo $validate_title; ?>
+          </td>
           <td>
             <button 
               form="form-smaily_for_opencart" 
@@ -117,7 +132,7 @@
               type="button" 
               title="<?php echo $button_validate; ?>" 
               class="btn btn-primary">
-              <?php echo $button_validate; ?>
+            <?php echo $button_validate; ?>
               <span id="smaily-validate-loader" hidden>
                 <i class="fa fa-spinner fa-spin" hidden></i>
               </span>
@@ -132,7 +147,7 @@
 <?php echo $footer; ?>
 <script type="text/javascript">
 (function($) {
-   $(window).on("load", function() {
+  $(window).on("load", function() {
     
     // Toggle API authentication form on link click
     $('#authFormLink').on('click', function(e) {
@@ -171,7 +186,7 @@
 
       // Start spinner.
       spinner.show();
-      $.post( "index.php?route=module/smaily_for_opencart/ajaxValidateCredentials&token=<?php echo $token ?>",{
+      $.post("index.php?route=module/smaily_for_opencart/ajaxValidateCredentials&token=<?php echo $token ?>", {
           'subdomain' : subdomain,
           'username'  : username,
           'password'  : password
