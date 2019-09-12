@@ -8,11 +8,6 @@
       </a>
     <?php } ?>
   </div>
-  <?php if ($error_warning) { ?>
-    <div class="warning">
-      <?php echo $error_warning; ?>
-    </div>
-  <?php } ?>
 
 <div class="box">
   <div class="heading">
@@ -133,9 +128,9 @@
               title="<?php echo $button_validate; ?>" 
               class="btn btn-primary">
             <?php echo $button_validate; ?>
-              <span id="smaily-validate-loader" hidden>
-                <i class="fa fa-spinner fa-spin" hidden></i>
-              </span>
+            <span id="smaily-validate-loader" hidden>
+              <i class="fa fa-spinner fa-spin" hidden></i>
+            </span>
             </button>
           </td>
         </tr>  

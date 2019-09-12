@@ -9,9 +9,6 @@ $_['section_general']   = 'General';
 $_['text_module']         = 'Modules';
 $_['text_edit']           = 'Edit';
 
-// Enable
-$_['entry_enable_module_title']        = 'Enable Smaily Module';
-
 // First general form
 $_['entry_subdomain_title']            = 'Subdomain*';
 $_['entry_username_title']             = 'Username*';
@@ -25,9 +22,6 @@ $_['placeholder_password']   = 'Please enter password';
 
 // Error
 $_['error_permission']              = 'Warning: You do not have permission to modify Smaily for Opencart!';
-$_['error_subdomain']               = 'Subdomain can\'t be empty';
-$_['error_username']                = 'Username can\'t be empty';
-$_['error_password']                = 'Password can\'t be empty';
 $_['error_validate']                = 'Please validate credentials before saving settings';
 $_['error_validate_empty']          = 'Please fill out all fields before validating';
 

@@ -148,34 +148,6 @@ class ControllerModuleSmailyForOpencart extends Controller {
 
     }
 
-    protected function validate() {
-        // Permission.
-        if (!$this->user->hasPermission('modify', 'module/smaily_for_opencart')) {
-            $this->error['warning'] = $this->language->get('error_permission');
-        }
-        // Subdomain filled.
-        if (empty(trim($this->request->post['smaily_for_opencart_subdomain']))) {
-            $this->error['subdomain'] = $this->language->get('error_subdomain');
-        }
-        // Username filled.
-        if (empty(trim($this->request->post['smaily_for_opencart_username']))) {
-            $this->error['username'] = $this->language->get('error_username');
-        }
-        // Password filled.
-        if (empty(trim($this->request->post['smaily_for_opencart_password']))) {
-            $this->error['password'] = $this->language->get('error_password');
-        }
-
-        // Check if credentials are validated.
-        $validated = $this->config->get('smaily_for_opencart_validated');
-        if (! $validated) {
-            // Error message.
-            $this->error['validate'] = $this->language->get('error_validate');
-        }
-
-        return !$this->error;
-    }
-
     /**
      * When validate button is pressed on admin screen.
      *
