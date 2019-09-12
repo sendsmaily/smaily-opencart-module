@@ -194,7 +194,7 @@
             authenticationLink.show();
           }
         },
-      'json');
+        'json');
     });
   });
 })(jQuery);
