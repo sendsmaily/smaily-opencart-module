@@ -17,12 +17,6 @@
       </h1>
   </div>
   <div class="container-fluid">
-    <?php if ($error_warning) { ?>
-    <div class="alert warning">
-      <i class="fa fa-exclamation-circle"></i>
-      <?php echo $error_warning; ?>
-    </div>
-    <?php } ?>
     <?php if ($error_validate) { ?>
     <div class="alert warning">
       <i class="fa fa-exclamation-circle"></i>
@@ -58,12 +52,7 @@
                 class="form-control" />
               <span class="help">
                 <?php echo $small_subdomain ?>
-              </span>
-              <?php if ($error_subdomain) { ?>
-                <div class="warning">
-                  <?php echo $error_subdomain; ?>
-                </div>
-              <?php } ?>           
+              </span>    
             </td>
           </div>
         </tr>
@@ -80,11 +69,6 @@
                 id="username"
                 value="<?php echo $username; ?>"
                 class="form-control" /><br>
-              <?php if ($error_username) { ?>
-                <div class="warning">
-                  <?php echo $error_username; ?>
-                </div>
-              <?php } ?>
             </td>
           </div>
         </tr>
@@ -107,12 +91,7 @@
                   target="_blank">
                   <?php echo $small_password ?>
                 </a> 
-              </span>
-                <?php if ($error_password) { ?>
-                  <div class="warning">
-                    <?php echo $error_password; ?>
-                  </div>
-                <?php } ?>             
+              </span>     
             </td>
           </div>
         </tr>
@@ -127,10 +106,10 @@
               type="button" 
               title="<?php echo $button_validate; ?>" 
               class="btn btn-primary">
-            <?php echo $button_validate; ?>
-            <span id="smaily-validate-loader" hidden>
-              <i class="fa fa-spinner fa-spin" hidden></i>
-            </span>
+              <?php echo $button_validate; ?>
+              <span id="smaily-validate-loader" hidden>
+                <i class="fa fa-spinner fa-spin" hidden></i>
+              </span>
             </button>
           </td>
         </tr>  
@@ -181,11 +160,14 @@
 
       // Start spinner.
       spinner.show();
-      $.post("index.php?route=module/smaily_for_opencart/ajaxValidateCredentials&token=<?php echo $token ?>", {
+      $.post(
+        'index.php?route=module/smaily_for_opencart/ajaxValidateCredentials&token=<?php echo $token ?>', 
+        {
           'subdomain' : subdomain,
-          'username'  : username,
-          'password'  : password
-        }, function(response) {
+          'username' : username,
+          'password' : password
+        }, 
+        function(response) {
           // Hide spinner.
           spinner.hide();
           // Error message
@@ -211,7 +193,8 @@
             authenticationForm.hide();
             authenticationLink.show();
           }
-        },'json');
+        },
+        'json');
    });
   });
 })(jQuery);
