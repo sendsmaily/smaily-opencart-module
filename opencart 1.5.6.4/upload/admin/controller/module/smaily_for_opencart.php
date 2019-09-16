@@ -257,12 +257,12 @@ class ControllerModuleSmailyForOpencart extends Controller {
             $this->load->model('smailyforopencart/admin');
             // Used because save button saves whole form.
             $settings = [
-            'smaily_api_credentials' => [
-                'password' => $password,
-                'subdomain' => $subdomain,
-                'username' => $username,     
-                ]    
-            ];
+                'smaily_api_credentials' => [
+                    'password' => $password,
+                    'subdomain' => $subdomain,
+                    'username' => $username,     
+                    ]    
+                ];
             // Save credentials to db.
             $this->model_smailyforopencart_admin->editSettingValue('smaily', 'smaily_api_credentials', $settings['smaily_api_credentials']);
             $response['success'] = $validate['success'];
