@@ -45,12 +45,8 @@ class ControllerModuleSmailyForOpencart extends Controller {
         if ($this->request->server['REQUEST_METHOD'] == 'POST') {
             // Save Customer Sync settings.
             $this->handleCustomerSync();
-            // Display Success after pressing save.
-            $this->session->data['success'] = $this->language->get('text_success');
             // Code execution stops here.
             return;
-            // Redirect to module settings page.
-            $this->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'));
         }
 
         // Text fields
@@ -101,8 +97,6 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->data['customer_sync_field_date_added'] = $this->language->get('date_added');
         $this->data['small_sync_additional'] = $this->language->get('small_sync_additional');
         $this->data['small_token'] = $this->language->get('small_token');
-
-
 
         // Validate error.
         if (isset($this->error['validate'])) {
@@ -244,6 +238,8 @@ class ControllerModuleSmailyForOpencart extends Controller {
         ];
         // Save customer sync settings to db.
         $this->model_smailyforopencart_admin->editSettingValue('smaily', 'smaily_customer_sync', $settings);
+        $this->session->data['success'] = $this->language->get('text_success');
+        $this->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'));
         return;
     }
     /**

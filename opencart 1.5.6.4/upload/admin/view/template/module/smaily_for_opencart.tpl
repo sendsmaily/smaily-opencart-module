@@ -14,16 +14,14 @@
         <img alt="" />
         <?php echo $heading_title; ?>
       </h1>
-      <?php if ($validated) { ?>
       <div class="buttons">
-        <a onclick="$('#form-smaily_for_opencart').submit();" class="button">
+        <a onclick="$('#form-smaily_for_opencart').submit();" style="display:<?php echo $validated ? 'inline' : 'none'?>" class="button">
           <span><?php echo $button_save; ?></span>
         </a>
         <a onclick="location = '<?php echo $cancel; ?>';" class="button">
           <span><?php echo $button_cancel; ?></span>
         </a>
       </div>
-      <?php } ?>
     </div>
     <div class="container-fluid">
       <?php if ($error_validate) { ?>
@@ -266,6 +264,7 @@
             $('#validate-div').removeClass('warning');
             // Show response
             $('#validate-div').addClass('success').show();
+            $('.button').show();
           }
         },
         'json');
