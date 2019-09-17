@@ -133,56 +133,65 @@
         <div id="tab-sync">
           <table class="form">
             <tr>
-              <td><?php echo $entry_enable_subscriber_title; ?></td>
-              <td><select name="smaily_for_opencart_enable_subscribe" id="input-subscriber-status" class="form-control">
-                    <?php if ($subscribe_status) { ?>
-                    <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
-                    <option value="0"><?php echo $text_disabled; ?></option>
-                    <?php } else { ?>
-                    <option value="1"><?php echo $text_enabled; ?></option>
-                    <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
-                    <?php } ?>    
-                  </select>
+              <td>
+                <?php echo $customer_sync_enable_title; ?>
+              </td>
+              <td>
+                <select name="smaily_for_opencart_enable_subscribe" id="input-subscriber-status" class="form-control">
+                  <?php if ($subscribe_status) { ?>
+                  <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+                  <option value="0"><?php echo $text_disabled; ?></option>
+                  <?php } else { ?>
+                  <option value="1"><?php echo $text_enabled; ?></option>
+                  <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+                  <?php } ?>        
+                </select>
               </td>
             </tr>
             <tr>
-              <td><?php echo $entry_customer_sync_fields_title; ?></td>
-              <td><select class="form-control" name="smaily_for_opencart_syncronize_additional[]" id="customer_sync_fields" multiple="multiple">
-                    <?php
-                      // All available options
-                      $sync_options = [
-                        'firstname'  => $firstname,
-                        'lastname'  => $lastname,
-                        'telephone'  => $telephone,
-                        'date_added' => $date_added
-                      ];
-                      // Add options for select.
-                      foreach ($sync_options as $value => $name) {
-                        $selected = is_array($syncronize_additional) && in_array($value, $syncronize_additional) ? 'selected' : '';
-                        echo("<option value='$value' $selected>$name</option>");
-                      }
-                      ?>  
-                  </select>
-                  <span class="help"><?php echo $small_sync_additional; ?></span>
+              <td>
+                <?php echo $customer_sync_fields_title; ?>
+              </td>
+              <td>
+                <select class="form-control" name="smaily_for_opencart_syncronize_additional[]" id="customer_sync_fields" multiple="multiple">
+                  <?php foreach ($sync_options as $value => $sync_field) { ?>
+                  <option
+                    value="<?php echo $value; ?>"
+                    <?php if ($sync_field['selected']) { ?> selected=""<?php } ?>>
+                    <?php echo $sync_field['label']; ?>
+                  </option>
+                  <?php } ?>
+                <span class="help">
+                  <?php echo $small_sync_additional; ?>
+                </span>
               </td>
             </tr>
             <tr>
-              <td><?php echo $sync_token_title; ?></td>
-                <td><input 
-                      type="text"
-                      name="smaily_for_opencart_sync_token"
-                      placeholder="<?php echo $sync_token_placeholder; ?>"
-                      id="sync-token"
-                      value="<?php echo $sync_token; ?>"
-                      class="form-control" />
-                      <span class="help"><?php echo $small_token ?></span>
-                </td>
+              <td>
+                <?php echo $sync_token_title; ?>
+              </td>
+              <td>
+                <input 
+                    type="text"
+                    name="smaily_for_opencart_sync_token"
+                    placeholder="<?php echo $sync_token_placeholder; ?>"
+                    id="sync-token"
+                    value="<?php echo $subscribe_sync_token; ?>"
+                    class="form-control" />
+                <span class="help">
+                  <?php echo $small_token ?>
+                </span>
+              </td>    
             </tr>
             <tr>
-              <td><?php echo $sync_customer_url_title; ?></td>
+              <td>
+                <?php echo $sync_customer_url_title; ?>
+              </td>
               <td>
                 <p><strong><?php echo $customer_cron_url ?></strong></p>
-                <span class="help"><?php echo $customer_cron_text ?></span>
+                <span class="help">
+                  <?php echo $customer_cron_text ?>
+                </span>
               </td>
             </tr>
           </table>    

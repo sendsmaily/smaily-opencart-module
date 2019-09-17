@@ -15,8 +15,8 @@ class ModelSmailyForOpencartAdmin extends Model {
         }
     }
     public function editSettingValue($group = '', $key = '', $value = '', $store_id = 0) {
-        // Use UPDATE if group exist, otherwise INSERT it into db.
-        if (in_array(0, $this->db->query("SELECT EXISTS(SELECT * FROM " . DB_PREFIX . "setting WHERE `key`='" . $this->db->escape($key) . "')")->row)) {
+        // Use UPDATE if key exist, otherwise INSERT it into db.
+        if ($this->db->query("SELECT * FROM " . DB_PREFIX . "setting WHERE `key`='" . $this->db->escape($key) . "'")->num_rows == 0) {
             if (!is_array($value)) {
                 $this->db->query("INSERT INTO " . DB_PREFIX . "setting SET store_id = '" . (int)$store_id . "', `group` = '" . $this->db->escape($group) . "', `key` = '" . $this->db->escape($key) . "', `value` = '" . $this->db->escape($value) . "'");
             } else {
