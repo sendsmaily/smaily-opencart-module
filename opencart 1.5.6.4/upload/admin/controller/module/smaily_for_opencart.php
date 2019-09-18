@@ -138,13 +138,13 @@ class ControllerModuleSmailyForOpencart extends Controller {
         if (isset($this->request->post['smaily_for_opencart_enable_subscribe'])) {
             $this->data['sync_enabled'] = $this->request->post['smaily_for_opencart_enable_subscribe'];
         } else {
-            $this->data['sync_enabled'] = isset($sync_settings['sync_enabled']) ? $sync_settings['sync_enabled'] : '';
+            $this->data['sync_enabled'] = isset($sync_settings['enabled']) ? $sync_settings['enabled'] : '';
         }
         // Customer sync additional fields.
         if (isset($this->request->post['smaily_for_opencart_sync_fields'])) {
             $this->data['sync_fields'] = $this->request->post['smaily_for_opencart_sync_fields'];
         } else {
-            $this->data['sync_fields'] = isset($sync_settings['sync_fields']) ? $sync_settings['sync_fields'] : '';
+            $this->data['sync_fields'] = isset($sync_settings['fields']) ? $sync_settings['fields'] : '';
         }
         // Customer sync token.
         if (! empty($this->request->post['smaily_for_opencart_sync_token'])) {
@@ -152,10 +152,10 @@ class ControllerModuleSmailyForOpencart extends Controller {
             $this->data['sync_token'] = $this->request->post['smaily_for_opencart_sync_token'];
         } else {
             // Read sync token from db, if it's not in there, create one.
-            $this->data['sync_token'] = isset($sync_settings['sync_token']) ? $sync_settings['sync_token'] : uniqid();
+            $this->data['sync_token'] = isset($sync_settings['token']) ? $sync_settings['token'] : uniqid();
         }
         // Display customer sync field as selected if it's in the database.
-        $sync_fields = isset($sync_settings['sync_fields']) ? $sync_settings['sync_fields'] : array();
+        $sync_fields = isset($sync_settings['fields']) ? $sync_settings['fields'] : array();
         $this->data['sync_fields_selected'] = array(
           'firstname' => array(
             'label' => $this->language->get('firstname'),
@@ -183,6 +183,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         );
         $this->response->setOutput($this->render());
     }
+
     protected function handleCustomerSync() {
         if (!$this->user->hasPermission('modify', 'module/smaily_for_opencart')) {
             return;
@@ -204,9 +205,9 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $customer_sync_token = !empty($customer_sync_token) ? $this->db->escape($customer_sync_token) : uniqid();
         // Add declared objects to array.
         $settings = [
-          'sync_enabled' => $customer_sync_enabled,
-          'sync_fields' => $customer_sync_fields,
-          'sync_token' => $customer_sync_token,
+          'enabled' => $customer_sync_enabled,
+          'fields' => $customer_sync_fields,
+          'token' => $customer_sync_token,
         ];
         // Save customer sync settings to db.
         $this->model_smailyforopencart_admin->editSettingValue('smaily', 'smaily_customer_sync', $settings);
