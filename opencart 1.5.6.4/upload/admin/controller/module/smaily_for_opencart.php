@@ -85,18 +85,14 @@ class ControllerModuleSmailyForOpencart extends Controller {
         // Subscriber sync fields.
         $this->data['customer_sync_enable_title'] = $this->language->get('customer_sync_enable_title');
         $this->data['customer_sync_fields_title'] = $this->language->get('customer_sync_fields_title');
-        $this->data['sync_token_title'] = $this->language->get('sync_token_title');
-        $this->data['sync_token_placeholder'] = $this->language->get('sync_token_placeholder');
-        $this->data['sync_customer_url_title'] = $this->language->get('sync_customer_url_title');
-        $this->data['customer_cron_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/cron_customers&token=[token]';
-        $this->data['customer_cron_text'] = $this->language->get('customer_cron_text');
-        // Subscriber sync additional fields
-        $this->data['customer_sync_field_firstname'] = $this->language->get('firstname');
-        $this->data['customer_sync_field_lastname'] = $this->language->get('lastname');
-        $this->data['customer_sync_field_telephone'] = $this->language->get('telephone');
-        $this->data['customer_sync_field_date_added'] = $this->language->get('date_added');
-        $this->data['small_sync_additional'] = $this->language->get('small_sync_additional');
-        $this->data['small_token'] = $this->language->get('small_token');
+        $this->data['customer_sync_fields_help'] = $this->language->get('customer_sync_fields_help');
+        // Subscriber sync cron fields.
+        $this->data['customer_sync_cron_token_title'] = $this->language->get('customer_sync_cron_token_title');
+        $this->data['customer_sync_cron_token_placeholder'] = $this->language->get('customer_sync_cron_token_placeholder');
+        $this->data['customer_sync_cron_token_help'] = $this->language->get('customer_sync_cron_token_help');
+        $this->data['customer_sync_cron_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/cron_customers&token=[token]';
+        $this->data['customer_sync_cron_url_title'] = $this->language->get('customer_sync_cron_url_title');
+        $this->data['customer_sync_cron_url_help'] = $this->language->get('customer_sync_cron_url_help');
 
         // Validate error.
         if (isset($this->error['validate'])) {
@@ -133,65 +129,51 @@ class ControllerModuleSmailyForOpencart extends Controller {
          */
         $api_credentials = isset($settings['smaily_api_credentials']) ? $settings['smaily_api_credentials'] : array();
         $sync_settings = isset($settings['smaily_customer_sync']) ? $settings['smaily_customer_sync'] : array();
-        // Subdomain
-        if (isset($this->request->post['smaily_for_opencart_subdomain'])) {
-            $this->data['subdomain'] = $this->request->post['smaily_for_opencart_subdomain'];
-        } else {
-            $this->data['subdomain'] = isset($api_credentials['subdomain']) ? $api_credentials['subdomain'] : '';
-        }
-        // Username
-        if (isset($this->request->post['smaily_for_opencart_username'])) {
-            $this->data['username'] = $this->request->post['smaily_for_opencart_username'];
-        } else {
-            $this->data['username'] = isset($api_credentials['username']) ? $api_credentials['username'] : '';
-        }
-        // Password
-        if (isset($this->request->post['smaily_for_opencart_password'])) {
-            $this->data['password'] = $this->request->post['smaily_for_opencart_password'];
-        } else {
-            $this->data['password'] = isset($api_credentials['password']) ? $api_credentials['password'] : '';
-        }
 
-        // Subscriber sync enabled.
+        $this->data['subdomain'] = isset($api_credentials['subdomain']) ? $api_credentials['subdomain'] : '';
+        $this->data['username'] = isset($api_credentials['username']) ? $api_credentials['username'] : '';
+        $this->data['password'] = isset($api_credentials['password']) ? $api_credentials['password'] : '';
+
+        // Customer sync enabled.
         if (isset($this->request->post['smaily_for_opencart_enable_subscribe'])) {
-            $this->data['subscribe_status'] = $this->request->post['smaily_for_opencart_enable_subscribe'];
+            $this->data['sync_enabled'] = $this->request->post['smaily_for_opencart_enable_subscribe'];
         } else {
-            $this->data['subscribe_status'] = isset($sync_settings['subscribe_status']) ? $sync_settings['subscribe_status'] : '';
+            $this->data['sync_enabled'] = isset($sync_settings['sync_enabled']) ? $sync_settings['sync_enabled'] : '';
         }
         // Customer sync additional fields.
-        if (isset($this->request->post['smaily_for_opencart_syncronize_additional'])) {
-            $this->data['subscribe_additional'] = $this->request->post['smaily_for_opencart_syncronize_additional'];
+        if (isset($this->request->post['smaily_for_opencart_sync_fields'])) {
+            $this->data['sync_fields'] = $this->request->post['smaily_for_opencart_sync_fields'];
         } else {
-            $this->data['subscribe_additional'] = isset($sync_settings['subscribe_additional']) ? $sync_settings['subscribe_additional'] : '';
+            $this->data['sync_fields'] = isset($sync_settings['sync_fields']) ? $sync_settings['sync_fields'] : '';
         }
         // Customer sync token.
         if (! empty($this->request->post['smaily_for_opencart_sync_token'])) {
             // Get sync token if user adds custom one.
-            $this->data['subscribe_sync_token'] = $this->request->post['smaily_for_opencart_sync_token'];
+            $this->data['sync_token'] = $this->request->post['smaily_for_opencart_sync_token'];
         } else {
             // Read sync token from db, if it's not in there, create one.
-            $this->data['subscribe_sync_token'] = isset($sync_settings['subscribe_sync_token']) ? $sync_settings['subscribe_sync_token'] : uniqid();
+            $this->data['sync_token'] = isset($sync_settings['sync_token']) ? $sync_settings['sync_token'] : uniqid();
         }
-
-        $this->data['sync_options'] = array(
+        // Display customer sync field as selected if it's in the database.
+        $sync_fields = isset($sync_settings['sync_fields']) ? $sync_settings['sync_fields'] : array();
+        $this->data['sync_fields_selected'] = array(
           'firstname' => array(
             'label' => $this->language->get('firstname'),
-            'selected' => false,
+            'selected' => in_array('firstname', $sync_fields),
           ),
           'lastname' => array(
             'label' => $this->language->get('lastname'),
-            'selected' => false,
+            'selected' => in_array('lastname', $sync_fields),
           ),
           'telephone' => array(
             'label' => $this->language->get('telephone'),
-            'selected' => false,
+            'selected' => in_array('telephone', $sync_fields),
           ),
           'date_added' => array(
             'label' => $this->language->get('date_added'),
-            'selected' => false,
+            'selected' => in_array('date_added', $sync_fields),
           ),
         );
-        
 
         // Load template
         $this->template = 'module/smaily_for_opencart.tpl';
@@ -202,45 +184,34 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->response->setOutput($this->render());
     }
     protected function handleCustomerSync() {
-        $isRequestMethodPost = $this->request->server['REQUEST_METHOD'] === 'POST';
-        $hasPermissionsToModify = $this->user->hasPermission('modify', 'module/smaily_for_opencart');
-        if (!$isRequestMethodPost || !$hasPermissionsToModify) {
+        if (!$this->user->hasPermission('modify', 'module/smaily_for_opencart')) {
             return;
         }
-        $response = [];
         // Load Smaily admin model for saving settings.
         $this->load->model('smailyforopencart/admin');
         // Declare customer sync objects.
-        $subscribe_status = $this->request->post['smaily_for_opencart_enable_subscribe'];
+        $customer_sync_enabled = $this->request->post['smaily_for_opencart_sync_enabled'];
         // For if no customer sync fields are selected.
-        if (!empty($this->request->post['smaily_for_opencart_syncronize_additional'])) {
-            $subscribe_additional = $this->request->post['smaily_for_opencart_syncronize_additional'];
-        } else {
-            $subscribe_additional = array();
+        $customer_sync_fields = array();
+        if (!empty($this->request->post['smaily_for_opencart_sync_fields']) && is_array($this->request->post['smaily_for_opencart_sync_fields'])) {
+            $customer_sync_fields = $this->request->post['smaily_for_opencart_sync_fields'];
         }
-        $subscribe_sync_token = $this->request->post['smaily_for_opencart_sync_token'];
-        
+        $customer_sync_token = $this->request->post['smaily_for_opencart_sync_token'];
         // Data validation.
-        $subscribe_status = ($subscribe_status == 0 || $subscribe_status == 1) ? $subscribe_status : 0;
-        // Flipping array allows to use isset for validation.
-        $subscribe_additional = (
-            isset(array_flip($subscribe_additional)['firstname']) || 
-            isset(array_flip($subscribe_additional)['lastname']) ||
-            isset(array_flip($subscribe_additional)['telephone']) ||
-            isset(array_flip($subscribe_additional)['date_added'])) ? $subscribe_additional : array();
-        // Validate and sanitize cron token field.
-        $subscribe_sync_token = !empty($subscribe_sync_token) ? $this->db->escape($subscribe_sync_token) : uniqid();
+        $customer_sync_enabled = ($customer_sync_enabled == 0 || $customer_sync_enabled == 1) ? $customer_sync_enabled : 0;
+        $customer_sync_fields = array_intersect(['firstname', 'lastname', 'telephone', 'date_added'], $customer_sync_fields);
+        // Cron token field validation and sanitization.
+        $customer_sync_token = !empty($customer_sync_token) ? $this->db->escape($customer_sync_token) : uniqid();
         // Add declared objects to array.
         $settings = [
-          'subscribe_status' => ($subscribe_status),
-          'subscribe_additional' => ($subscribe_additional),
-          'subscribe_sync_token' => ($subscribe_sync_token),
+          'sync_enabled' => $customer_sync_enabled,
+          'sync_fields' => $customer_sync_fields,
+          'sync_token' => $customer_sync_token,
         ];
         // Save customer sync settings to db.
         $this->model_smailyforopencart_admin->editSettingValue('smaily', 'smaily_customer_sync', $settings);
         $this->session->data['success'] = $this->language->get('text_success');
         $this->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'));
-        return;
     }
     /**
      * When validate button is pressed on admin screen.

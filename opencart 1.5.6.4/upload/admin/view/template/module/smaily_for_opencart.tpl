@@ -14,10 +14,12 @@
         <img alt="" />
         <?php echo $heading_title; ?>
       </h1>
-      <div class="buttons">
-        <a onclick="$('#form-smaily_for_opencart').submit();" style="display:<?php echo $validated ? 'inline' : 'none'?>" class="button">
+      <div class="buttons" style="display:flex">
+        <div class="save_button" style="display:<?php echo $validated ? 'block' : 'none'?>">
+        <a onclick="$('#form-smaily_for_opencart').submit();" class="button">
           <span><?php echo $button_save; ?></span>
         </a>
+        </div>
         <a onclick="location = '<?php echo $cancel; ?>';" class="button">
           <span><?php echo $button_cancel; ?></span>
         </a>
@@ -135,8 +137,8 @@
                 <?php echo $customer_sync_enable_title; ?>
               </td>
               <td>
-                <select name="smaily_for_opencart_enable_subscribe" id="input-subscriber-status" class="form-control">
-                  <?php if ($subscribe_status) { ?>
+                <select name="smaily_for_opencart_sync_enabled" id="input-subscriber-status" class="form-control">
+                  <?php if ($sync_enabled) { ?>
                   <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
                   <option value="0"><?php echo $text_disabled; ?></option>
                   <?php } else { ?>
@@ -151,44 +153,45 @@
                 <?php echo $customer_sync_fields_title; ?>
               </td>
               <td>
-                <select class="form-control" name="smaily_for_opencart_syncronize_additional[]" id="customer_sync_fields" multiple="multiple">
-                  <?php foreach ($sync_options as $value => $sync_field) { ?>
+                <select class="form-control" name="smaily_for_opencart_sync_fields[]" id="customer_sync_fields" multiple="multiple">
+                  <?php foreach ($sync_fields_selected as $value => $sync_field) { ?>
                   <option
                     value="<?php echo $value; ?>"
                     <?php if ($sync_field['selected']) { ?> selected=""<?php } ?>>
                     <?php echo $sync_field['label']; ?>
                   </option>
                   <?php } ?>
+                </select>
                 <span class="help">
-                  <?php echo $small_sync_additional; ?>
+                  <?php echo $customer_sync_fields_help; ?>
                 </span>
               </td>
             </tr>
             <tr>
               <td>
-                <?php echo $sync_token_title; ?>
+                <?php echo $customer_sync_cron_token_title; ?>
               </td>
               <td>
                 <input 
                     type="text"
                     name="smaily_for_opencart_sync_token"
-                    placeholder="<?php echo $sync_token_placeholder; ?>"
+                    placeholder="<?php echo $customer_sync_cron_token_placeholder; ?>"
                     id="sync-token"
-                    value="<?php echo $subscribe_sync_token; ?>"
+                    value="<?php echo $sync_token; ?>"
                     class="form-control" />
                 <span class="help">
-                  <?php echo $small_token ?>
+                  <?php echo $customer_sync_cron_token_help; ?>
                 </span>
               </td>    
             </tr>
             <tr>
               <td>
-                <?php echo $sync_customer_url_title; ?>
+                <?php echo $customer_sync_cron_url_title; ?>
               </td>
               <td>
-                <p><strong><?php echo $customer_cron_url ?></strong></p>
+                <p><strong><?php echo $customer_sync_cron_url ?></strong></p>
                 <span class="help">
-                  <?php echo $customer_cron_text ?>
+                  <?php echo $customer_sync_cron_url_help ?>
                 </span>
               </td>
             </tr>
@@ -264,7 +267,7 @@
             $('#validate-div').removeClass('warning');
             // Show response
             $('#validate-div').addClass('success').show();
-            $('.button').show();
+            $('div.save_button').show();
           }
         },
         'json');

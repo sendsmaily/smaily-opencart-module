@@ -24,7 +24,6 @@ $_['validation_link'] = 'Display API authentication';
 $_['placeholder_subdomain'] = 'Please enter subdomain';
 $_['placeholder_username'] = 'Please enter username';
 $_['placeholder_password'] = 'Please enter password';
-$_['sync_token_placeholder'] = 'Please enter token for customer sync';
 
 // Error
 $_['error_permission'] = 'Warning: You do not have permission to modify Smaily for Opencart!';
@@ -51,8 +50,10 @@ $_['text_disabled'] = 'Disabled';
 // Customer sync form
 $_['customer_sync_enable_title'] = 'Enable Customer Synchronization';
 $_['customer_sync_fields_title'] = 'Customer Synchronization fields';
-$_['sync_token_title'] = 'Customer Cron Token*';
-$_['sync_customer_url_title'] = 'Cron url';
-$_['customer_cron_text'] = 'Use this url to run cron. Token must be provided';
-$_['small_sync_additional'] = 'Select fields you wish to synchronize';
-$_['small_token'] = 'Token is required for cron security. Use this auto generated one or replace with your own.';
+$_['customer_sync_fields_help'] = 'Select fields you wish to synchronize';
+// Customer sync form cron text
+$_['customer_sync_cron_token_title'] = 'Customer Cron Token*';
+$_['customer_sync_cron_token_placeholder'] = 'Please enter token for customer sync';
+$_['customer_sync_cron_token_help'] = 'Token is required for cron security. Use this auto generated one or replace with your own.';
+$_['customer_sync_cron_url_title'] = 'Cron url';
+$_['customer_sync_cron_url_help'] = 'Use this url to run cron. Token must be provided';
