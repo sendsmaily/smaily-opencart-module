@@ -38,7 +38,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         // Settings model.
         $this->load->model('setting/setting');
         // Load smaily settings.
-        $settings = $this->load->model_setting_setting->getSetting('smaily'); 
+        $settings = $this->load->model_setting_setting->getSetting('smaily');
         // Add heading title.
         $this->document->setTitle($this->language->get('heading_title'));
         // When save is pressed.
@@ -178,7 +178,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         // Load template
         $this->template = 'module/smaily_for_opencart.tpl';
         $this->children = array(
-            'common/header', 
+            'common/header',
             'common/footer',
         );
         $this->response->setOutput($this->render());
@@ -201,10 +201,11 @@ class ControllerModuleSmailyForOpencart extends Controller {
         // Data validation.
         $customer_sync_enabled = ($customer_sync_enabled == 0 || $customer_sync_enabled == 1) ? $customer_sync_enabled : 0;
         $customer_sync_fields = array_intersect(['firstname', 'lastname', 'telephone', 'date_added'], $customer_sync_fields);
-        // Cron token field validation and sanitization.
-        $customer_sync_token = !empty($customer_sync_token) ? $this->db->escape($customer_sync_token) : uniqid();
         // Remove all non-alphanumeric characters and spaces from token.
         $customer_sync_token = preg_replace('/[^a-zA-Z0-9]+/', '', $customer_sync_token);
+        // Cron token field validation and sanitization.
+        $customer_sync_token = !empty($customer_sync_token) ? $this->db->escape($customer_sync_token) : uniqid();
+
         // Add declared objects to array.
         $settings = [
           'enabled' => $customer_sync_enabled,
@@ -278,7 +279,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
             $response['error'] = $this->language->get('validated_error');
         }
         // Return to ajax call.
-        echo json_encode($response);        
+        echo json_encode($response);
     }
 
     /**

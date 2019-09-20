@@ -12,7 +12,7 @@ class ControllerSmailyForOpencartCronCustomers extends Controller {
         $this->load->model('setting/setting');
         // Load Smaily helper.
         $this->load->model('smailyforopencart/helper');
-        
+
         // Validate token.
 
         $settings = $this->model_setting_setting->getSetting('smaily')['smaily_customer_sync'];
@@ -66,12 +66,12 @@ class ControllerSmailyForOpencartCronCustomers extends Controller {
                 // Send subscribers to smaily.
                 $response = $this->model_smailyforopencart_helper->apiCall('contact', $list, 'POST');
                 // Error handling for apiCall POST.
-                if ($response != 101) {
+                if (isset($response['code']) && $reponse['code']) {
                     die('Error with request to Smaily API, try again later.');
                 }
             }
             $this->log->write('smaily subscriber sync finished: ' . json_encode($response));
             echo 'Smaily subscriber sync finished.';
-        }    
+        }
     }
 }
