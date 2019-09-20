@@ -13,5 +13,22 @@ class ModelSmailyForOpencartAdmin extends Model {
         } else {
             return null;    
         }
+    }
+
+    public function editSettingValue($group = '', $key = '', $value = '', $store_id = 0) {
+        // Use UPDATE if key exist, otherwise INSERT it into db.
+        if ($this->db->query("SELECT * FROM " . DB_PREFIX . "setting WHERE `key`='" . $this->db->escape($key) . "'")->num_rows == 0) {
+            if (!is_array($value)) {
+                $this->db->query("INSERT INTO " . DB_PREFIX . "setting SET store_id = '" . (int)$store_id . "', `group` = '" . $this->db->escape($group) . "', `key` = '" . $this->db->escape($key) . "', `value` = '" . $this->db->escape($value) . "'");
+            } else {
+                $this->db->query("INSERT INTO " . DB_PREFIX . "setting SET store_id = '" . (int)$store_id . "', `group` = '" . $this->db->escape($group) . "', `key` = '" . $this->db->escape($key) . "', `value` = '" . $this->db->escape(serialize($value)) . "', serialized = '1'");
+            }    
+        } else {
+            if (!is_array($value)) {
+                $this->db->query("UPDATE " . DB_PREFIX . "setting SET `value` = '" . $this->db->escape($value) . "' WHERE `group` = '" . $this->db->escape($group) . "' AND `key` = '" . $this->db->escape($key) . "' AND store_id = '" . (int)$store_id . "'");
+            } else {
+                $this->db->query("UPDATE " . DB_PREFIX . "setting SET `value` = '" . $this->db->escape(serialize($value)) . "' WHERE `group` = '" . $this->db->escape($group) . "' AND `key` = '" . $this->db->escape($key) . "' AND store_id = '" . (int)$store_id . "' AND serialized = '1'");
+            }           
+        }
     }   
 }

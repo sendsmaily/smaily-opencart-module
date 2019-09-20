@@ -8,6 +8,11 @@ $_['section_general'] = 'General';
 // Text
 $_['text_module'] = 'Modules';
 $_['text_edit'] = 'Edit';
+$_['text_success'] = 'Success: You have modified Smaily for Opencart module!';
+
+// Tabs
+$_['tab_sync'] = 'Customer Sync';
+$_['tab_general'] = 'General Settings';
 
 // First general form
 $_['entry_subdomain_title'] = 'Subdomain*';
@@ -27,6 +32,8 @@ $_['error_validate_empty'] = 'Please fill out all fields before validating';
 
 // Buttons
 $_['button_validate'] = 'Validate';
+$_['button_save'] = 'Save';
+$_['button_cancel'] = 'Cancel';
 
 // Validation responses
 $_['validated_success'] = 'Validated!';
@@ -37,3 +44,16 @@ $_['validated_error'] = 'Something went wrong with validating!';
 // Small text
 $_['small_subdomain'] = 'For example "demo" from https://demo.sendsmaily.net/';
 $_['small_password'] = 'How to create API credentials?';
+$_['text_enabled'] = 'Enabled';
+$_['text_disabled'] = 'Disabled';
+
+// Customer sync form
+$_['customer_sync_enable_title'] = 'Enable Customer Synchronization';
+$_['customer_sync_fields_title'] = 'Customer Synchronization fields';
+$_['customer_sync_fields_help'] = 'Select fields you wish to synchronize';
+// Customer sync form cron text
+$_['customer_sync_cron_token_title'] = 'Customer Cron Token*';
+$_['customer_sync_cron_token_placeholder'] = 'Please enter token for customer sync';
+$_['customer_sync_cron_token_help'] = 'Token is required for cron security. Use this auto generated one or replace with your own.';
+$_['customer_sync_cron_url_title'] = 'Cron url';
+$_['customer_sync_cron_url_help'] = 'Use this url to run cron. Token must be provided';
