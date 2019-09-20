@@ -144,7 +144,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         if (isset($this->request->post['smaily_for_opencart_sync_fields'])) {
             $this->data['sync_fields'] = $this->request->post['smaily_for_opencart_sync_fields'];
         } else {
-            $this->data['sync_fields'] = isset($sync_settings['fields']) ? $sync_settings['fields'] : '';
+            $this->data['sync_fields'] = isset($sync_settings['fields']) ? $sync_settings['fields'] : array();
         }
         // Customer sync token.
         if (! empty($this->request->post['smaily_for_opencart_sync_token'])) {
@@ -154,24 +154,24 @@ class ControllerModuleSmailyForOpencart extends Controller {
             // Read sync token from db, if it's not in there, create one.
             $this->data['sync_token'] = isset($sync_settings['token']) ? $sync_settings['token'] : uniqid();
         }
-        // Display customer sync field as selected if it's in the database.
-        $sync_fields = isset($sync_settings['fields']) ? $sync_settings['fields'] : array();
+
+        // Display chosen customer sync field as selected.
         $this->data['sync_fields_selected'] = array(
           'firstname' => array(
             'label' => $this->language->get('firstname'),
-            'selected' => in_array('firstname', $sync_fields),
+            'selected' => in_array('firstname', $this->data['sync_fields']),
           ),
           'lastname' => array(
             'label' => $this->language->get('lastname'),
-            'selected' => in_array('lastname', $sync_fields),
+            'selected' => in_array('lastname', $this->data['sync_fields']),
           ),
           'telephone' => array(
             'label' => $this->language->get('telephone'),
-            'selected' => in_array('telephone', $sync_fields),
+            'selected' => in_array('telephone', $this->data['sync_fields']),
           ),
           'date_added' => array(
             'label' => $this->language->get('date_added'),
-            'selected' => in_array('date_added', $sync_fields),
+            'selected' => in_array('date_added', $this->data['sync_fields']),
           ),
         );
 
@@ -203,6 +203,8 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $customer_sync_fields = array_intersect(['firstname', 'lastname', 'telephone', 'date_added'], $customer_sync_fields);
         // Cron token field validation and sanitization.
         $customer_sync_token = !empty($customer_sync_token) ? $this->db->escape($customer_sync_token) : uniqid();
+        // Remove all non-alphanumeric characters and spaces from token.
+        $customer_sync_token = preg_replace('/[^a-zA-Z0-9]+/', '', $customer_sync_token);
         // Add declared objects to array.
         $settings = [
           'enabled' => $customer_sync_enabled,

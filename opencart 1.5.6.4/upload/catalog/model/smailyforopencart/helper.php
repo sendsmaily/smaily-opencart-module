@@ -1,6 +1,27 @@
 <?php
 
 class ModelSmailyForOpencartHelper extends Model {
+    private $_credentials = NULL;
+    
+    /**
+     * Gets Smaily API credentials from settings. 
+     *
+     * @return array Smaily API credentials.
+     */
+    private function getApiCredentials() {
+        if (is_null($this->_credentials)) {
+            $this->load->model('setting/setting');
+            $credentials = $this->model_setting_setting->getSetting('smaily')['smaily_api_credentials'];
+            $this->_credentials = is_array($credentials) ? $credentials : [
+                'password' => NULL,
+                'subdomain' => NULL,
+                'username' => NULL,
+            ];
+        }
+
+        return $this->_credentials;
+    }
+
     /**
      * Makes cURL call to Smaily API endpoint. Returns body or empty if error.
      *
@@ -12,13 +33,11 @@ class ModelSmailyForOpencartHelper extends Model {
     public function apiCall($endpoint, array $data = [], $method = 'GET') {
         // Response.
         $response = [];
-        // Smaily settings from database.
-        $this->load->model('setting/setting');
-        $settings = $this->model_setting_setting->getSetting('smaily')['smaily_api_credentials'];
-        // Credentials.
+        // Load credentials.
+        $settings = $this->getApiCredentials();
         $username = $settings['username'];
-        $password = $settings['password'];
         $subdomain = $settings['subdomain'];
+        $password = $settings['password'];
         // Url.
         $apiUrl = 'https://' . $subdomain . '.sendsmaily.net/api/' . $endpoint . '.php';
         // cURL call.
@@ -53,7 +72,7 @@ class ModelSmailyForOpencartHelper extends Model {
             }
         }
         // Return response if success.
-        if ($http_code === 200) {
+        if ($http_code === 200) {   
             // POST.
             if ($method === 'POST') {
                 if (array_key_exists('code', $api_call) && (int) $api_call['code'] === 101) {
@@ -74,11 +93,12 @@ class ModelSmailyForOpencartHelper extends Model {
     /**
      * Get all subscribed customers.
      *
+     * @param int $offset Id counter
      * @return array $customers All subscribed customers in array.
      */
     public function getSubscribedCustomers($offset) {
-        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer
-            WHERE (`customer_id` > " . (int)$offset . " AND `newsletter` = '1') LIMIT 2500");
+        $query = $this->db->query(
+            "SELECT * FROM " . DB_PREFIX . "customer WHERE (`customer_id` > " . (int)$offset . " AND `newsletter` = '1') LIMIT 2500");
         return $query->rows;
     }
 
@@ -86,16 +106,21 @@ class ModelSmailyForOpencartHelper extends Model {
      * Sets newsletter status to 0 in customer table.
      *
      * @param array $emails Emails to unsubscribe.
-     *
      * @return void
      */
     public function unsubscribeCustomers($emails) {
-        foreach ($emails as $email) {
-            $this->db->query("UPDATE " . DB_PREFIX . "customer SET newsletter = '0'
-                WHERE (`email` = '" . $email . "' AND `customer_id` <> 0)");
+        // Split email array to chunks of 500, in case query is too long.
+        $chunks = array_chunk($emails, 500);
+        foreach ($chunks as $chunk) {
+            $binds = array();
+            foreach ($emails as $email) {
+                $binds[] = $this->db->escape($email);
+            }
+            // Add all emails to long string seperated by commas.
+            $this->db->query(
+                "UPDATE " . DB_PREFIX . "customer SET newsletter = '0' WHERE `email` IN ('" . implode("','", $binds) . "')");
         }
     }
-
 
     /**
      * Get additional sync fields from settings table.
