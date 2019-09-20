@@ -2,9 +2,9 @@
 
 class ModelSmailyForOpencartHelper extends Model {
     /**
-     * Makes cUrl call to smaily api endpoint. Returns body or empty if error.
+     * Makes cURL call to Smaily API endpoint. Returns body or empty if error.
      *
-     * @param string $endpoint Smaily api endpoint without .php
+     * @param string $endpoint Smaily API endpoint without .php
      * @param array $data      Data to send to smaily.
      * @param string $method   POST or GET
      * @return array $response Response body for success, empty if error.
@@ -15,13 +15,13 @@ class ModelSmailyForOpencartHelper extends Model {
         // Smaily settings from database.
         $this->load->model('setting/setting');
         $settings = $this->model_setting_setting->getSetting('smaily')['smaily_api_credentials'];
-        // Credentials
+        // Credentials.
         $username = $settings['username'];
         $password = $settings['password'];
         $subdomain = $settings['subdomain'];
         // Url.
         $apiUrl = 'https://' . $subdomain . '.sendsmaily.net/api/' . $endpoint . '.php';
-        // Curl call.
+        // cURL call.
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $apiUrl);
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -44,7 +44,7 @@ class ModelSmailyForOpencartHelper extends Model {
             $api_call = json_decode(curl_exec($ch), true);
             // Response code from Smaily API.
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            // Validate response
+            // Validate response.
             if (!array_key_exists('code', $api_call)) {
                 $this->log->write('Something went wrong with Smaily request!');
             }
@@ -76,20 +76,26 @@ class ModelSmailyForOpencartHelper extends Model {
      *
      * @return array $customers All subscribed customers in array.
      */
-    public function getSubscribedCustomers() {
-        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer WHERE newsletter = '1'");
+    public function getSubscribedCustomers($offset) {
+        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer
+            WHERE (`customer_id` > " . (int)$offset . " AND `newsletter` = '1') LIMIT 2500");
         return $query->rows;
     }
 
     /**
      * Sets newsletter status to 0 in customer table.
      *
-     * @param string $customer_id Customers id.
+     * @param array $emails Emails to unsubscribe.
+     *
      * @return void
      */
-    public function unsubscribeCustomer($customer_id) {
-        $this->db->query("UPDATE " . DB_PREFIX . "customer SET newsletter = '0' WHERE customer_id = '" . (int)$customer_id . "'");
+    public function unsubscribeCustomers($emails) {
+        foreach ($emails as $email) {
+            $this->db->query("UPDATE " . DB_PREFIX . "customer SET newsletter = '0'
+                WHERE (`email` = '" . $email . "' AND `customer_id` <> 0)");
+        }
     }
+
 
     /**
      * Get additional sync fields from settings table.

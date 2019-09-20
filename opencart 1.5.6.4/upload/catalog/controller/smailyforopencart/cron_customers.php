@@ -13,43 +13,45 @@ class ControllerSmailyForOpencartCronCustomers extends Controller {
         // Load Smaily helper.
         $this->load->model('smailyforopencart/helper');
         
-        $settings = $this->model_setting_setting->getSetting('smaily')['smaily_customer_sync'];
+        // Validate token.
 
-        // Validate cron token.
-        if (!array_key_exists('token', $settings) ||
-            empty($this->request->get['token']) ||
-            $settings['token'] !== $this->request->get['token']
-        ) {
+        $settings = $this->model_setting_setting->getSetting('smaily')['smaily_customer_sync'];
+        $settings = empty($settings) ? ['enabled' => 0, 'token' => ''] : $settings;
+
+        $settings_token = isset($settings['token']) ? $settings['token'] : '';
+        $request_token = isset($this->request->get['token']) ? trim($this->request->get['token']) : '';
+        if (empty($settings_token) || empty($request_token) || $settings_token !== $request_token) {
             die('Unauthorized');
         }
         if ($settings['enabled'] == 1) {
-
-            // Get unsubscribers from smaily.
-            $unsubscribers_filter = array(
-                'list' => 2,
-            );
-
-            $unsubscribers = $this->model_smailyforopencart_helper->apiCall('contact', $unsubscribers_filter);
-            // Collect unsubscriber emails.
-            $unsubscribers_emails = [];
-            foreach ($unsubscribers as $unsubscriber) {
-                array_push($unsubscribers_emails, $unsubscriber['email']);
-            }
-            // Remove subscribed status from unsubscribed customers.
-            $subscribers = $this->model_smailyforopencart_helper->getSubscribedCustomers();
-            foreach ($subscribers as $subscriber) {
-                if (in_array($subscriber['email'], $unsubscribers_emails)) {
-                    $this->model_smailyforopencart_helper->unsubscribeCustomer($subscriber['customer_id']);
+            $offset_unsub = 0;
+            while (true) {
+                $unsubscribers = $this->model_smailyforopencart_helper->apiCall('contact', [
+                    'list' => 2,
+                    'offset' => $offset_unsub,
+                    'limit' => 2500,
+                ]);
+                // Collect unsubscriber emails.
+                $unsubscribers_emails = [];
+                foreach ($unsubscribers as $unsubscriber) {
+                    array_push($unsubscribers_emails, $unsubscriber['email']);
+                }
+                // unsubscribeCustomers method would compile a single update query.
+                $this->model_smailyforopencart_helper->unsubscribeCustomers($unsubscribers_emails);
+                $offset_unsub += 1;
+                if (empty($unsubscribers)) {
+                    break;
                 }
             }
             
-            // Get all users with subscribed status.
-            $subscribers = $this->model_smailyforopencart_helper->getSubscribedCustomers();
-            if (empty($subscribers)) {
-                $this->log->write('Smaily subscriber sync without customers.');
-                echo 'No subscribers to sync.';
-            } else {
-                // Prepare list for smaily.
+            $offset_sub = 0;
+            while (true) {
+                $subscribers = $this->model_smailyforopencart_helper->getSubscribedCustomers($offset_sub);
+                if (empty($subscribers)) {
+                    $this->log->write('smaily subscriber sync without customers.');
+                    echo 'No subscribers to sync.';
+                    break;
+                }
                 $list = [];
                 foreach ($subscribers as $subscriber) {
                     // Get customer info based of selected fields from admin.
@@ -57,15 +59,14 @@ class ControllerSmailyForOpencartCronCustomers extends Controller {
                     $customer = [];
                     foreach ($sync_fields as $field) {
                         $customer[$field] = $subscriber[$field];
+                        $offset_sub = $subscriber['customer_id'];
                     }
                     $customer['is_unsubscribed'] = "0";
                     array_push($list, $customer);
                 }
                 // Send subscribers to smaily.
                 $response = $this->model_smailyforopencart_helper->apiCall('contact', $list, 'POST');
-                $this->log->write('Smaily customer sync : ' . json_encode($response));
-                echo 'Subscribers synchronized';
             }
-        }
+        }    
     }
 }
