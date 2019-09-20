@@ -66,7 +66,7 @@ class ControllerSmailyForOpencartCronCustomers extends Controller {
                 // Send subscribers to smaily.
                 $response = $this->model_smailyforopencart_helper->apiCall('contact', $list, 'POST');
                 // Error handling for apiCall POST.
-                if (isset($response['code']) && $reponse['code']) {
+                if (isset($response['code']) && $response['code'] != "101") {
                     die('Error with request to Smaily API, try again later.');
                 }
             }
