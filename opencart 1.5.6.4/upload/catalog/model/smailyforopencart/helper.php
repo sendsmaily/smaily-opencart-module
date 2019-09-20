@@ -2,9 +2,9 @@
 
 class ModelSmailyForOpencartHelper extends Model {
     private $_credentials = NULL;
-    
+
     /**
-     * Gets Smaily API credentials from settings. 
+     * Gets Smaily API credentials from settings.
      *
      * @return array Smaily API credentials.
      */
@@ -72,7 +72,7 @@ class ModelSmailyForOpencartHelper extends Model {
             }
         }
         // Return response if success.
-        if ($http_code === 200) {   
+        if ($http_code === 200) {
             // POST.
             if ($method === 'POST') {
                 if (array_key_exists('code', $api_call) && (int) $api_call['code'] === 101) {
