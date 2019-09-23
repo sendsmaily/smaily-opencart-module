@@ -6,8 +6,6 @@ class ControllerSmailyForOpencartRss extends Controller {
         // Load models.
         $this->load->model('catalog/product');
         $this->load->model('tool/image');
-        $this->load->model('localisation/currency');
-
         // Get params from url for filtering products.
         if (isset($this->request->get['category'])) {
             $category = $this->request->get['category'];
@@ -19,10 +17,10 @@ class ControllerSmailyForOpencartRss extends Controller {
         } else {
             $limit = 50;
         }
-        // Xml header.
-        $this->response->addHeader('Content-Type: text/xml; charset=utf-8');
+
         // Store url.
-        if (isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1'))) {
+        $env_https = isset($this->request->server['HTTPS']) ? $this->request->server['HTTPS'] : NULL;
+        if ($env_https = 'on' || $env_https == '1') {
             $this->data['store_url'] = $this->config->get('config_ssl');
         } else {
             $this->data['store_url'] = $this->config->get('config_url');
@@ -41,7 +39,7 @@ class ControllerSmailyForOpencartRss extends Controller {
         // Add category if set.
         if ($category) {
             $filter['filter_category_id'] = $this->getCategoryIdByName($category);
-            $filter['filter_sub_caegory'] = true;
+            $filter['filter_sub_category'] = true;
         }
         // Get items based on filer.
         $products = $this->model_catalog_product->getProducts($filter);
@@ -54,7 +52,7 @@ class ControllerSmailyForOpencartRss extends Controller {
             // Link, guid
             $item['link'] = $this->url->link('product/product', 'product_id=' . $product['product_id']);
             // Created date.
-            $item['pubDate'] = $product['date_available'];
+            $item['pubDate'] = date('r', strtotime($product['date_available']));
             // Description.
             $item['description'] = $product['description'];
             // Enclosure.
@@ -70,8 +68,11 @@ class ControllerSmailyForOpencartRss extends Controller {
             $items[] = $item;
         }
         $this->data['items'] = $items;
-        // Return output.
+        // Load RSS template.
         $this->template = 'default/template/smailyforopencart/rss.tpl';
+        // XML header.
+        $this->response->addHeader('Content-Type: text/xml; charset=utf-8');
+        // Return output.
         $this->response->setOutput($this->render());
     }
 
@@ -84,15 +85,15 @@ class ControllerSmailyForOpencartRss extends Controller {
      */
     public function getCategoryIdByName($name) {
         $this->load->model('catalog/category');
-        $id = '';
-        // All categories.
+        // Load all categories.
         $categories = $this->model_catalog_category->getCategories();
         foreach ($categories as $category) {
             if ($category['name'] == $name) {
                 // Get id if name matches.
-                $id = $category['category_id'];
+                return $category['category_id'];
             }
         }
-        return $id;
+        // Return empty if no matching category found.
+        return ;
     }
 }
