@@ -46,6 +46,9 @@
         <a href="#tab-sync">
           <?php echo $tab_sync; ?>
         </a>
+        <a href="#tab-rss">
+          <?php echo $tab_rss; ?>
+        </a>
       </div>
       <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-smaily_for_opencart">
         <div id="tab-general">
@@ -182,20 +185,34 @@
                 <span class="help">
                   <?php echo $customer_sync_cron_token_help; ?>
                 </span>
-              </td>    
+              </td>
             </tr>
             <tr>
               <td>
                 <?php echo $customer_sync_cron_url_title; ?>
               </td>
               <td>
-                <p><strong><?php echo $customer_sync_cron_url ?></strong></p>
+                <p><strong><?php echo $customer_sync_cron_url; ?></strong></p>
                 <span class="help">
-                  <?php echo $customer_sync_cron_url_help ?>
+                  <?php echo $customer_sync_cron_url_help; ?>
                 </span>
               </td>
             </tr>
-          </table>    
+          </table>
+        </div>
+        <div id="tab-rss">
+          <table class="form">
+            <tr>
+              <td>
+                <?php echo $rss_feed_title; ?>
+              </td>
+              <td>
+                <p><strong><?php echo $rss_feed_url; ?></strong></p>
+                <span class="help">
+                  <?php echo $rss_feed_text; ?>
+                </span>
+              </td>
+          </table>
         </div>
       </form>
     </div>
