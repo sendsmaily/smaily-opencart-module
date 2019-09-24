@@ -14,7 +14,6 @@ class ControllerSmailyForOpencartCronCustomers extends Controller {
         $this->load->model('smailyforopencart/helper');
 
         // Validate token.
-
         $settings = $this->model_setting_setting->getSetting('smaily')['smaily_customer_sync'];
         $settings = empty($settings) ? ['enabled' => 0, 'token' => ''] : $settings;
 

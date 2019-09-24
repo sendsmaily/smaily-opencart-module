@@ -6,7 +6,7 @@ class ControllerSmailyForOpencartRss extends Controller {
         // Load models.
         $this->load->model('catalog/product');
         $this->load->model('tool/image');
-        // Get params from url for filtering products.
+        // Get params from URL for filtering products.
         if (isset($this->request->get['category'])) {
             $category = $this->request->get['category'];
         } else {
@@ -18,7 +18,7 @@ class ControllerSmailyForOpencartRss extends Controller {
             $limit = 50;
         }
 
-        // Store url.
+        // Store URL.
         $env_https = isset($this->request->server['HTTPS']) ? $this->request->server['HTTPS'] : NULL;
         if ($env_https = 'on' || $env_https == '1') {
             $this->data['store_url'] = $this->config->get('config_ssl');
@@ -77,10 +77,10 @@ class ControllerSmailyForOpencartRss extends Controller {
     }
 
     /**
-     * Returns category ID based on category name. Name must be url-encoded.
+     * Returns category ID based on category name. Name must be URL-encoded.
      * When no category found with that name, returns empty string.
      *
-     * @param string $name Category name
+     * @param string $name Category name.
      * @return string $id  Category id.
      */
     public function getCategoryIdByName($name) {
@@ -93,7 +93,7 @@ class ControllerSmailyForOpencartRss extends Controller {
                 return $category['category_id'];
             }
         }
-        // Return empty if no matching category found.
-        return ;
+        // Return empty string if no matching category found.
+        return '';
     }
 }
