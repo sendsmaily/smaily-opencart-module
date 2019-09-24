@@ -55,6 +55,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         // Section tab titles
         $this->data['tab_general'] = $this->language->get('tab_general');
         $this->data['tab_sync'] = $this->language->get('tab_sync');
+        $this->data['tab_rss'] = $this->language->get('tab_rss');
         // Save and cancel button
         $this->data['button_save'] = $this->language->get('button_save');
         $this->data['button_cancel'] = $this->language->get('button_cancel');
@@ -94,6 +95,10 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->data['customer_sync_cron_url_title'] = $this->language->get('customer_sync_cron_url_title');
         $this->data['customer_sync_cron_url_help'] = $this->language->get('customer_sync_cron_url_help');
 
+        // RSS feed text
+        $this->data['rss_feed_title'] = $this->language->get('rss_feed_title');
+        $this->data['rss_feed_text'] = $this->language->get('rss_feed_text');
+        $this->data['rss_feed_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
         // Validate error.
         if (isset($this->error['validate'])) {
             $this->data['error_validate'] = $this->error['validate'];

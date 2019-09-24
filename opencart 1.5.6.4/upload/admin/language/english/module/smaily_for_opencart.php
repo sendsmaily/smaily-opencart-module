@@ -13,6 +13,7 @@ $_['text_success'] = 'Success: You have modified Smaily for Opencart module!';
 // Tabs
 $_['tab_sync'] = 'Customer Sync';
 $_['tab_general'] = 'General Settings';
+$_['tab_rss'] = 'RSS feed';
 
 // First general form
 $_['entry_subdomain_title'] = 'Subdomain*';
@@ -57,3 +58,7 @@ $_['customer_sync_cron_token_placeholder'] = 'Please enter token for customer sy
 $_['customer_sync_cron_token_help'] = 'Token is required for cron security. Use this auto generated one or replace with your own.';
 $_['customer_sync_cron_url_title'] = 'Cron url';
 $_['customer_sync_cron_url_help'] = 'Use this url to run cron. Token must be provided';
+
+// RSS text
+$_['rss_feed_title'] = 'Product RSS feed';
+$_['rss_feed_text'] = "Copy this URL into your template editor's RSS block, to receive RSS-feed";
