@@ -43,7 +43,9 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->document->setTitle($this->language->get('heading_title'));
         // When save is pressed.
         if ($this->request->server['REQUEST_METHOD'] == 'POST') {
-            // Save Customer Sync settings.
+            // Save Layout Module settings.
+            $this->handleLayoutSaving();
+            // Save Customer Sync settings and redirect page.
             $this->handleCustomerSync();
             // Code execution stops here.
             return;
@@ -99,6 +101,30 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->data['rss_feed_title'] = $this->language->get('rss_feed_title');
         $this->data['rss_feed_text'] = $this->language->get('rss_feed_text');
         $this->data['rss_feed_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
+
+        // Layout text and buttons
+        $this->data['entry_layout'] = $this->language->get('entry_layout');
+        $this->data['entry_position'] = $this->language->get('entry_position');
+        $this->data['entry_status'] = $this->language->get('entry_status');
+        $this->data['entry_sort_order'] = $this->language->get('entry_sort_order');
+        $this->data['text_content_top'] = $this->language->get('text_content_top');
+        $this->data['text_content_bottom'] = $this->language->get('text_content_bottom');
+        $this->data['text_column_left'] = $this->language->get('text_column_left');
+        $this->data['text_column_right'] = $this->language->get('text_column_right');
+        $this->data['button_module'] = $this->language->get('button_module');
+        $this->data['button_remove'] = $this->language->get('button_remove');
+
+        // Layout module
+        $this->load->model('design/layout');
+        $this->data['layouts'] = $this->model_design_layout->getLayouts();
+        $this->data['modules'] = array();
+        // Fetch modules
+        if (isset($this->request->post['smaily_for_opencart_module'])) {
+            $this->data['modules'] = $this->request->post['smaily_for_opencart_module'];
+        } elseif ($this->config->get('smaily_for_opencart_module')) {
+            $this->data['modules'] = $this->config->get('smaily_for_opencart_module');
+        }
+
         // Validate error.
         if (isset($this->error['validate'])) {
             $this->data['error_validate'] = $this->error['validate'];
@@ -187,6 +213,21 @@ class ControllerModuleSmailyForOpencart extends Controller {
             'common/footer',
         );
         $this->response->setOutput($this->render());
+    }
+
+    protected function handleLayoutSaving() {
+        if (!$this->user->hasPermission('modify', 'module/smaily_for_opencart')) {
+            return;
+        }
+        // Load Smaily admin model for saving settings.
+        $this->load->model('smailyforopencart/admin');
+        // Check if layout settings are in POST.
+        if (!empty($this->request->post['smaily_for_opencart_module']) && is_array($this->request->post['smaily_for_opencart_module'])) {
+            // Declare layout module settings in POST.
+            $smaily_modules = $this->request->post['smaily_for_opencart_module'];
+            $this->model_smailyforopencart_admin->editSettingValue('smaily', 'smaily_for_opencart_module', $smaily_modules);
+        }
+        return;
     }
 
     protected function handleCustomerSync() {
