@@ -217,10 +217,10 @@
         <table id="module" class="list">
           <thead>
             <tr>
-              <td class="left"><?php echo $entry_layout; ?></td>
-              <td class="left"><?php echo $entry_position; ?></td>
-              <td class="left"><?php echo $entry_status; ?></td>
-              <td class="right"><?php echo $entry_sort_order; ?></td>
+              <td class="left"><?php echo $entry_title_layout; ?></td>
+              <td class="left"><?php echo $entry_title_position; ?></td>
+              <td class="left"><?php echo $entry_title_status; ?></td>
+              <td class="right"><?php echo $entry_title_sort_order; ?></td>
               <td></td>
             </tr>
           </thead>
@@ -241,27 +241,13 @@
               </td>
               <td class="left">
                 <select name="smaily_for_opencart_module[<?php echo $module_row; ?>][position]">
-                  <?php if ($module['position'] == 'content_top') { ?>
-                    <option value="content_top" selected="selected"><?php echo $text_content_top; ?></option>
-                  <?php } else { ?>
-                    <option value="content_top"><?php echo $text_content_top; ?></option>
+                  <?php foreach ($module_position_selected as $value => $module_position) { ?>
+                  <option
+                    value="<?php echo $value; ?>"
+                    <?php if ($module['position'] == $value) { ?> selected="selected"<?php } ?>>
+                    <?php echo $module_position['label']; ?>
+                  </option>
                   <?php } ?>
-                  <?php if ($module['position'] == 'content_bottom') { ?>
-                    <option value="content_bottom" selected="selected"><?php echo $text_content_bottom; ?></option>
-                  <?php } else { ?>
-                    <option value="content_bottom"><?php echo $text_content_bottom; ?></option>
-                  <?php } ?>
-                  <?php if ($module['position'] == 'column_left') { ?>
-                    <option value="column_left" selected="selected"><?php echo $text_column_left; ?></option>
-                  <?php } else { ?>
-                    <option value="column_left"><?php echo $text_column_left; ?></option>
-                  <?php } ?>
-                  <?php if ($module['position'] == 'column_right') { ?>
-                    <option value="column_right" selected="selected"><?php echo $text_column_right; ?></option>
-                  <?php } else { ?>
-                    <option value="column_right"><?php echo $text_column_right; ?></option>
-                  <?php } ?>
-                </select>
               </td>
               <td class="left">
                 <select name="smaily_for_opencart_module[<?php echo $module_row; ?>][status]">
@@ -292,7 +278,7 @@
             <tr>
               <td colspan="4"></td>
               <td class="left">
-                <a onclick="addModule();" class="button"><?php echo $button_module; ?></a>
+                <a onclick="addModule();" class="button"><?php echo $entry_button_module; ?></a>
               </td>
             </tr>
           </tfoot>
@@ -315,10 +301,10 @@ function addModule() {
     <?php } ?>
   html += '    </select></td>';
   html += '    <td class="left"><select name="smaily_for_opencart_module[' + module_row + '][position]">';
-  html += '      <option value="content_top"><?php echo $text_content_top; ?></option>';
-  html += '      <option value="content_bottom"><?php echo $text_content_bottom; ?></option>';
-  html += '      <option value="column_left"><?php echo $text_column_left; ?></option>';
-  html += '      <option value="column_right"><?php echo $text_column_right; ?></option>';
+  html += '      <option value="content_top"><?php echo $entry_select_top; ?></option>';
+  html += '      <option value="content_bottom"><?php echo $entry_select_bottom; ?></option>';
+  html += '      <option value="column_left"><?php echo $entry_select_left; ?></option>';
+  html += '      <option value="column_right"><?php echo $entry_select_right; ?></option>';
   html += '    </select></td>';
   html += '    <td class="left"><select name="smaily_for_opencart_module[' + module_row + '][status]">';
   html += '      <option value="1" selected="selected"><?php echo $text_enabled; ?></option>';

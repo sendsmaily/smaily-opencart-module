@@ -64,12 +64,13 @@ $_['rss_feed_title'] = 'Product RSS feed';
 $_['rss_feed_text'] = "Copy this URL into your template editor's RSS block, to receive RSS-feed";
 
 // Layout texts
-$_['entry_layout'] = 'Layout:';
-$_['entry_position'] = 'Position:';
-$_['entry_status'] = 'Status:';
-$_['entry_sort_order'] = 'Sort Order:';
-$_['text_content_top'] = 'Content Top';
-$_['text_content_bottom'] = 'Content Bottom';
-$_['text_column_left'] = 'Column Left';
-$_['text_column_right'] = 'Column Right';
-$_['button_module'] = 'Add module';
+$_['entry_title_layout'] = 'Layout:';
+$_['entry_title_position'] = 'Position:';
+$_['entry_title_status'] = 'Status:';
+$_['entry_title_sort_order'] = 'Sort Order:';
+$_['entry_select_top'] = 'Content Top';
+$_['entry_select_bottom'] = 'Content Bottom';
+$_['entry_select_left'] = 'Column Left';
+$_['entry_select_right'] = 'Column Right';
+$_['entry_button_module'] = 'Add module';
+$_['entry_error'] = 'Error validating layout data. Ensure sort order is numeric';
