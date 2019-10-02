@@ -12,10 +12,10 @@ class ControllerModuleSmailyForOpencart extends Controller {
         // Get language template.
         $this->language->load('module/smaily_for_opencart');
         // Form element translations.
-        $this->data['newsletter_title'] = $this->language->get('newsletter_title');
-        $this->data['subscribe_button'] = $this->language->get('subscribe_button');
-        $this->data['email_placeholder'] = $this->language->get('email_placeholder');
-        $this->data['name_placeholder'] = $this->language->get('name_placeholder');
+        $this->data['optin_form_title'] = $this->language->get('optin_form_title');
+        $this->data['optin_form_subscribe_button'] = $this->language->get('optin_form_subscribe_button');
+        $this->data['optin_form_email_placeholder'] = $this->language->get('optin_form_email_placeholder');
+        $this->data['optin_form_name_placeholder'] = $this->language->get('optin_form_name_placeholder');
 
         // Form settings.
         $this->data['subdomain'] = $settings['smaily_api_credentials']['subdomain'];
@@ -26,10 +26,10 @@ class ControllerModuleSmailyForOpencart extends Controller {
         // Get smaily response from URL.
         $response_code = isset($this->request->get['code']) ? (int) $this->request->get['code'] : null;
         if ($response_code && $response_code === 101) {
-            $this->data['success_message'] = $this->language->get('newsletter_success_response');
+            $this->data['success_message'] = $this->language->get('optin_form_response_success');
         }
         if ($response_code && $response_code !== 101) {
-            $this->data['error_message'] = $this->language->get('newsletter_error_response');
+            $this->data['error_message'] = $this->language->get('optin_form_response_error');
         }
         if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/smaily_for_opencart.tpl')) {
             $this->template = $this->config->get('config_template') . '/template/module/smaily_for_opencart.tpl';

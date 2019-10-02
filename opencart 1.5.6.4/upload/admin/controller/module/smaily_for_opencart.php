@@ -67,7 +67,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->data['subdomain_placeholder'] = $this->language->get('placeholder_subdomain');
         // Username.
         $this->data['username_title'] = $this->language->get('entry_username_title');
-        $this->data['username_placeholder'] = $this->language->get('placeholder_username');
+        $this->data['useroptin_form_name_placeholder'] = $this->language->get('placeholder_username');
         // Password.
         $this->data['password_title'] = $this->language->get('entry_password_title');
         $this->data['password_placeholder'] = $this->language->get('placeholder_password');
@@ -103,15 +103,15 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->data['rss_feed_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
 
         // Layout text and buttons
-        $this->data['entry_title_layout'] = $this->language->get('entry_title_layout');
-        $this->data['entry_title_position'] = $this->language->get('entry_title_position');
-        $this->data['entry_title_status'] = $this->language->get('entry_title_status');
-        $this->data['entry_title_sort_order'] = $this->language->get('entry_title_sort_order');
-        $this->data['entry_select_top'] = $this->language->get('entry_select_top');
-        $this->data['entry_select_bottom'] = $this->language->get('entry_select_bottom');
-        $this->data['entry_select_left'] = $this->language->get('entry_select_left');
-        $this->data['entry_select_right'] = $this->language->get('entry_select_right');
-        $this->data['entry_button_module'] = $this->language->get('entry_button_module');
+        $this->data['table_header_layout_text'] = $this->language->get('table_header_layout_text');
+        $this->data['table_header_position_text'] = $this->language->get('table_header_position_text');
+        $this->data['table_header_status_text'] = $this->language->get('table_header_status_text');
+        $this->data['table_header_sort_order_text'] = $this->language->get('table_header_sort_order_text');
+        $this->data['optin_form_position_top_text'] = $this->language->get('optin_form_position_top_text');
+        $this->data['optin_form_position_bottom_text'] = $this->language->get('optin_form_position_bottom_text');
+        $this->data['optin_form_position_left_text'] = $this->language->get('optin_form_position_left_text');
+        $this->data['optin_form_position_right_text'] = $this->language->get('optin_form_position_right_text');
+        $this->data['button_add_module_text'] = $this->language->get('button_add_module_text');
         $this->data['button_remove'] = $this->language->get('button_remove');
 
         // Layout module
@@ -119,10 +119,10 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->data['layouts'] = $this->model_design_layout->getLayouts();
         $this->data['modules'] = array();
         // Fetch modules
-        if (isset($this->request->post['smaily_for_opencart_module']) && is_array($this->request->post['smaily_for_opencart_module'])) {
-            $this->data['modules'] = $this->request->post['smaily_for_opencart_module'];
-        } elseif ($this->config->get('smaily_for_opencart_module')) {
-            $this->data['modules'] = $this->config->get('smaily_for_opencart_module');
+        if (isset($this->request->post['smaily_optin_form_settings']) && is_array($this->request->post['smaily_optin_form_settings'])) {
+            $this->data['modules'] = $this->request->post['smaily_optin_form_settings'];
+        } elseif ($this->config->get('smaily_optin_form_settings')) {
+            $this->data['modules'] = $this->config->get('smaily_optin_form_settings');
         }
 
         // Validate error.
@@ -207,18 +207,18 @@ class ControllerModuleSmailyForOpencart extends Controller {
         );
 
         // Display selected layout module position as such.
-        $this->data['module_position_selected'] = array(
+        $this->data['optin_form_position_options'] = array(
           'content_top' => array(
-            'label' => $this->language->get('entry_select_top'),
+            'label' => $this->language->get('optin_form_position_top_text'),
           ),
           'content_bottom' => array(
-            'label' => $this->language->get('entry_select_bottom'),
+            'label' => $this->language->get('optin_form_position_bottom_text'),
           ),
           'column_left' => array(
-            'label' => $this->language->get('entry_select_left'),
+            'label' => $this->language->get('optin_form_position_left_text'),
           ),
           'column_right' => array(
-            'label' => $this->language->get('entry_select_right'),
+            'label' => $this->language->get('optin_form_position_right_text'),
           ),
         );
 
@@ -235,30 +235,29 @@ class ControllerModuleSmailyForOpencart extends Controller {
         if (!$this->user->hasPermission('modify', 'module/smaily_for_opencart')) {
             return;
         }
+        $optin_form_settings = [];
         // Load Smaily admin model for saving settings.
         $this->load->model('smailyforopencart/admin');
         // Check if layout settings are in POST & that it's an array.
-        if (!empty($this->request->post['smaily_for_opencart_module']) && is_array($this->request->post['smaily_for_opencart_module'])) {
-            $smaily_modules_san = [];
+        if (!empty($this->request->post['smaily_optin_form_settings']) && is_array($this->request->post['smaily_optin_form_settings'])) {
             // Declare layout module settings in POST.
-            $smaily_modules = $this->request->post['smaily_for_opencart_module'];
+            $optin_form_settings = $this->request->post['smaily_optin_form_settings'];
             // Loop over each array and validate array keys.
-            foreach ($smaily_modules as $module) {
+            foreach ($smaily_modules as &$module) {
                 // Check if layout_id is number, if not default to 0.
                 $module['layout_id'] = (isset($module['layout_id']) && is_numeric($module['layout_id'])) ? $module['layout_id'] : '0';
                 // Check if position is one out of 4 available, if not default to content_bottom
                 $module['position'] = (isset($module['position']) && in_array(
-                    $module['position'], array('content_top', 'content_bottom', 'column_left', 'column_right')
+                    $module['position'], array('content_top', 'content_bottom', 'column_left', 'column_right'), true
                 )) ? $module['position'] : 'content_bottom';
-                // Check if status is 1 or 0, if none default to 0
-                $module['status'] = (isset($module['status']) && $module['status'] == '1' || '0') ? $module['status'] : '0';
+                // Check if status is 1 or 0, if none default to 0.
+                $module['status'] = (isset($module['status']) && $module['status'] === '1' || $module['status'] === '0') ? $module['status'] : '0';
                 // Check if sort order is a number, if not default to 1.
-                $module['sort_order'] = (isset($module['sort_order']) && is_numeric($module['status'])) ? $module['status'] : '1';
-                array_push($smaily_modules_san, $module);
+                $module['sort_order'] = (isset($module['sort_order']) && is_numeric($module['sort_order'])) ? $module['sort_order'] : '';
             }
-            // Save layout settings.
-            $this->model_smailyforopencart_admin->editSettingValue('smaily', 'smaily_for_opencart_module', $smaily_modules_san);
         }
+        // Save layout settings.
+        $this->model_smailyforopencart_admin->editSettingValue('smaily', 'smaily_optin_form_settings', $optin_form_settings);
     }
 
     protected function handleCustomerSync() {

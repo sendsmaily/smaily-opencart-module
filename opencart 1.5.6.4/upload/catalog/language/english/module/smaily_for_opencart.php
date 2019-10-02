@@ -1,13 +1,13 @@
 <?php
 
 // Title for newsletter form.
-$_['newsletter_title'] = 'Subscribe to newsletter';
+$_['optin_form_title'] = 'Subscribe to newsletter';
 
 // Response messages.
-$_['newsletter_success_response'] = 'You have been successfully subscribed!';
-$_['newsletter_error_response']   = 'Something went wrong with subscription!';
+$_['optin_form_response_success'] = 'You have been successfully subscribed!';
+$_['optin_form_response_error']   = 'Something went wrong with subscription!';
 
 // Form elements.
-$_['subscribe_button'] = 'Subscribe';
-$_['email_placeholder'] = 'Enter email*';
-$_['name_placeholder'] = 'Enter name';
+$_['optin_form_subscribe_button'] = 'Subscribe';
+$_['optin_form_email_placeholder'] = 'Enter email*';
+$_['optin_form_name_placeholder'] = 'Enter name';

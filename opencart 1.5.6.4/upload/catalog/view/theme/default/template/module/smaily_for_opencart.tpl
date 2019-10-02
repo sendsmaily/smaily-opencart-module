@@ -1,6 +1,6 @@
 <div class="panel">
   <div class="container-fluid">
-      <h3><?php echo $newsletter_title ?></h3>
+    <h3><?php echo $optin_form_title; ?></h3>
     <div class="panel-body">
       <?php if (isset($success_message)) : ?>
       <div class="alert alert-success" role="alert">
@@ -16,13 +16,13 @@
         <input type="hidden" name="success_url" value='<?php echo $current_url; ?>' />
         <input type="hidden" name="failure_url" value='<?php echo $current_url; ?>' />
         <div class="form-group">
-          <input type="email" class="form-control" name="email" placeholder="<?php echo $email_placeholder; ?>" required />
+          <input type="email" class="form-control" name="email" placeholder="<?php echo $optin_form_email_placeholder; ?>" required />
         </div>
         <div class="from-group">
           <div class="input-group">
-            <input type="text" class="form-control" name="name" placeholder="<?php echo $name_placeholder; ?>" />
+            <input type="text" class="form-control" name="name" placeholder="<?php echo $optin_form_name_placeholder; ?>" />
             <span class="input-group-btn">
-              <button type="submit" class="btn btn-sm btn-primary"><?php echo $subscribe_button; ?></button>
+              <button type="submit" class="btn btn-sm btn-primary"><?php echo $optin_form_subscribe_button; ?></button>
             </span>
           </div>
         </div>

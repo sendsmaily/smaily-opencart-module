@@ -15,7 +15,7 @@
         <?php echo $heading_title; ?>
       </h1>
       <div class="buttons" style="display:flex">
-        <div class="save_button" style="display:<?php echo $validated ? 'block' : 'none'?>">
+        <div class="save_button" style="display:<?php echo $validated ? 'block' : 'none' ?>">
         <a onclick="$('#form-smaily_for_opencart').submit();" class="button">
           <span><?php echo $button_save; ?></span>
         </a>
@@ -68,7 +68,7 @@
                     value="<?php echo $subdomain; ?>"
                     class="form-control" />
                   <span class="help">
-                    <?php echo $small_subdomain ?>
+                    <?php echo $small_subdomain; ?>
                   </span>
                 </td>
               </div>
@@ -82,7 +82,7 @@
                   <input
                     type="text"
                     name="smaily_for_opencart_username"
-                    placeholder="<?php echo $username_placeholder; ?>"
+                    placeholder="<?php echo $useroptin_form_name_placeholder; ?>"
                     id="username"
                     value="<?php echo $username; ?>"
                     class="form-control" /><br>
@@ -106,7 +106,7 @@
                     <a
                       href="http://help.smaily.com/en/support/solutions/articles/16000062943-create-api-user"
                       target="_blank">
-                      <?php echo $small_password ?>
+                      <?php echo $small_password; ?>
                     </a>
                   </span>
                 </td>
@@ -217,10 +217,10 @@
         <table id="module" class="list">
           <thead>
             <tr>
-              <td class="left"><?php echo $entry_title_layout; ?></td>
-              <td class="left"><?php echo $entry_title_position; ?></td>
-              <td class="left"><?php echo $entry_title_status; ?></td>
-              <td class="right"><?php echo $entry_title_sort_order; ?></td>
+              <td class="left"><?php echo $table_header_layout_text; ?></td>
+              <td class="left"><?php echo $table_header_position_text; ?></td>
+              <td class="left"><?php echo $table_header_status_text; ?></td>
+              <td class="right"><?php echo $table_header_sort_order_text; ?></td>
               <td></td>
             </tr>
           </thead>
@@ -229,28 +229,29 @@
           <tbody id="module-row<?php echo $module_row; ?>">
             <tr>
               <td class="left">
-                <select name="smaily_for_opencart_module[<?php echo $module_row; ?>][layout_id]">
+                <select name="smaily_optin_form_settings[<?php echo $module_row; ?>][layout_id]">
                   <?php foreach ($layouts as $layout) { ?>
-                  <?php if ($layout['layout_id'] == $module['layout_id']) { ?>
-                    <option value="<?php echo $layout['layout_id']; ?>" selected="selected"><?php echo $layout['name']; ?></option>
-                  <?php } else { ?>
-                    <option value="<?php echo $layout['layout_id']; ?>"><?php echo $layout['name']; ?></option>
-                  <?php } ?>
+                  <option
+                    value="<?php echo $layout['layout_id']; ?>"
+                    <?php if ($layout['layout_id'] == $module['layout_id']) { ?> selected="selected" <?php } ?>>
+                    <?php echo $layout['name']; ?>
+                  </option>
                   <?php } ?>
                 </select>
               </td>
               <td class="left">
-                <select name="smaily_for_opencart_module[<?php echo $module_row; ?>][position]">
-                  <?php foreach ($module_position_selected as $value => $module_position) { ?>
+                <select name="smaily_optin_form_settings[<?php echo $module_row; ?>][position]">
+                  <?php foreach ($optin_form_position_options as $value => $option) { ?>
                   <option
                     value="<?php echo $value; ?>"
-                    <?php if ($module['position'] == $value) { ?> selected="selected"<?php } ?>>
-                    <?php echo $module_position['label']; ?>
+                    <?php if ($module['position'] == $value) { ?> selected="selected" <?php } ?>>
+                    <?php echo $option['label']; ?>
                   </option>
                   <?php } ?>
+                </select>
               </td>
               <td class="left">
-                <select name="smaily_for_opencart_module[<?php echo $module_row; ?>][status]">
+                <select name="smaily_optin_form_settings[<?php echo $module_row; ?>][status]">
                   <?php if ($module['status']) { ?>
                     <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
                     <option value="0"><?php echo $text_disabled; ?></option>
@@ -263,7 +264,7 @@
               <td class="right">
                 <input
                   type="text"
-                  name="smaily_for_opencart_module[<?php echo $module_row; ?>][sort_order]"
+                  name="smaily_optin_form_settings[<?php echo $module_row; ?>][sort_order]"
                   value="<?php echo $module['sort_order']; ?>"
                   size="3" />
               </td>
@@ -278,7 +279,7 @@
             <tr>
               <td colspan="4"></td>
               <td class="left">
-                <a onclick="addModule();" class="button"><?php echo $entry_button_module; ?></a>
+                <a onclick="addModule();" class="button"><?php echo $button_add_module_text; ?></a>
               </td>
             </tr>
           </tfoot>
@@ -295,22 +296,22 @@ var module_row = <?php echo $module_row; ?>;
 function addModule() {
   html  = '<tbody id="module-row' + module_row + '">';
   html += '  <tr>';
-  html += '    <td class="left"><select name="smaily_for_opencart_module[' + module_row + '][layout_id]">';
+  html += '    <td class="left"><select name="smaily_optin_form_settings[' + module_row + '][layout_id]">';
     <?php foreach ($layouts as $layout) { ?>
   html += '      <option value="<?php echo $layout['layout_id']; ?>"><?php echo addslashes($layout['name']); ?></option>';
     <?php } ?>
   html += '    </select></td>';
-  html += '    <td class="left"><select name="smaily_for_opencart_module[' + module_row + '][position]">';
-  html += '      <option value="content_top"><?php echo $entry_select_top; ?></option>';
-  html += '      <option value="content_bottom"><?php echo $entry_select_bottom; ?></option>';
-  html += '      <option value="column_left"><?php echo $entry_select_left; ?></option>';
-  html += '      <option value="column_right"><?php echo $entry_select_right; ?></option>';
+  html += '    <td class="left"><select name="smaily_optin_form_settings[' + module_row + '][position]">';
+  html += '      <option value="content_top"><?php echo $optin_form_position_top_text; ?></option>';
+  html += '      <option value="content_bottom"><?php echo $optin_form_position_bottom_text; ?></option>';
+  html += '      <option value="column_left"><?php echo $optin_form_position_left_text; ?></option>';
+  html += '      <option value="column_right"><?php echo $optin_form_position_right_text; ?></option>';
   html += '    </select></td>';
-  html += '    <td class="left"><select name="smaily_for_opencart_module[' + module_row + '][status]">';
+  html += '    <td class="left"><select name="smaily_optin_form_settings[' + module_row + '][status]">';
   html += '      <option value="1" selected="selected"><?php echo $text_enabled; ?></option>';
   html += '      <option value="0"><?php echo $text_disabled; ?></option>';
   html += '    </select></td>';
-  html += '    <td class="right"><input type="text" name="smaily_for_opencart_module[' + module_row + '][sort_order]" value="" size="3" /></td>';
+  html += '    <td class="right"><input type="text" name="smaily_optin_form_settings[' + module_row + '][sort_order]" value="" size="3" /></td>';
   html += '    <td class="left"><a onclick="$(\'#module-row' + module_row + '\').remove();" class="button"><?php echo $button_remove; ?></a></td>';
   html += '  </tr>';
   html += '</tbody>';
@@ -356,7 +357,7 @@ function addModule() {
       // Start spinner.
       spinner.show();
       $.post(
-        'index.php?route=module/smaily_for_opencart/ajaxValidateCredentials&token=<?php echo $token ?>',
+        'index.php?route=module/smaily_for_opencart/ajaxValidateCredentials&token=<?php echo $token; ?>',
         {
           'subdomain' : subdomain,
           'username' : username,
