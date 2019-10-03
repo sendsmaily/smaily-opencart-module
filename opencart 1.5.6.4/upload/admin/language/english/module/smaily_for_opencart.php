@@ -73,4 +73,4 @@ $_['optin_form_position_bottom_text'] = 'Content Bottom';
 $_['optin_form_position_left_text'] = 'Column Left';
 $_['optin_form_position_right_text'] = 'Column Right';
 $_['button_add_module_text'] = 'Add module';
-$_['button_remove_module_text'] = 'Add module';
+$_['button_remove_module_text'] = 'Remove';

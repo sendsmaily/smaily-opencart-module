@@ -12,9 +12,9 @@
         <?php echo $error_message; ?>
       </div>
       <?php endif; ?>
-      <form class="form" action='https://<?php echo $subdomain; ?>.sendsmaily.net/api/opt-in/' method="post" autocomplete="off">
-        <input type="hidden" name="success_url" value='<?php echo $current_url; ?>' />
-        <input type="hidden" name="failure_url" value='<?php echo $current_url; ?>' />
+      <form class="form" action="https://<?php echo $subdomain; ?>.sendsmaily.net/api/opt-in/" method="post" autocomplete="off">
+        <input type="hidden" name="success_url" value="<?php echo $current_url; ?>" />
+        <input type="hidden" name="failure_url" value="<?php echo $current_url; ?>" />
         <div class="form-group">
           <input type="email" class="form-control" name="email" placeholder="<?php echo $optin_form_email_placeholder; ?>" required />
         </div>

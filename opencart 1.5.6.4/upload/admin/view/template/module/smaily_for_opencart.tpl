@@ -224,35 +224,35 @@
               <td></td>
             </tr>
           </thead>
-          <?php $module_row = 0; ?>
-          <?php foreach ($modules as $module) { ?>
-          <tbody id="module-row<?php echo $module_row; ?>">
+          <?php $optin_form_setting_row = 0; ?>
+          <?php foreach ($optin_form_settings as $optin_form_setting) { ?>
+          <tbody id="module-row<?php echo $optin_form_setting_row; ?>">
             <tr>
               <td class="left">
-                <select name="smaily_optin_form_settings[<?php echo $module_row; ?>][layout_id]">
+                <select name="smaily_optin_form_settings[<?php echo $optin_form_setting_row; ?>][layout_id]">
                   <?php foreach ($layouts as $layout) { ?>
                   <option
                     value="<?php echo $layout['layout_id']; ?>"
-                    <?php if ($layout['layout_id'] == $module['layout_id']) { ?> selected="selected" <?php } ?>>
+                    <?php if ($layout['layout_id'] == $optin_form_setting['layout_id']) { ?> selected="selected" <?php } ?>>
                     <?php echo $layout['name']; ?>
                   </option>
                   <?php } ?>
                 </select>
               </td>
               <td class="left">
-                <select name="smaily_optin_form_settings[<?php echo $module_row; ?>][position]">
+                <select name="smaily_optin_form_settings[<?php echo $optin_form_setting_row; ?>][position]">
                   <?php foreach ($optin_form_position_options as $value => $option) { ?>
                   <option
                     value="<?php echo $value; ?>"
-                    <?php if ($module['position'] == $value) { ?> selected="selected" <?php } ?>>
+                    <?php if ($optin_form_setting['position'] == $value) { ?> selected="selected" <?php } ?>>
                     <?php echo $option['label']; ?>
                   </option>
                   <?php } ?>
                 </select>
               </td>
               <td class="left">
-                <select name="smaily_optin_form_settings[<?php echo $module_row; ?>][status]">
-                  <?php if ($module['status']) { ?>
+                <select name="smaily_optin_form_settings[<?php echo $optin_form_setting_row; ?>][status]">
+                  <?php if ($optin_form_setting['status']) { ?>
                     <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
                     <option value="0"><?php echo $text_disabled; ?></option>
                   <?php } else { ?>
@@ -264,16 +264,16 @@
               <td class="right">
                 <input
                   type="text"
-                  name="smaily_optin_form_settings[<?php echo $module_row; ?>][sort_order]"
-                  value="<?php echo $module['sort_order']; ?>"
+                  name="smaily_optin_form_settings[<?php echo $optin_form_setting_row; ?>][sort_order]"
+                  value="<?php echo $optin_form_setting['sort_order']; ?>"
                   size="3" />
               </td>
               <td class="left">
-                <a onclick="$('#module-row<?php echo $module_row; ?>').remove();" class="button"><?php echo $button_remove; ?></a>
+                <a onclick="$('#module-row<?php echo $optin_form_setting_row; ?>').remove();" class="button"><?php echo $button_remove; ?></a>
               </td>
             </tr>
           </tbody>
-          <?php $module_row++; ?>
+          <?php $optin_form_setting_row++; ?>
           <?php } ?>
           <tfoot>
             <tr>
@@ -291,7 +291,7 @@
 <?php echo $footer; ?>
 <script type="text/javascript">
 //Layout module at the bottom of admin view
-var module_row = <?php echo $module_row; ?>;
+var module_row = <?php echo $optin_form_setting_row; ?>;
 
 function addModule() {
   html  = '<tbody id="module-row' + module_row + '">';
