@@ -15,7 +15,7 @@
         <?php echo $heading_title; ?>
       </h1>
       <div class="buttons" style="display:flex">
-        <div class="save_button" style="display:<?php echo $validated ? 'block' : 'none' ?>">
+        <div class="save_button" style="display:<?php echo $validated ? 'block' : 'none'; ?>">
         <a onclick="$('#form-smaily_for_opencart').submit();" class="button">
           <span><?php echo $button_save; ?></span>
         </a>
@@ -82,7 +82,7 @@
                   <input
                     type="text"
                     name="smaily_for_opencart_username"
-                    placeholder="<?php echo $useroptin_form_name_placeholder; ?>"
+                    placeholder="<?php echo $username_placeholder; ?>"
                     id="username"
                     value="<?php echo $username; ?>"
                     class="form-control" /><br>

@@ -43,7 +43,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->document->setTitle($this->language->get('heading_title'));
         // When save is pressed.
         if ($this->request->server['REQUEST_METHOD'] == 'POST') {
-            // Save Layout Module settings.
+            // Save optin form settings.
             $this->handleLayoutSaving();
             // Save Customer Sync settings and redirect page.
             $this->handleCustomerSync();
@@ -239,7 +239,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $optin_form_settings = [];
         // Load Smaily admin model for saving settings.
         $this->load->model('smailyforopencart/admin');
-        // Check if layout settings are in POST & that it's an array.
+        // Check if optin form settings are in POST & that they're an array.
         if (!empty($this->request->post['smaily_optin_form_settings']) && is_array($this->request->post['smaily_optin_form_settings'])) {
             // Declare optin form settings in POST.
             $optin_form_settings = $this->request->post['smaily_optin_form_settings'];
