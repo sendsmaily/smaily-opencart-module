@@ -40,13 +40,13 @@
     <!-- Generate form content -->
     <div class="content">
       <div id="tabs" class="htabs">
-        <a href="#tab-general">
+        <a href="#tab-general" id="tab-0">
           <?php echo $tab_general; ?>
         </a>
-        <a href="#tab-sync">
+        <a href="#tab-sync" id="tab-1">
           <?php echo $tab_sync; ?>
         </a>
-        <a href="#tab-rss">
+        <a href="#tab-rss" id="tab-2">
           <?php echo $tab_rss; ?>
         </a>
       </div>
@@ -325,6 +325,10 @@ function addModule() {
   $(window).on("load", function() {
     // Javascript section tabs
     $('#tabs a').tabs();
+    // Show Customer Sync tab when user is validated.
+    if ($("#username").val()) {
+      $('#tab-1').trigger('click');
+    }
     // Validate autoresponders.
     $('#validate').on('click', function(e) {
       // Scroll top.
