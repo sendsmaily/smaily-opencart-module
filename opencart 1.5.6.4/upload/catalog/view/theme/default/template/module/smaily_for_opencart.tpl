@@ -20,7 +20,7 @@
         </div>
         <div class="from-group">
           <div class="input-group">
-            <input type="text" class="form-control" name="name" placeholder="<?php echo $optin_form_name_placeholder; ?>" />
+            <input type="name" class="form-control" name="name" placeholder="<?php echo $optin_form_name_placeholder; ?>" />
             <span class="input-group-btn">
               <button type="submit" class="btn btn-sm btn-primary"><?php echo $optin_form_subscribe_button; ?></button>
             </span>
