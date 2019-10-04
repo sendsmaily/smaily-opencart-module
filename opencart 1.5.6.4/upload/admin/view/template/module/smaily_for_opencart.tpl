@@ -40,15 +40,22 @@
     <!-- Generate form content -->
     <div class="content">
       <div id="tabs" class="htabs">
+        <?php if (!$validated) { ?>
         <a href="#tab-general">
           <?php echo $tab_general; ?>
         </a>
+        <?php } ?>
         <a href="#tab-sync">
           <?php echo $tab_sync; ?>
         </a>
         <a href="#tab-rss">
           <?php echo $tab_rss; ?>
         </a>
+        <?php if ($validated) { ?>
+        <a href="#tab-general">
+          <?php echo $tab_general; ?>
+        </a>
+        <?php } ?>
       </div>
       <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-smaily_for_opencart">
         <div id="tab-general">
@@ -133,7 +140,7 @@
           </table>
         </div>
         <!-- Customer sync -->
-        <div id="tab-sync">
+        <div id="tab-sync" style="display: none">
           <table class="form">
             <tr>
               <td>
@@ -200,7 +207,7 @@
             </tr>
           </table>
         </div>
-        <div id="tab-rss">
+        <div id="tab-rss" style="display: none">
           <table class="form">
             <tr>
               <td>
