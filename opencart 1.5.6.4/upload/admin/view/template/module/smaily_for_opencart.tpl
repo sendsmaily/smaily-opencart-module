@@ -48,7 +48,7 @@
         <a href="#tab-sync">
           <?php echo $tab_sync; ?>
         </a>
-        <a href="#tab-rss" id="tab-2">
+        <a href="#tab-rss">
           <?php echo $tab_rss; ?>
         </a>
         <?php if ($validated) { ?>
@@ -332,10 +332,6 @@ function addModule() {
   $(window).on("load", function() {
     // Javascript section tabs
     $('#tabs a').tabs();
-    // Show Customer Sync tab when user is validated.
-    if ($("#username").val()) {
-      $('#tab-1').trigger('click');
-    }
     // Validate autoresponders.
     $('#validate').on('click', function(e) {
       // Scroll top.
