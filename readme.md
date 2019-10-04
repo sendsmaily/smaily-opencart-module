@@ -27,7 +27,7 @@ Automatically subscribe newsletter subscribers to a Smaily subscribers list, gen
 - Smaily subscriber sign up form with built in captcha
 - Easy to use form
 
-### Abandoned cart reminder emails
+### Abandoned cart reminder emails (Opencart 2.2+)
 
 - Automatically notify customers about their abandoned cart
 - Send abandoned cart information to smaily for easy use on templates
@@ -35,7 +35,7 @@ Automatically subscribe newsletter subscribers to a Smaily subscribers list, gen
 
 ## Requirements
 
-Smaily for Opencart requires PHP 5.6+ (PHP 7.0+ recommended). You'll also need to be running Opencart 2.2+.
+Smaily for Opencart requires PHP 5.6+ (PHP 7.0+ recommended). You'll also need to be running Opencart 1.5.6.4 or Opencart 2.2+.
 
 ## Documentation & Support
 
@@ -45,12 +45,16 @@ Online documentation and code samples are available via our [Help Center](http:/
 
 All development for Smaily for Opencart is [handled via GitHub](https://github.com/sendsmaily/smaily-opencart-module). Opening new issues and submitting pull requests are welcome.
 
-## Installation
+## Installation (Opencart 2.2+)
 
 1. Upload or extract the `opencart-[version]/upload` folder content to your site's `root` directory.
 2. If you have configured your FTP-settings in `system->settings->FTP` you can also use built in extension installer. For Opencart 3+ there is no need to configure FTP settings-
 3. Upload `smailyforopencart.ocmod.zip` file under **Extensions->Extension Installer**.
 4. Install the plugin from the **Extensions->Modules** - menu in Opencart.
+
+## Installation (Opencart 1.5.6.4)
+1. Upload or extract the `opencart-[version]/upload` folder content to your site's `root` directory.
+2. Install the plugin from the **Extensions->Modules** - menu in Opencart.
 
 ## Usage
 
@@ -63,6 +67,14 @@ All development for Smaily for Opencart is [handled via GitHub](https://github.c
 7. Select autoresponder for abandoned carts, extra fields you would like to add to template and delay for abandoned carts. Cron token required for security.
 8. To add subscription form to your homepage go to **Design->Layouts->Home** and add `Smaily for Opencart` to your prefered position.
 9. That's it, your Opencart store is now integrated with Smaily Plugin!
+
+## Usage (Opencart 1.5.6.4)
+
+1. Go to Extensions -> Modules -> Smaily for Opencart
+2. Insert your Smaily API authentication information to get started.
+3. Click Validate button to validate API credentials.
+4. To add the subscription form to your homepage go to **Smaily for Opencart -> Edit** and click `Add Layout` and edit it to your prefered position.
+5. That's it, your Opencart store is now integrated with Smaily!
 
 ## Using Cron to Automate Customer Synchronization and Sending Abandoned Carts Emails
 
