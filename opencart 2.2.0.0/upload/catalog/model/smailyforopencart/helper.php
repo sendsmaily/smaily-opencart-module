@@ -74,21 +74,33 @@ class ModelSmailyForOpencartHelper extends Model {
     /**
      * Get all subscribed customers.
      *
+     * @param int $offset Id counter
      * @return array $customers All subscribed customers in array.
      */
-    public function getSubscribedCustomers() {
-        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer WHERE newsletter = '1'");
+    public function getSubscribedCustomers($offset) {
+        $query = $this->db->query(
+            "SELECT * FROM " . DB_PREFIX . "customer WHERE (`customer_id` > " . (int)$offset . " AND `newsletter` = '1') LIMIT 2500");
         return $query->rows;
     }
 
     /**
      * Sets newsletter status to 0 in customer table.
      *
-     * @param string $customer_id Customers id.
+     * @param array $emails Emails to unsubscribe.
      * @return void
      */
-    public function unsubscribeCustomer($customer_id) {
-        $this->db->query("UPDATE " . DB_PREFIX . "customer SET newsletter = '0' WHERE customer_id = '" . (int)$customer_id . "'");
+    public function unsubscribeCustomers($emails) {
+        // Split email array to chunks of 500, in case query is too long.
+        $chunks = array_chunk($emails, 500);
+        foreach ($chunks as $chunk) {
+            $binds = array();
+            foreach ($emails as $email) {
+                $binds[] = $this->db->escape($email);
+            }
+            // Add all emails to long string seperated by commas.
+            $this->db->query(
+                "UPDATE " . DB_PREFIX . "customer SET newsletter = '0' WHERE `email` IN ('" . implode("','", $binds) . "')");
+        }
     }
 
     /**
