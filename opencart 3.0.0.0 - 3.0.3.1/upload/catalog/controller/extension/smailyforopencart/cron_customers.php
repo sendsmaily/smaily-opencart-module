@@ -46,6 +46,7 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
                 $offset_unsub += 1;
             }
 
+            $response = '';
             $offset_sub = 0;
             while (true) {
                 $subscribers = $this->model_smailyforopencart_helper->getSubscribedCustomers($offset_sub);
