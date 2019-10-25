@@ -120,7 +120,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $data['sync_token_title'] = $this->language->get('sync_token_title');
         $data['sync_token_placeholder'] = $this->language->get('sync_token_placeholder');
         $data['sync_customer_url_title'] = $this->language->get('sync_customer_url_title');
-        $data['customer_cron_url'] = $this->config->get('config_url') . 'index.php?route=extension/smailyforopencart/cron_customers&token=[token]';
+        $data['customer_cron_url'] = str_replace('/admin','',$this->config->get('site_url')) . 'index.php?route=extension/smailyforopencart/cron_customers&token=[token]';
         $data['customer_cron_text'] = $this->language->get('customer_cron_text');
         // Customer sync option fields text.
         $data['firstname'] = $this->language->get('firstname');
@@ -135,7 +135,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $data['cart_token_title'] = $this->language->get('cart_token_title');
         $data['cart_token_placeholder'] = $this->language->get('cart_token_placeholder');
         $data['sync_cart_url_title'] = $this->language->get('sync_cart_url_title');
-        $data['cart_cron_url'] = $this->config->get('config_url') . 'index.php?route=extension/smailyforopencart/cron_cart&token=[token]';
+        $data['cart_cron_url'] = str_replace('/admin','',$this->config->get('site_url')) . 'index.php?route=extension/smailyforopencart/cron_cart&token=[token]';
         $data['cart_cron_text'] = $this->language->get('cart_cron_text');
         // Abandoned cart option fields text.
         $data['product_name'] = $this->language->get('product_name');
@@ -145,7 +145,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 
         // Small texts.
         $data['small_subdomain'] = $this->language->get('small_subdomain');
-        $data['smaily_rss_url'] = $this->config->get('config_url') . 'index.php?route=extension/smailyforopencart/rss';
+        $data['smaily_rss_url'] = str_replace('/admin','',$this->config->get('site_url')) . 'index.php?route=extension/smailyforopencart/rss';
         $data['small_password'] = $this->language->get('small_password');
         $data['small_sync_additional'] = $this->language->get('small_sync_additional');
         $data['small_cart_additional'] = $this->language->get('small_cart_additional');
@@ -372,7 +372,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             $response = [];
             // Language for resonse.
             $this->load->language('extension/module/smaily_for_opencart');
-            
+
             // Check if all fields are set.
             if (empty($this->request->post['subdomain']) ||
                 empty($this->request->post['username']) ||
@@ -396,7 +396,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 $subdomain = $parts[0];
             }
             $subdomain = preg_replace('/[^a-zA-Z0-9]+/', '', $subdomain);
-            
+
             $subdomain = $this->db->escape($subdomain);
             $username =  $this->db->escape($this->request->post['username']);
             $password = $this->db->escape($this->request->post['password']);
