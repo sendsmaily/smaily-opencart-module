@@ -85,7 +85,33 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 'name' => $this->language->get('section_abandoned'),
             ),
         );
+        // Get URL for CRON links.
+        $url = new Url(HTTP_CATALOG, $this->config->get('config_secure') ? HTTP_CATALOG : HTTPS_CATALOG);
+        $url->link('extension/smailyforopencart/cron_customers');
 
+        // Initalize customer sync token.
+        if (! empty($this->request->post['module_smaily_for_opencart_sync_token'])) {
+            // Get sync token if user adds custom one.
+            $data['sync_token'] = $this->request->post['module_smaily_for_opencart_sync_token'];
+        } else {
+            if (! empty($this->config->get('module_smaily_for_opencart_sync_token'))) {
+                $data['sync_token'] = $this->config->get('module_smaily_for_opencart_sync_token');
+            } else {
+                // Generate random token if not saved in db.
+                $data['sync_token'] = uniqid();
+            }
+        }
+        // Initalize abandoned cart token.
+        if (! empty($this->request->post['module_smaily_for_opencart_cart_token'])) {
+            $data['cart_token'] = $this->request->post['module_smaily_for_opencart_cart_token'];
+        } else {
+            if (! empty($this->config->get('module_smaily_for_opencart_cart_token'))) {
+                $data['cart_token'] = $this->config->get('module_smaily_for_opencart_cart_token');
+            } else {
+                // Generate random token if not saved in db.
+                $data['cart_token'] = uniqid();
+            }
+        }
         // Text fields
         $data['heading_title'] = $this->language->get('heading_title');
         $data['text_edit'] = $this->language->get('text_edit');
@@ -120,7 +146,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $data['sync_token_title'] = $this->language->get('sync_token_title');
         $data['sync_token_placeholder'] = $this->language->get('sync_token_placeholder');
         $data['sync_customer_url_title'] = $this->language->get('sync_customer_url_title');
-        $data['customer_cron_url'] = str_replace('/admin','',$this->config->get('site_url')) . 'index.php?route=extension/smailyforopencart/cron_customers&token=[token]';
+        $data['customer_cron_url'] = $url->link('extension/smailyforopencart/cron_customers') . "&token=" . $data['sync_token'];
         $data['customer_cron_text'] = $this->language->get('customer_cron_text');
         // Customer sync option fields text.
         $data['firstname'] = $this->language->get('firstname');
@@ -135,7 +161,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $data['cart_token_title'] = $this->language->get('cart_token_title');
         $data['cart_token_placeholder'] = $this->language->get('cart_token_placeholder');
         $data['sync_cart_url_title'] = $this->language->get('sync_cart_url_title');
-        $data['cart_cron_url'] = str_replace('/admin','',$this->config->get('site_url')) . 'index.php?route=extension/smailyforopencart/cron_cart&token=[token]';
+        $data['cart_cron_url'] = $url->link('extension/smailyforopencart/cron_cart') . "&token=" . $data['cart_token'];
         $data['cart_cron_text'] = $this->language->get('cart_cron_text');
         // Abandoned cart option fields text.
         $data['product_name'] = $this->language->get('product_name');
@@ -145,7 +171,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 
         // Small texts.
         $data['small_subdomain'] = $this->language->get('small_subdomain');
-        $data['smaily_rss_url'] = str_replace('/admin','',$this->config->get('site_url')) . 'index.php?route=extension/smailyforopencart/rss';
+        $data['smaily_rss_url'] = $url->link('extension/smailyforopencart/rss');
         $data['small_password'] = $this->language->get('small_password');
         $data['small_sync_additional'] = $this->language->get('small_sync_additional');
         $data['small_cart_additional'] = $this->language->get('small_cart_additional');
@@ -272,18 +298,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         } else {
             $data['syncronize_additional'] = $this->config->get('module_smaily_for_opencart_syncronize_additional') ? $this->config->get('module_smaily_for_opencart_syncronize_additional') : [];
         }
-        // Customer sync token.
-        if (! empty($this->request->post['module_smaily_for_opencart_sync_token'])) {
-            // Get sync token if user adds custom one.
-            $data['sync_token'] = $this->request->post['module_smaily_for_opencart_sync_token'];
-        } else {
-            if (! empty($this->config->get('module_smaily_for_opencart_sync_token'))) {
-                $data['sync_token'] = $this->config->get('module_smaily_for_opencart_sync_token');
-            } else {
-                // Generate random token if not saved in db.
-                $data['sync_token'] = uniqid();
-            }
-        }
+
         // Abandoned cart autoresponder.
         if (isset($this->request->post['module_smaily_for_opencart_abandoned_autoresponder'])) {
             $data['abandoned_autoresponder'] = json_decode(html_entity_decode($this->request->post['module_smaily_for_opencart_abandoned_autoresponder']), true);
@@ -302,17 +317,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         } else {
             $data['cart_delay'] = $this->config->get('module_smaily_for_opencart_cart_delay');
         }
-        // Abandoned cart token.
-        if (! empty($this->request->post['module_smaily_for_opencart_cart_token'])) {
-            $data['cart_token'] = $this->request->post['module_smaily_for_opencart_cart_token'];
-        } else {
-            if (! empty($this->config->get('module_smaily_for_opencart_cart_token'))) {
-                $data['cart_token'] = $this->config->get('module_smaily_for_opencart_cart_token');
-            } else {
-                // Generate random token if not saved in db.
-                $data['cart_token'] = uniqid();
-            }
-        }
+
 
 
         $data['header'] = $this->load->controller('common/header');
