@@ -25,31 +25,34 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
 
         if (array_key_exists('module_smaily_for_opencart_enable_subscribe', $settings) &&
             (int) $settings['module_smaily_for_opencart_enable_subscribe'] === 1) {
-            // Get unsubscribers from smaily.
-            $unsubscribers_filter = array(
-                'list' => 2,
-            );
-            $unsubscribers = $this->model_extension_smailyforopencart_helper->apiCall('contact', $unsubscribers_filter);
-            // Collect unsubscriber emails.
-            $unsubscribers_emails = [];
-            foreach ($unsubscribers as $unsubscriber) {
-                array_push($unsubscribers_emails, $unsubscriber['email']);
-            }
-            // Remove subscribed status from unsubscribed customers.
-            $subscribers = $this->model_extension_smailyforopencart_helper->getSubscribedCustomers();
-            foreach ($subscribers as $subscriber) {
-                if (in_array($subscriber['email'], $unsubscribers_emails)) {
-                    $this->model_extension_smailyforopencart_helper->unsubscribeCustomer($subscriber['customer_id']);
+            $offset_unsub = 0;
+            while (true) {
+                $unsubscribers = $this->model_extension_smailyforopencart_helper->apiCall('contact', [
+                    'list' => 2,
+                    'offset' => $offset_unsub,
+                    'limit' => 2500,
+                ]);
+                // Exit while loop if api returns no unsubscribers.
+                if (empty($unsubscribers)) {
+                    break;
                 }
+                // Collect unsubscriber emails.
+                $unsubscribers_emails = [];
+                foreach ($unsubscribers as $unsubscriber) {
+                    array_push($unsubscribers_emails, $unsubscriber['email']);
+                }
+                // unsubscribeCustomers method would compile a single update query.
+                $this->model_extension_smailyforopencart_helper->unsubscribeCustomers($unsubscribers_emails);
+                $offset_unsub += 1;
             }
 
-            // Get all users with subscribed status.
-            $subscribers = $this->model_extension_smailyforopencart_helper->getSubscribedCustomers();
-            if (empty($subscribers)) {
-                $this->log->write('Smaily subscriber sync without customers.');
-                echo 'No subscribers to sync.';
-            } else {
-                // Prepare list for smaily.
+            $response = 'No customers to sync in OpenCart database';
+            $offset_sub = 0;
+            while (true) {
+                $subscribers = $this->model_extension_smailyforopencart_helper->getSubscribedCustomers($offset_sub);
+                if (empty($subscribers)) {
+                    break;
+                }
                 $list = [];
                 foreach ($subscribers as $subscriber) {
                     // Get customer info based of selected fields from admin.
@@ -58,14 +61,19 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
                     foreach ($sync_fields as $field) {
                         $customer[$field] = $subscriber[$field];
                     }
+                    $offset_sub = $subscriber['customer_id'];
                     $customer['is_unsubscribed'] = "0";
                     array_push($list, $customer);
                 }
                 // Send subscribers to smaily.
                 $response = $this->model_extension_smailyforopencart_helper->apiCall('contact', $list, 'POST');
-                $this->log->write('Smaily customer sync : ' . json_encode($response));
-                echo 'Subscribers synchronized';
+                // Error handling for apiCall POST.
+                if (isset($response['code']) && $response['code'] != "101") {
+                    die('Error with request to Smaily API, try again later.');
+                }
             }
+            $this->log->write('smaily subscriber sync finished: ' . json_encode($response));
+            echo 'Smaily subscriber sync finished.';
         }
     }
 }

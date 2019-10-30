@@ -44,6 +44,7 @@ class ControllerSmailyForOpencartCronCustomers extends Controller {
                 $offset_unsub += 1;
             }
 
+            $response = 'No customers to sync in OpenCart database';
             $offset_sub = 0;
             while (true) {
                 $subscribers = $this->model_smailyforopencart_helper->getSubscribedCustomers($offset_sub);
