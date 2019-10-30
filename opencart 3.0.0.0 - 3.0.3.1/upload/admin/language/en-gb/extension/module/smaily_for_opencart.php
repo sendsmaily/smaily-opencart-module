@@ -41,7 +41,7 @@ $_['rss_feed_text']                    = "Copy this URL into your template edito
 $_['entry_customer_sync_fields_title'] = 'Customer Synchronization fields';
 $_['sync_token_title']                 = 'Customer Cron Token*';
 $_['sync_customer_url_title']          = 'Cron url';
-$_['customer_cron_text']               = 'Use this url to run cron. Token must be provided';
+$_['customer_cron_text']               = 'Use this url to run cron.';
 // Abandoned cart form
 $_['entry_autoresponder_title']        = 'Autoresponder ID*';
 $_['abandoned_sync_fields_title']      = 'Abandoned Cart additional fields';
@@ -49,7 +49,7 @@ $_['delay_title']                      = 'Abandoned cart delay time';
 $_['abandoned_minutes']                = 'minutes';
 $_['cart_token_title']                 = 'Abandoned Cart Token*';
 $_['sync_cart_url_title']              = 'Abandoned Cart Url';
-$_['cart_cron_text']                   = 'Use this url to run cron. Token must be provided';
+$_['cart_cron_text']                   = 'Use this url to run cron.';
 
 //Placeholders
 $_['placeholder_subdomain']  = 'Please enter subdomain';
