@@ -79,7 +79,11 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
      */
     public function getSubscribedCustomers($offset) {
         $query = $this->db->query(
-            "SELECT * FROM " . DB_PREFIX . "customer WHERE (`customer_id` > " . (int)$offset . " AND `newsletter` = '1') LIMIT 2500");
+            "SELECT * FROM " . DB_PREFIX . "customer
+            WHERE (`customer_id` > " . (int)$offset . " AND `newsletter` = '1'
+            AND `date_added` > " . "'" . $this->model_extension_smailyforopencart_helper->getSyncTime()['sent_time'] . "')" .
+            " LIMIT 2500"
+        );
         return $query->rows;
     }
 
@@ -130,6 +134,29 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
             $fields = $cart_additional;
         }
         return $fields;
+    }
+
+    /**
+     * Get sync time from dataqbase
+     *
+     * @return string $sync_time Time latest customer sync was done.
+     */
+    public function getSyncTime() {
+        $query = $this->db->query(
+            "SELECT `sent_time` FROM " . DB_PREFIX . "smaily_customer_sync"
+        );
+        return $query->row;
+    }
+
+    /**
+     * Update customer sync time in database.
+     *
+     * @return void
+     */
+    public function saveSyncTime() {
+        $this->db->query(
+            "UPDATE " . DB_PREFIX . "smaily_customer_sync SET `sent_time` = NOW()"
+        );
     }
 
     /**

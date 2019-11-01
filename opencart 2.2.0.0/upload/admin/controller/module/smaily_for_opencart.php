@@ -506,7 +506,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
     }
 
     /**
-     * Creates abandoned carts table and action hook for module.
+     * Creates abandoned carts table, customer sync table, and action hook for module.
      *
      * @return void
      */

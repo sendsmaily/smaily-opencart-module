@@ -16,6 +16,20 @@ class ModelSmailyForOpencartAdmin extends Model {
             PRIMARY KEY (customer_id)
             )"
         );
+        // Create Smaily customer sync time database.
+        $this->db->query(
+            "CREATE TABLE IF NOT EXISTS " . DB_PREFIX . "smaily_customer_sync (
+            sync_id int(11) NOT NULL AUTO_INCREMENT,
+            sent_time datetime NOT NULL,
+            PRIMARY KEY (sync_id)
+            )"
+        );
+        // Write default 1970-1-1 sync time to table, if it is empty.
+        $this->db->query(
+            "INSERT INTO " . DB_PREFIX . "smaily_customer_sync (sent_time) " .
+            "SELECT '" . date('Y-m-d H:i:s', 0) . "'
+            WHERE NOT EXISTS (SELECT * FROM " . DB_PREFIX . "smaily_customer_sync)"
+        );
     }
 
     /**
@@ -25,6 +39,7 @@ class ModelSmailyForOpencartAdmin extends Model {
      */
     public function uninstall() {
         $this->db->query("DROP TABLE IF EXISTS " . DB_PREFIX . "smaily_abandoned_carts");
+        $this->db->query("DROP TABLE IF EXISTS " . DB_PREFIX . "smaily_customer_sync");
     }
 
     /**
