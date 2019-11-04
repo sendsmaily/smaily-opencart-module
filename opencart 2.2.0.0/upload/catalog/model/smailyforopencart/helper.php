@@ -78,10 +78,12 @@ class ModelSmailyForOpencartHelper extends Model {
      * @return array $customers All subscribed customers in array.
      */
     public function getSubscribedCustomers($offset) {
+        $this->load->model('setting/setting');
+        $sync_time = $this->model_setting_setting->getSettingValue('module_smaily_for_opencart_sync_time');
         $query = $this->db->query(
             "SELECT * FROM " . DB_PREFIX . "customer
             WHERE (`customer_id` > " . (int)$offset . " AND `newsletter` = '1'
-            AND `date_added` > " . "'" . $this->model_smailyforopencart_helper->getSyncTime()['sent_time'] . "')" .
+            AND `date_added` > " . "'" . $sync_time . "')" .
             " LIMIT 2500"
         );
         return $query->rows;
@@ -134,29 +136,6 @@ class ModelSmailyForOpencartHelper extends Model {
             $fields = $cart_additional;
         }
         return $fields;
-    }
-
-    /**
-     * Get sync time from dataqbase
-     *
-     * @return string $sync_time Time latest customer sync was done.
-     */
-    public function getSyncTime() {
-        $query = $this->db->query(
-            "SELECT `sent_time` FROM " . DB_PREFIX . "smaily_customer_sync"
-        );
-        return $query->row;
-    }
-
-    /**
-     * Update customer sync time in database.
-     *
-     * @return void
-     */
-    public function saveSyncTime() {
-        $this->db->query(
-            "UPDATE " . DB_PREFIX . "smaily_customer_sync SET `sent_time` = NOW()"
-        );
     }
 
     /**
@@ -224,5 +203,13 @@ class ModelSmailyForOpencartHelper extends Model {
             "INSERT INTO " . DB_PREFIX . "smaily_abandoned_carts (customer_id, sent_time)" .
             "VALUES (" . "'" . (int) $customer_id . "', NOW())"
         );
+    }
+
+    public function editSettingValue($code = '', $key = '', $value = '', $store_id = 0) {
+        if (!is_array($value)) {
+            $this->db->query("UPDATE " . DB_PREFIX . "setting SET `value` = '" . $this->db->escape($value) . "', serialized = '0'  WHERE `code` = '" . $this->db->escape($code) . "' AND `key` = '" . $this->db->escape($key) . "' AND store_id = '" . (int)$store_id . "'");
+        } else {
+            $this->db->query("UPDATE " . DB_PREFIX . "setting SET `value` = '" . $this->db->escape(json_encode($value)) . "', serialized = '1' WHERE `code` = '" . $this->db->escape($code) . "' AND `key` = '" . $this->db->escape($key) . "' AND store_id = '" . (int)$store_id . "'");
+        }
     }
 }
