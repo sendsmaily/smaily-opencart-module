@@ -48,9 +48,9 @@ class ControllerSmailyForOpencartCronCustomers extends Controller {
 
             $response = 'No customers to sync in OpenCart database';
             $offset_sub = 0;
-            $last_sync = $this->model_extension_smailyforopencart_helper->getSyncTime();
+            $last_sync = $this->model_smailyforopencart_helper->getSyncTime();
             while (true) {
-                $subscribers = $this->model_smailyforopencart_helper->getSubscribedCustomers($offset_sub, $sync_time);
+                $subscribers = $this->model_smailyforopencart_helper->getSubscribedCustomers($offset_sub, $last_sync);
                 if (empty($subscribers)) {
                     break;
                 }
