@@ -73,8 +73,7 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
                     die('Error with request to Smaily API, try again later.');
                 }
             }
-            $settings['module_smaily_for_opencart_sync_time'] = date('c');
-            $this->model_extension_smailyforopencart_helper->editSetting('module_smaily_for_opencart', $settings);
+            $this->model_extension_smailyforopencart_helper->editSettingValue('module_smaily_for_opencart', 'module_smaily_for_opencart_sync_time', date('c'));
 
             $this->log->write('smaily subscriber sync finished: ' . json_encode($response));
             echo 'Smaily subscriber sync finished.';
