@@ -16,10 +16,6 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
             PRIMARY KEY (customer_id)
             )"
         );
-        // Save 1970-1-1 sync time to settings.
-        $this->load->model('setting/setting');
-        $data['module_smaily_for_opencart_sync_time'] = date('Y-m-d H:i:s', 0);
-        $this->model_setting_setting->editSetting('module_smaily_for_opencart_sync', $data);
     }
 
     /**
