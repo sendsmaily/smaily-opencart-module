@@ -49,6 +49,7 @@ class ControllerSmailyForOpencartCronCustomers extends Controller {
             $response = 'No customers to sync in OpenCart database';
             $offset_sub = 0;
             $last_sync = $this->model_smailyforopencart_helper->getSyncTime();
+            $sync_time = date('c');
             while (true) {
                 $subscribers = $this->model_smailyforopencart_helper->getSubscribedCustomers($offset_sub, $last_sync);
                 if (empty($subscribers)) {
@@ -73,7 +74,11 @@ class ControllerSmailyForOpencartCronCustomers extends Controller {
                     die('Error with request to Smaily API, try again later.');
                 }
             }
-            $this->model_smailyforopencart_helper->editSettingValue('smaily_for_opencart', 'smaily_for_opencart_sync_time', date('c'));
+            $this->model_smailyforopencart_helper->editSettingValue(
+                'smaily_for_opencart',
+                'smaily_for_opencart_sync_time',
+                $sync_time,
+            );
 
             $this->log->write('smaily subscriber sync finished: ' . json_encode($response));
             echo 'Smaily subscriber sync finished.';
