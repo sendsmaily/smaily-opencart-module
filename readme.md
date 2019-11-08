@@ -122,6 +122,11 @@ Up to 10 products can be received in Smaily templating engine. You can refrence 
 
 ## Changelog
 
+### 1.1.4
+
+- Customer synchronization is now split into chunks, increases stability.
+- Full URL for CRON links is now displayed.
+
 ### 1.1.3
 
 - Add support for PHP 5.6
