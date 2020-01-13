@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  opencart:
+    build: ./
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      OPENCART_DB_HOST: opencart_db
+      OPENCART_DB_PASSWORD: examplepass
+    volumes:
+      - opencart:/var/www/html
+
+  opencart_db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: opencart
+      MYSQL_ROOT_PASSWORD: examplepass
+    volumes:
+      - opencart_db:/var/lib/mysql
+volumes:
+  opencart:
+  opencart_db:
