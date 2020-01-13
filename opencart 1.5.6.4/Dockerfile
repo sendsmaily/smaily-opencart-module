@@ -31,5 +31,8 @@ ADD upload /var/www/html/
 RUN mv config-dist.php config.php \
     && mv admin/config-dist.php admin/config.php
 
-RUN chmod -R 777 /var/www/html
+RUN chown -R www-data:www-data /var/www \
+    && find /var/www -type d -exec chmod 2750 {} \+ \
+    && find /var/www -type f -exec chmod 640 {} \+
+
 EXPOSE 80 3306
