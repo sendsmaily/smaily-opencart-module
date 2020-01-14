@@ -26,6 +26,12 @@ RUN curl -L https://github.com/opencart/opencart/releases/download/$OPENCART_VER
     && mv opencart/upload/* . \
     && rm -rf opencart.zip opencart
 
+# Prefill mySQL credentials
+RUN sed -i -e "s/\['db_name'] = ''/['db_name'] = 'opencart'/g" install/controller/step_3.php \
+    && sed -i -e "s/\['db_user'] = ''/['db_user'] = 'root'/g" install/controller/step_3.php \
+    && sed -i -e "s/\['db_password'] = ''/['db_password'] = 'examplepass'/g" install/controller/step_3.php \
+    && sed -i "s/localhost/database/g" install/controller/step_3.php
+
 # Add Smaily plugin files to /html
 ADD upload /var/www/html/
 
