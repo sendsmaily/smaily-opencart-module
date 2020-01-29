@@ -32,10 +32,6 @@ RUN sed -i -e "s/\['db_name'] = ''/['db_name'] = 'opencart'/g" install/controlle
     && sed -i -e "s/\['email'] = ''/['email'] = 'testing@smaily.sb'/g" install/controller/step_3.php \
     && sed -i "s/localhost/database/g" install/controller/step_3.php
 
-# Add Smaily plugin files to /html
-ADD upload /var/www/html/
-
-# Rename config.ph
 RUN mv config-dist.php config.php \
     && mv admin/config-dist.php admin/config.php
 
@@ -43,4 +39,16 @@ RUN chown -R www-data:www-data /var/www \
     && find /var/www -type d -exec chmod 2750 {} \+ \
     && find /var/www -type f -exec chmod 640 {} \+
 
+# Install modman
+RUN curl -SL https://raw.githubusercontent.com/colinmollenhour/modman/master/modman -o modman \
+    && chmod +x ./modman \
+    && mv ./modman /usr/local/bin/
+
+# Add modman wrapper for symlinking Smaily plugin files
+ADD modman-wrapper.sh /modman-wrapper.sh
+RUN chmod +x /modman-wrapper.sh
+ENTRYPOINT ["/modman-wrapper.sh"]
+
+CMD ["apache2-foreground"]
 EXPOSE 80 3306
+
