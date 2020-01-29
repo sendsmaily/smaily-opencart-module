@@ -17,7 +17,7 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: opencart
-      MYSQL_ROOT_PASSWORD: smaily1
+      MYSQL_ROOT_PASSWORD: smailydev1
     volumes:
       - database:/var/lib/mysql
 volumes:

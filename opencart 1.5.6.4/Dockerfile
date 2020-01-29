@@ -27,8 +27,8 @@ RUN curl -L https://github.com/opencart/opencart/archive/$OPENCART_VERSION.tar.g
 # Prefill mySQL credentials & OpenCart password and email.
 RUN sed -i -e "s/\['db_name'] = ''/['db_name'] = 'opencart'/g" install/controller/step_3.php \
     && sed -i -e "s/\['db_user'] = ''/['db_user'] = 'root'/g" install/controller/step_3.php \
-    && sed -i -e "s/\['db_password'] = ''/['db_password'] = 'smaily1'/g" install/controller/step_3.php \
-    && sed -i -e "s/\['password'] = ''/['password'] = 'smaily1'/g" install/controller/step_3.php \
+    && sed -i -e "s/\['db_password'] = ''/['db_password'] = 'smailydev1'/g" install/controller/step_3.php \
+    && sed -i -e "s/\['password'] = ''/['password'] = 'smailydev1'/g" install/controller/step_3.php \
     && sed -i -e "s/\['email'] = ''/['email'] = 'testing@smaily.sb'/g" install/controller/step_3.php \
     && sed -i "s/localhost/database/g" install/controller/step_3.php
 
