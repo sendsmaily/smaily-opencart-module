@@ -1,14 +1,14 @@
-admin/controller/module/smaily_for_opencart.php admin/controller/module/smaily_for_opencart.php
-admin/language/en-gb/module/smaily_for_opencart.php admin/language/en-gb/module/smaily_for_opencart.php
-admin/model/smailyforopencart/admin.php admin/model/smailyforopencart/admin.php
-admin/view/template/module/smaily_for_opencart.tpl admin/view/template/module/smaily_for_opencart.tpl
-catalog/controller/module/smaily_for_opencart.php catalog/controller/module/smaily_for_opencart.php
-catalog/controller/smailyforopencart/cron_cart.php catalog/controller/smailyforopencart/cron_cart.php
-catalog/controller/smailyforopencart/cron_customers.php catalog/controller/smailyforopencart/cron_customers.php
-catalog/controller/smailyforopencart/order.php catalog/controller/smailyforopencart/order.php
-catalog/controller/smailyforopencart/rss.php catalog/controller/smailyforopencart/rss.php
-catalog/language/en-gb/module/smaily_for_opencart.php catalog/language/en-gb/module/smaily_for_opencart.php
-catalog/model/smailyforopencart/helper.php catalog/model/smailyforopencart/helper.php
+admin/controller/module/smaily_for_opencart.php                    admin/controller/module/smaily_for_opencart.php
+admin/language/en-gb/module/smaily_for_opencart.php                admin/language/en-gb/module/smaily_for_opencart.php
+admin/model/smailyforopencart/admin.php                            admin/model/smailyforopencart/admin.php
+admin/view/template/module/smaily_for_opencart.tpl                 admin/view/template/module/smaily_for_opencart.tpl
+catalog/controller/module/smaily_for_opencart.php                  catalog/controller/module/smaily_for_opencart.php
+catalog/controller/smailyforopencart/cron_cart.php                 catalog/controller/smailyforopencart/cron_cart.php
+catalog/controller/smailyforopencart/cron_customers.php            catalog/controller/smailyforopencart/cron_customers.php
+catalog/controller/smailyforopencart/order.php                     catalog/controller/smailyforopencart/order.php
+catalog/controller/smailyforopencart/rss.php                       catalog/controller/smailyforopencart/rss.php
+catalog/language/en-gb/module/smaily_for_opencart.php              catalog/language/en-gb/module/smaily_for_opencart.php
+catalog/model/smailyforopencart/helper.php                         catalog/model/smailyforopencart/helper.php
 catalog/view/theme/default/template/module/smaily_for_opencart.tpl catalog/view/theme/default/template/module/smaily_for_opencart.tpl
-catalog/view/theme/default/template/smailyforopencart/rss.tpl catalog/view/theme/default/template/smailyforopencart/rss.tpl
+catalog/view/theme/default/template/smailyforopencart/rss.tpl      catalog/view/theme/default/template/smailyforopencart/rss.tpl
 
