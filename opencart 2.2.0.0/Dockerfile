@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libfreetype6-dev \
         libpng-dev \
         libjpeg62-turbo-dev \
+        # MariaDB for mysqladmin ping in entrypoint
         mariadb-client \
     && docker-php-ext-install mcrypt \
     && docker-php-ext-install mysqli \
