@@ -26,8 +26,8 @@ if [ -d install ] ; then
 fi
 echo 'OpenCart installed!'
 
-if [ ! -d $MAGE_ROOT_DIR/.modman ] ; then
-    cd $MAGE_ROOT_DIR && modman init
+if [ ! -d $OC_ROOT_DIR/.modman ] ; then
+    cd $OC_ROOT_DIR && modman init
 fi
 # Symlink Smaily's module files to html/
 modman link /var/www/html/smailyfiles

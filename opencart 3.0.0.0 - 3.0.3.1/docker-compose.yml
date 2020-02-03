@@ -7,7 +7,7 @@ services:
     ports:
       - 8080:80
     environment:
-      MAGE_ROOT_DIR: /var/www/html
+      OC_ROOT_DIR: /var/www/html
     volumes:
       - app:/var/www/html
       - ./upload:/var/www/html/smailyfiles
