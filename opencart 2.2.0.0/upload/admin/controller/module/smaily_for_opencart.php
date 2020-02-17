@@ -86,79 +86,79 @@ class ControllerModuleSmailyForOpencart extends Controller {
 
         // Text fields
         $data['heading_title'] = $this->language->get('heading_title');
-        $data['text_edit'] = $this->language->get('text_edit');
-        $data['text_enabled'] = $this->language->get('text_enabled');
+        $data['text_edit']     = $this->language->get('text_edit');
+        $data['text_enabled']  = $this->language->get('text_enabled');
         $data['text_disabled'] = $this->language->get('text_disabled');
-        $data['entry_name'] = $this->language->get('entry_name');
-        $data['entry_banner'] = $this->language->get('entry_banner');
-        $data['entry_width'] = $this->language->get('entry_width');
-        $data['entry_height'] = $this->language->get('entry_height');
-        $data['entry_status'] = $this->language->get('entry_status');
+        $data['entry_name']    = $this->language->get('entry_name');
+        $data['entry_banner']  = $this->language->get('entry_banner');
+        $data['entry_width']   = $this->language->get('entry_width');
+        $data['entry_height']  = $this->language->get('entry_height');
+        $data['entry_status']  = $this->language->get('entry_status');
 
         // Enable module.
-        $data['entry_enable_module_title'] = $this->language->get('entry_enable_module_title');
+        $data['entry_enable_module_title']     = $this->language->get('entry_enable_module_title');
         $data['entry_enable_subscriber_title'] = $this->language->get('entry_enable_subscriber_title');
-        $data['entry_enable_abandoned_title'] = $this->language->get('entry_enable_abandoned_title');
+        $data['entry_enable_abandoned_title']  = $this->language->get('entry_enable_abandoned_title');
         // Subdomain.
-        $data['subdomain_title'] = $this->language->get('entry_subdomain_title');
+        $data['subdomain_title']       = $this->language->get('entry_subdomain_title');
         $data['subdomain_placeholder'] = $this->language->get('placeholder_subdomain');
         // Username.
-        $data['username_title'] = $this->language->get('entry_username_title');
+        $data['username_title']       = $this->language->get('entry_username_title');
         $data['username_placeholder'] = $this->language->get('placeholder_username');
         // Password.
-        $data['password_title'] = $this->language->get('entry_password_title');
+        $data['password_title']       = $this->language->get('entry_password_title');
         $data['password_placeholder'] = $this->language->get('placeholder_password');
         // Credentials validated status.
         $data['validated'] = $this->model_setting_setting->getSettingValue('smaily_for_opencart_validated');
         // Validate button.
         $data['button_validate'] = $this->language->get('button_validate');
-        $data['validate_title'] = $this->language->get('validate_title');
+        $data['validate_title']  = $this->language->get('validate_title');
         // Autoresponder title.
         $data['entry_autoresponder_title'] = $this->language->get('entry_autoresponder_title');
         // Rss feed.
         $data['rss_feed_title'] = $this->language->get('rss_feed_title');
-        $data['rss_feed_text'] = $this->language->get('rss_feed_text');
+        $data['rss_feed_text']  = $this->language->get('rss_feed_text');
 
         // Subscriber sync fields.
         $data['entry_customer_sync_fields_title'] = $this->language->get('entry_customer_sync_fields_title');
-        $data['sync_token_title'] = $this->language->get('sync_token_title');
-        $data['sync_token_placeholder'] = $this->language->get('sync_token_placeholder');
-        $data['sync_customer_url_title'] = $this->language->get('sync_customer_url_title');
-        $data['customer_cron_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/cron_customers&token=[token]';
-        $data['customer_cron_text'] = $this->language->get('customer_cron_text');
+        $data['sync_token_title']                 = $this->language->get('sync_token_title');
+        $data['sync_token_placeholder']           = $this->language->get('sync_token_placeholder');
+        $data['sync_customer_url_title']          = $this->language->get('sync_customer_url_title');
+        $data['customer_cron_text']               = $this->language->get('customer_cron_text');
         // Customer sync option fields text.
-        $data['firstname'] = $this->language->get('firstname');
-        $data['lastname'] = $this->language->get('lastname');
-        $data['telephone'] = $this->language->get('telephone');
+        $data['firstname']  = $this->language->get('firstname');
+        $data['lastname']   = $this->language->get('lastname');
+        $data['telephone']  = $this->language->get('telephone');
         $data['date_added'] = $this->language->get('date_added');
 
         // Abandoned cart fields.
         $data['abandoned_sync_fields_title'] = $this->language->get('abandoned_sync_fields_title');
-        $data['delay_title'] = $this->language->get('delay_title');
-        $data['abandoned_minutes'] = $this->language->get('abandoned_minutes');
-        $data['cart_token_title'] = $this->language->get('cart_token_title');
-        $data['cart_token_placeholder'] = $this->language->get('cart_token_placeholder');
-        $data['sync_cart_url_title'] = $this->language->get('sync_cart_url_title');
-        $data['cart_cron_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/cron_cart&token=[token]';
-        $data['cart_cron_text'] = $this->language->get('cart_cron_text');
+        $data['delay_title']                 = $this->language->get('delay_title');
+        $data['abandoned_minutes']           = $this->language->get('abandoned_minutes');
+        $data['cart_token_title']            = $this->language->get('cart_token_title');
+        $data['cart_token_placeholder']      = $this->language->get('cart_token_placeholder');
+        $data['sync_cart_url_title']         = $this->language->get('sync_cart_url_title');
+        $data['cart_cron_text']              = $this->language->get('cart_cron_text');
         // Abandoned cart option fields text.
-        $data['product_name'] = $this->language->get('product_name');
+        $data['customer_first_name'] = $this->language->get('customer_first_name');
+        $data['customer_last_name']  = $this->language->get('customer_last_name');
+        $data['product_name']        = $this->language->get('product_name');
         $data['product_description'] = $this->language->get('product_description');
-        $data['product_quantity'] = $this->language->get('product_quantity');
-        $data['product_price'] = $this->language->get('product_price');
-
+        $data['product_quantity']    = $this->language->get('product_quantity');
+        $data['product_price']       = $this->language->get('product_price');
+        $data['product_base_price']  = $this->language->get('product_base_price');
         // Small texts.
-        $data['small_subdomain'] = $this->language->get('small_subdomain');
-        $data['smaily_rss_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
-        $data['small_password'] = $this->language->get('small_password');
+        $data['small_subdomain']       = $this->language->get('small_subdomain');
+        $data['smaily_rss_url']        = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
+        $data['small_password']        = $this->language->get('small_password');
         $data['small_sync_additional'] = $this->language->get('small_sync_additional');
         $data['small_cart_additional'] = $this->language->get('small_cart_additional');
         $data['small_cart_delay']      = $this->language->get('small_cart_delay');
-        $data['small_token'] = $this->language->get('small_token');
+        $data['small_token']           = $this->language->get('small_token');
 
-        $data['button_save'] = $this->language->get('button_save');
+        $data['button_save']   = $this->language->get('button_save');
         $data['button_cancel'] = $this->language->get('button_cancel');
-        $data['token'] = $this->session->data['token'];
+        $data['token']         = $this->session->data['token'];
 
         // Display success message after save.
         if (isset($this->request->get['success'])) {
@@ -288,6 +288,10 @@ class ControllerModuleSmailyForOpencart extends Controller {
                 $data['sync_token'] = uniqid();
             }
         }
+        // Customer sync cron url.
+        $data['customer_cron_url'] = $this->config->get('config_url') .
+            'index.php?route=smailyforopencart/cron_customers&token=' . $data['sync_token'];
+
 
         // Abandoned cart autoresponder.
         if (isset($this->request->post['smaily_for_opencart_abandoned_autoresponder'])) {
@@ -319,6 +323,10 @@ class ControllerModuleSmailyForOpencart extends Controller {
                 $data['cart_token'] = uniqid();
             }
         }
+        // Abandoned cart cron url.
+        $data['cart_cron_url'] = $this->config->get('config_url') .
+            'index.php?route=smailyforopencart/cron_cart&token=' . $data['cart_token'];
+
 
 
         $data['header'] = $this->load->controller('common/header');

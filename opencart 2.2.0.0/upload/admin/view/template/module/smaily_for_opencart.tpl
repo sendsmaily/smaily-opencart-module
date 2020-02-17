@@ -240,7 +240,8 @@
                       'name'        => $product_name,
                       'description' => $product_description,
                       'quantity'    => $product_quantity,
-                      'price'       => $product_price
+                      'price'       => $product_price,
+                      'base_price'  => $product_base_price
                     ];
                     // Add options for select.
                     foreach ($cart_options as $value => $name) {

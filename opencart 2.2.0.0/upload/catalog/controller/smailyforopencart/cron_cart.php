@@ -60,6 +60,7 @@ class ControllerSmailyForOpencartCronCart extends Controller {
                 'description',
                 'quantity',
                 'price',
+                'base_price'
             ];
             $selected_fields = array_intersect($fields_available, $cart_sync_values);
             // Populate products list with empty values for legacy api.
@@ -68,7 +69,7 @@ class ControllerSmailyForOpencartCronCart extends Controller {
                     $addresses['product_' . $field . '_' . $i] = '';
                 }
             }
-            // TODO: Add product base_price as display price.
+
             // Populate addresses fields with up to 10 products.
             $j = 1;
             foreach ($cart['products'] as $product) {
@@ -97,6 +98,12 @@ class ControllerSmailyForOpencartCronCart extends Controller {
                                 $product['data']['tax_class_id']
                             );
                             break;
+                        case 'base_price':
+                            $addresses['product_base_price_' . $j] = $this->getProductDisplayPrice(
+                                $product['data']['price'],
+                                $product['data']['tax_class_id']
+                            );
+                            break;
                         default:
                             $addresses['product_' . $sync_value . '_' . $j] = $product['data'][$sync_value];
                             break;
@@ -115,6 +122,9 @@ class ControllerSmailyForOpencartCronCart extends Controller {
                 'autoresponder' => $autoresponder_id,
                 'addresses' => [$addresses],
             );
+            echo('<pre>');
+            var_export($query);
+            die();
             // Make api call.
             $response = $this->model_smailyforopencart_helper->apiCall('autoresponder', $query, 'POST');
             // If successful add customer to smaily_abandoned_carts table

@@ -26,6 +26,7 @@ $_['product_name']        = 'Product name';
 $_['product_description'] = 'Product description';
 $_['product_quantity']    = 'Product quantity';
 $_['product_price']       = 'Product price';
+$_['product_base_price']  = 'Product base price';
 
 // Enable
 $_['entry_enable_module_title']        = 'Enable Smaily Module';
