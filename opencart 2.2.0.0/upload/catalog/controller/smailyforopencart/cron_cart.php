@@ -39,23 +39,36 @@ class ControllerSmailyForOpencartCronCart extends Controller {
             echo('No abandoned carts');
             die();
         }
-
+        // Get sync values selected from admin panel.
+        $cart_sync_values = $this->model_smailyforopencart_helper->getAbandonedSyncFields();
         foreach ($abandoned_carts as $cart) {
             // Addresses array for smaily api call.
             $addresses = array(
                 'email' => $cart['email'],
-                'first_name' => isset($cart['firstname']) ? $cart['firstname'] : '',
-                'last_name' => isset($cart['lastname']) ? $cart['lastname'] : '',
             );
-            // Sync values selected from admin panel.
-            $cart_sync_values = $this->model_smailyforopencart_helper->getAbandonedSyncFields();
-            // Populate products list with empty values for legacy api.
-            foreach ($cart_sync_values as $sync_value) {
-                for ($i=1; $i < 11; $i++) {
-                    $addresses['product_' . $sync_value . '_' . $i] = '';
-                }
+
+            // Add customer fields.
+            if (in_array('first_name', $cart_sync_values)) {
+                $addresses['first_name'] = isset($cart['firstname']) ? $cart['firstname'] : '';
+            }
+            if (in_array('last_name', $cart_sync_values)) {
+                $addresses['last_name'] = isset($cart['lastname']) ? $cart['lastname'] : '';
             }
 
+            $fields_available = [
+                'name',
+                'description',
+                'quantity',
+                'price',
+            ];
+            $selected_fields = array_intersect($fields_available, $cart_sync_values);
+            // Populate products list with empty values for legacy api.
+            foreach ($selected_fields as $field) {
+                for ($i=1; $i < 11; $i++) {
+                    $addresses['product_' . $field . '_' . $i] = '';
+                }
+            }
+            // TODO: Add product base_price and price. as display price.
             // Populate addresses fields with up to 10 products.
             $j = 1;
             foreach ($cart['products'] as $product) {
@@ -63,11 +76,19 @@ class ControllerSmailyForOpencartCronCart extends Controller {
                     $addresses['over_10_products'] = 'true';
                     break;
                 }
-                foreach ($cart_sync_values as $sync_value) {
-                    if ($sync_value === 'quantity') {
-                        $addresses['product_' . $sync_value . '_' . $j] = $product[$sync_value];
-                    } else {
-                        $addresses['product_' . $sync_value . '_' . $j] = $product['data'][$sync_value];
+                foreach ($selected_fields as $sync_value) {
+                    switch ($sync_value) {
+                        case 'description':
+                            $addresses['product_' . $sync_value . '_' . $j] = htmlspecialchars(
+                                $product['data'][$sync_value]
+                            );
+                            break;
+                        case 'quantity':
+                            $addresses['product_' . $sync_value . '_' . $j] = $product[$sync_value];
+                            break;
+                        default:
+                            $addresses['product_' . $sync_value . '_' . $j] = $product['data'][$sync_value];
+                            break;
                     }
                 }
                 $j++;

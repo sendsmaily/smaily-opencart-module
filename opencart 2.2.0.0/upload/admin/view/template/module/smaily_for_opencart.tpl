@@ -235,10 +235,12 @@
                   <?php
                     // All available options
                     $cart_options = [
-                      'name'  => $product_name,
-                      'description'  => $product_description,
-                      'quantity'  => $product_quantity,
-                      'price' => $product_price
+                      'first_name'  => $customer_first_name,
+                      'last_name'   => $customer_last_name,
+                      'name'        => $product_name,
+                      'description' => $product_description,
+                      'quantity'    => $product_quantity,
+                      'price'       => $product_price
                     ];
                     // Add options for select.
                     foreach ($cart_options as $value => $name) {
