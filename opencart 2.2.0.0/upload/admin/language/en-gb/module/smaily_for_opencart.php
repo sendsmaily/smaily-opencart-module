@@ -24,6 +24,7 @@ $_['customer_first_name'] = 'Customer first name';
 $_['customer_last_name']  = 'Customer last name';
 $_['product_name']        = 'Product name';
 $_['product_description'] = 'Product description';
+$_['product_sku']         = 'Product SKU';
 $_['product_quantity']    = 'Product quantity';
 $_['product_price']       = 'Product price';
 $_['product_base_price']  = 'Product base price';

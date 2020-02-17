@@ -239,6 +239,7 @@
                       'last_name'   => $customer_last_name,
                       'name'        => $product_name,
                       'description' => $product_description,
+                      'sku'         => $product_sku,
                       'quantity'    => $product_quantity,
                       'price'       => $product_price,
                       'base_price'  => $product_base_price

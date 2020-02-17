@@ -58,6 +58,7 @@ class ControllerSmailyForOpencartCronCart extends Controller {
             $fields_available = [
                 'name',
                 'description',
+                'sku',
                 'quantity',
                 'price',
                 'base_price'
@@ -122,9 +123,7 @@ class ControllerSmailyForOpencartCronCart extends Controller {
                 'autoresponder' => $autoresponder_id,
                 'addresses' => [$addresses],
             );
-            echo('<pre>');
-            var_export($query);
-            die();
+
             // Make api call.
             $response = $this->model_smailyforopencart_helper->apiCall('autoresponder', $query, 'POST');
             // If successful add customer to smaily_abandoned_carts table

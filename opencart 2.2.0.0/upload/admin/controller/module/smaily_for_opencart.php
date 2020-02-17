@@ -144,6 +144,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $data['customer_last_name']  = $this->language->get('customer_last_name');
         $data['product_name']        = $this->language->get('product_name');
         $data['product_description'] = $this->language->get('product_description');
+        $data['product_sku']         = $this->language->get('product_sku');
         $data['product_quantity']    = $this->language->get('product_quantity');
         $data['product_price']       = $this->language->get('product_price');
         $data['product_base_price']  = $this->language->get('product_base_price');
