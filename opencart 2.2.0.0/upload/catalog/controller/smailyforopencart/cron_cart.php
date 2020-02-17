@@ -68,7 +68,7 @@ class ControllerSmailyForOpencartCronCart extends Controller {
                     $addresses['product_' . $field . '_' . $i] = '';
                 }
             }
-            // TODO: Add product base_price and price. as display price.
+            // TODO: Add product base_price as display price.
             // Populate addresses fields with up to 10 products.
             $j = 1;
             foreach ($cart['products'] as $product) {
@@ -79,12 +79,23 @@ class ControllerSmailyForOpencartCronCart extends Controller {
                 foreach ($selected_fields as $sync_value) {
                     switch ($sync_value) {
                         case 'description':
-                            $addresses['product_' . $sync_value . '_' . $j] = htmlspecialchars(
+                            $addresses['product_description_' . $j] = htmlspecialchars(
                                 $product['data'][$sync_value]
                             );
                             break;
                         case 'quantity':
-                            $addresses['product_' . $sync_value . '_' . $j] = $product[$sync_value];
+                            $addresses['product_quantity_' . $j] = $product[$sync_value];
+                            break;
+                        case 'price':
+                            if (isset($product['data']['special'])) {
+                                $price = $product['data']['special'];
+                            } else {
+                                $price = $product['data']['price'];
+                            }
+                            $addresses['product_price_' . $j] = $this->getProductDisplayPrice(
+                                $price,
+                                $product['data']['tax_class_id']
+                            );
                             break;
                         default:
                             $addresses['product_' . $sync_value . '_' . $j] = $product['data'][$sync_value];
@@ -112,5 +123,25 @@ class ControllerSmailyForOpencartCronCart extends Controller {
             }
         }
         echo 'Abandoned carts sent!';
+    }
+
+    /**
+     * Calculates and returns product display price with tax and default currency code.
+     *
+     * @param string $price         Product price.
+     * @param string $tax_class_id  Product tax class number.
+     * @return void
+     */
+    public function getProductDisplayPrice($price, $tax_class_id) {
+        $price_with_tax = $this->tax->calculate(
+            $price,
+            $tax_class_id,
+            $this->config->get('config_tax')
+        );
+        
+        return $this->currency->format(
+            $price_with_tax,
+            $this->config->get('config_currency')
+        );
     }
 }
