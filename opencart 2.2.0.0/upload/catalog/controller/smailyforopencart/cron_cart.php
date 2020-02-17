@@ -41,6 +41,16 @@ class ControllerSmailyForOpencartCronCart extends Controller {
         }
         // Get sync values selected from admin panel.
         $cart_sync_values = $this->model_smailyforopencart_helper->getAbandonedSyncFields();
+        $fields_available = [
+            'name',
+            'description',
+            'sku',
+            'quantity',
+            'price',
+            'base_price'
+        ];
+        $selected_fields = array_intersect($fields_available, $cart_sync_values);
+
         foreach ($abandoned_carts as $cart) {
             // Addresses array for smaily api call.
             $addresses = array(
@@ -55,15 +65,6 @@ class ControllerSmailyForOpencartCronCart extends Controller {
                 $addresses['last_name'] = isset($cart['lastname']) ? $cart['lastname'] : '';
             }
 
-            $fields_available = [
-                'name',
-                'description',
-                'sku',
-                'quantity',
-                'price',
-                'base_price'
-            ];
-            $selected_fields = array_intersect($fields_available, $cart_sync_values);
             // Populate products list with empty values for legacy api.
             foreach ($selected_fields as $field) {
                 for ($i=1; $i < 11; $i++) {
@@ -89,6 +90,7 @@ class ControllerSmailyForOpencartCronCart extends Controller {
                             $addresses['product_quantity_' . $j] = $product[$sync_value];
                             break;
                         case 'price':
+                            // Use special price if available.
                             if (isset($product['data']['special'])) {
                                 $price = $product['data']['special'];
                             } else {
