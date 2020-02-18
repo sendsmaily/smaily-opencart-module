@@ -525,9 +525,11 @@ class ControllerModuleSmailyForOpencart extends Controller {
         // Create database.
         $this->model_smailyforopencart_admin->install();
         // Add event listener for order.
-        $this->model_extension_event->addEvent('smaily_order', 'catalog/controller/checkout/confirm/after', 'smailyforopencart/order/removeSent');
-        // Upgrade scripts.
-        $this->model_smailyforopencart_admin->upgrade();
+        $this->model_extension_event->addEvent(
+            'smaily_order',
+            'catalog/controller/checkout/confirm/after',
+            'smailyforopencart/order/removeSent'
+        );
     }
 
     /**
