@@ -11,7 +11,7 @@
  *
  * Plugin Name: Smaily for Opencart
  * Description: Smaily email marketing and automation extension plugin for Opencart.
- * Version: 1.1.4
+ * Version: 1.2.0
  * License: GPL3
  * Author: Smaily
  * Author URI: https://smaily.com/
@@ -526,6 +526,8 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->model_smailyforopencart_admin->install();
         // Add event listener for order.
         $this->model_extension_event->addEvent('smaily_order', 'catalog/controller/checkout/confirm/after', 'smailyforopencart/order/removeSent');
+        // Upgrade scripts.
+        $this->model_smailyforopencart_admin->upgrade();
     }
 
     /**
