@@ -1,4 +1,5 @@
 admin/controller/module/smaily_for_opencart.php                    admin/controller/module/smaily_for_opencart.php
+admin/controller/smailyforopencart/upgrade.php                     admin/controller/smailyforopencart/upgrade.php
 admin/language/en-gb/module/smaily_for_opencart.php                admin/language/en-gb/module/smaily_for_opencart.php
 admin/model/smailyforopencart/admin.php                            admin/model/smailyforopencart/admin.php
 admin/view/template/module/smaily_for_opencart.tpl                 admin/view/template/module/smaily_for_opencart.tpl
@@ -11,4 +12,3 @@ catalog/language/en-gb/module/smaily_for_opencart.php              catalog/langu
 catalog/model/smailyforopencart/helper.php                         catalog/model/smailyforopencart/helper.php
 catalog/view/theme/default/template/module/smaily_for_opencart.tpl catalog/view/theme/default/template/module/smaily_for_opencart.tpl
 catalog/view/theme/default/template/smailyforopencart/rss.tpl      catalog/view/theme/default/template/smailyforopencart/rss.tpl
-

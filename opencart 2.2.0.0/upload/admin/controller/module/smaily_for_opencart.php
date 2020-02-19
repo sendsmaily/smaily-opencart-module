@@ -530,6 +530,12 @@ class ControllerModuleSmailyForOpencart extends Controller {
             'catalog/controller/checkout/confirm/after',
             'smailyforopencart/order/removeSent'
         );
+        // Add event for upgrading module.
+        $this->model_extension_event->addEvent(
+            'smaily_upgrade',
+            'admin/model/extension/modification/addModification/after',
+            'smailyforopencart/upgrade/upgrade'
+        );
     }
 
     /**
