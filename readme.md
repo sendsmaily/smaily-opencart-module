@@ -98,9 +98,9 @@ You can access RSS feed by visiting ulr `[store_url]/index.php?route=smailyforop
 
 List of all parameters available in Smaily email templating engine:
 
-- Customer first name: `{{ firstname }}`.
+- Customer first name: `{{ first_name }}`.
 
-- Customer last name: `{{ lastname }}`.
+- Customer last name: `{{ last_name }}`.
 
 Up to 10 products can be received in Smaily templating engine. You can refrence each product with number 1-10 behind parameter name.
 
@@ -110,7 +110,13 @@ Up to 10 products can be received in Smaily templating engine. You can refrence 
 
 - Product quantity: `{{ product_quantity_[1-10] }}`.
 
+- Product SKU: `{{ product_sku_[1-10] }}`.
+
 - Products price: `{{ product_price_[1-10] }}`.
+
+Also you can determine if customer had more than 10 items in cart
+
+- More than 10 items: `{{ over_10_products }}`.
 
 ## Screenshots found in /assets
 
@@ -121,6 +127,15 @@ Up to 10 products can be received in Smaily templating engine. You can refrence 
 5. Opencart Smaily form screen.
 
 ## Changelog
+
+### 1.2.0
+
+- Standardize abandoned cart additional fields across integrations
+- Change `firstname` to `first_name` and `lastname` to `last_name`
+- Add `product_base_price` field. Product `price` and `base_price` fields now pass prices with currency symbol.
+- Add `product_sku` field.
+- Fix bug where running customer synchronization throws PHP error.
+
 
 ### 1.1.4
 
