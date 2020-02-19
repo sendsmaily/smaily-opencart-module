@@ -130,6 +130,11 @@ Also you can determine if customer had more than 10 items in cart
 
 ### 1.2.0
 
+**Breaking change**
+
+This update adds upgrade functionality to our plugin.
+For further updates to work please uninstall older version and reinstall this module.
+
 - Standardize abandoned cart additional fields across integrations
 - Change `firstname` to `first_name` and `lastname` to `last_name`
 - Add `product_base_price` field. Product `price` and `base_price` fields now pass prices with currency symbol.
