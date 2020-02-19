@@ -41,6 +41,8 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $this->load->model('extension/smailyforopencart/admin');
         // Add heading title.
         $this->document->setTitle($this->language->get('heading_title'));
+        // URL for writing cron links.
+        $url = new Url(HTTP_CATALOG, $this->config->get('config_secure') ? HTTPS_CATALOG : '');
 
         // When save is pressed.
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
@@ -150,8 +152,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 
         // Small texts.
         $data['small_subdomain']       = $this->language->get('small_subdomain');
-        $data['smaily_rss_url']        = $this->config->get('config_url') .
-                                        'index.php?route=extension/smailyforopencart/rss';
+        $data['smaily_rss_url']        = $url->link('extension/smailyforopencart/rss', '', true);
         $data['small_password']        = $this->language->get('small_password');
         $data['small_sync_additional'] = $this->language->get('small_sync_additional');
         $data['small_cart_additional'] = $this->language->get('small_cart_additional');
@@ -302,9 +303,11 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             }
         }
         // Customer cron URL.
-        $data['customer_cron_url'] = $this->config->get('config_url') .
-            'index.php?route=extension/smailyforopencart/cron_customers&token=' .$data['sync_token'];
-
+        $data['customer_cron_url'] = $url->link(
+            'extension/smailyforopencart/cron_customers',
+            array('token' => $data['sync_token']),
+            true
+        );
         // Abandoned cart autoresponder.
         if (isset($this->request->post['smaily_for_opencart_abandoned_autoresponder'])) {
             $data['abandoned_autoresponder'] = json_decode(
@@ -345,9 +348,11 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             }
         }
         // Abandoned cart URL.
-        $data['cart_cron_url'] = $this->config->get('config_url') .
-            'index.php?route=extension/smailyforopencart/cron_cart&token=' . $data['cart_token'];
-
+        $data['cart_cron_url'] = $url->link(
+            'extension/smailyforopencart/cron_cart',
+            array('token' => $data['cart_token']),
+            true
+        );
 
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
