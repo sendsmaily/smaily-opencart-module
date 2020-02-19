@@ -19,12 +19,15 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
     }
 
     /**
-     * Remove smaily_abandoned_carts table.
+     * Remove smaily_abandoned_carts table and settings.
      *
      * @return void
      */
     public function uninstall() {
+        $this->load->model('setting/setting');
         $this->db->query("DROP TABLE IF EXISTS " . DB_PREFIX . "smaily_abandoned_carts");
+         // Remove plugin settings.
+        $this->model_setting_setting->deleteSetting('smaily_for_opencart');
     }
 
     /**
