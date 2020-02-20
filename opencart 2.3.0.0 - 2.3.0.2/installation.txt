@@ -16,3 +16,19 @@
 7. Select autoresponder for abandoned carts, extra fields you would like to add to template and delay for abandoned carts. Cron token required for security.
 8. To add subscription form to your homepage go to **Design->Layouts->Home** and add `Smaily for Opencart` to your prefered position.
 9. That's it, your Opencart store is now integrated with Smaily Plugin!
+
+## Changelog
+
+### 1.2.0 
+
+BREAKING CHANGE
+
+This update adds upgrade functionality to our plugin.
+For further updates to work please uninstall older version and reinstall this module.
+
+- Standardize abandoned cart additional fields across integrations
+- Change `firstname` to `first_name` and `lastname` to `last_name`
+- Add `product_base_price` field. Product `price` and `base_price` fields now pass prices with currency symbol.
+- Add `product_sku` field.
+- Fix bug where running customer synchronization throws PHP error.
+- Fix bug where URL-s were not displaying correctly in Smaily admin panel.
