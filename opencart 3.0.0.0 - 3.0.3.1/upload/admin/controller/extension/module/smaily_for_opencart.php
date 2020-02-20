@@ -11,7 +11,7 @@
  *
  * Plugin Name: Smaily for Opencart
  * Description: Smaily email marketing and automation extension plugin for Opencart.
- * Version: 1.1.4
+ * Version: 1.2.0
  * License: GPL3
  * Author: Smaily
  * Author URI: https://smaily.com/
@@ -55,9 +55,15 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 $data['module_smaily_for_opencart_validated'] = $validated;
             }
             // Get credentials.
-            $data['module_smaily_for_opencart_subdomain'] = $this->model_setting_setting->getSettingValue('module_smaily_for_opencart_subdomain');
-            $data['module_smaily_for_opencart_username'] = $this->model_setting_setting->getSettingValue('module_smaily_for_opencart_username');
-            $data['module_smaily_for_opencart_password'] = $this->model_setting_setting->getSettingValue('module_smaily_for_opencart_password');
+            $data['module_smaily_for_opencart_subdomain'] = $this->model_setting_setting->getSettingValue(
+                'module_smaily_for_opencart_subdomain'
+            );
+            $data['module_smaily_for_opencart_username'] = $this->model_setting_setting->getSettingValue(
+                'module_smaily_for_opencart_username'
+            );
+            $data['module_smaily_for_opencart_password'] = $this->model_setting_setting->getSettingValue(
+                'module_smaily_for_opencart_password'
+            ); 
             // Save settings
             $this->model_setting_setting->editSetting('module_smaily_for_opencart', $data);
             // Redirect to module settings page.
@@ -112,73 +118,85 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         }
         // Text fields
         $data['heading_title'] = $this->language->get('heading_title');
-        $data['text_edit'] = $this->language->get('text_edit');
-        $data['text_enabled'] = $this->language->get('text_enabled');
+        $data['text_edit']     = $this->language->get('text_edit');
+        $data['text_enabled']  = $this->language->get('text_enabled');
         $data['text_disabled'] = $this->language->get('text_disabled');
 
         // Enable module.
-        $data['entry_enable_module_title'] = $this->language->get('entry_enable_module_title');
+        $data['entry_enable_module_title']     = $this->language->get('entry_enable_module_title');
         $data['entry_enable_subscriber_title'] = $this->language->get('entry_enable_subscriber_title');
-        $data['entry_enable_abandoned_title'] = $this->language->get('entry_enable_abandoned_title');
+        $data['entry_enable_abandoned_title']  = $this->language->get('entry_enable_abandoned_title');
         // Subdomain.
-        $data['subdomain_title'] = $this->language->get('entry_subdomain_title');
+        $data['subdomain_title']       = $this->language->get('entry_subdomain_title');
         $data['subdomain_placeholder'] = $this->language->get('placeholder_subdomain');
         // Username.
-        $data['username_title'] = $this->language->get('entry_username_title');
+        $data['username_title']       = $this->language->get('entry_username_title');
         $data['username_placeholder'] = $this->language->get('placeholder_username');
         // Password.
-        $data['password_title'] = $this->language->get('entry_password_title');
+        $data['password_title']       = $this->language->get('entry_password_title');
         $data['password_placeholder'] = $this->language->get('placeholder_password');
         // Validate button.
-        $data['validated'] = $this->model_setting_setting->getSettingValue('module_smaily_for_opencart_validated');
+        $data['validated']       = $this->model_setting_setting->getSettingValue(
+            'module_smaily_for_opencart_validated'
+        );
         $data['button_validate'] = $this->language->get('button_validate');
-        $data['validate_title'] = $this->language->get('validate_title');
+        $data['validate_title']  = $this->language->get('validate_title');
         // Autoresponder title.
         $data['entry_autoresponder_title'] = $this->language->get('entry_autoresponder_title');
         // Rss feed.
         $data['rss_feed_title'] = $this->language->get('rss_feed_title');
-        $data['rss_feed_text'] = $this->language->get('rss_feed_text');
+        $data['rss_feed_text']  = $this->language->get('rss_feed_text');
 
-        // Subscriber sync fields.
+        // Subscriber sync title.
         $data['entry_customer_sync_fields_title'] = $this->language->get('entry_customer_sync_fields_title');
-        $data['sync_token_title'] = $this->language->get('sync_token_title');
-        $data['sync_token_placeholder'] = $this->language->get('sync_token_placeholder');
+        // Subscriber sync fields.
+        $data['sync_token_title']        = $this->language->get('sync_token_title');
+        $data['sync_token_placeholder']  = $this->language->get('sync_token_placeholder');
         $data['sync_customer_url_title'] = $this->language->get('sync_customer_url_title');
-        $data['customer_cron_url'] = $url->link('extension/smailyforopencart/cron_customers', array('token' => $data['sync_token']), true);
+        $data['customer_cron_url']       = $url->link(
+            'extension/smailyforopencart/cron_customers',
+            array('token' => $data['sync_token']),
+            true
+        );
         $data['customer_cron_text'] = $this->language->get('customer_cron_text');
         // Customer sync option fields text.
-        $data['firstname'] = $this->language->get('firstname');
-        $data['lastname'] = $this->language->get('lastname');
-        $data['telephone'] = $this->language->get('telephone');
+        $data['firstname']  = $this->language->get('firstname');
+        $data['lastname']   = $this->language->get('lastname');
+        $data['telephone']  = $this->language->get('telephone');
         $data['date_added'] = $this->language->get('date_added');
 
-        // Abandoned cart fields.
+        // Abandoned cart title.
         $data['abandoned_sync_fields_title'] = $this->language->get('abandoned_sync_fields_title');
-        $data['delay_title'] = $this->language->get('delay_title');
-        $data['abandoned_minutes'] = $this->language->get('abandoned_minutes');
-        $data['cart_token_title'] = $this->language->get('cart_token_title');
+        // Abandoned cart fields.
+        $data['delay_title']            = $this->language->get('delay_title');
+        $data['abandoned_minutes']      = $this->language->get('abandoned_minutes');
+        $data['cart_token_title']       = $this->language->get('cart_token_title');
         $data['cart_token_placeholder'] = $this->language->get('cart_token_placeholder');
-        $data['sync_cart_url_title'] = $this->language->get('sync_cart_url_title');
-        $data['cart_cron_url'] = $url->link('extension/smailyforopencart/cron_cart', array('token' => $data['cart_token']), true);
+        $data['sync_cart_url_title']    = $this->language->get('sync_cart_url_title');
+        $data['cart_cron_url'] = $url->link(
+            'extension/smailyforopencart/cron_cart',
+            array('token' => $data['cart_token']),
+            true
+        );
         $data['cart_cron_text'] = $this->language->get('cart_cron_text');
         // Abandoned cart option fields text.
-        $data['product_name'] = $this->language->get('product_name');
+        $data['product_name']        = $this->language->get('product_name');
         $data['product_description'] = $this->language->get('product_description');
-        $data['product_quantity'] = $this->language->get('product_quantity');
-        $data['product_price'] = $this->language->get('product_price');
+        $data['product_quantity']    = $this->language->get('product_quantity');
+        $data['product_price']       = $this->language->get('product_price');
 
         // Small texts.
-        $data['small_subdomain'] = $this->language->get('small_subdomain');
-        $data['smaily_rss_url'] = $url->link('extension/smailyforopencart/rss', '', true);
-        $data['small_password'] = $this->language->get('small_password');
+        $data['small_subdomain']       = $this->language->get('small_subdomain');
+        $data['smaily_rss_url']        = $url->link('extension/smailyforopencart/rss', '', true);
+        $data['small_password']        = $this->language->get('small_password');
         $data['small_sync_additional'] = $this->language->get('small_sync_additional');
         $data['small_cart_additional'] = $this->language->get('small_cart_additional');
         $data['small_cart_delay']      = $this->language->get('small_cart_delay');
-        $data['small_token'] = $this->language->get('small_token');
+        $data['small_token']           = $this->language->get('small_token');
 
-        $data['button_save'] = $this->language->get('button_save');
+        $data['button_save']   = $this->language->get('button_save');
         $data['button_cancel'] = $this->language->get('button_cancel');
-        $data['user_token'] = $this->session->data['user_token'];
+        $data['user_token']    = $this->session->data['user_token'];
 
         // Display success message after save.
         if (isset($this->request->get['success'])) {
@@ -238,16 +256,32 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         );
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('text_module'),
-            'href' => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'], true)
+            'href' => $this->url->link(
+                'marketplace/extension',
+                'user_token=' . $this->session->data['user_token'],
+                true
+            )
         );
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('extension/module/smaily_for_opencart', 'user_token=' . $this->session->data['user_token'], true)
+            'href' => $this->url->link(
+                'extension/module/smaily_for_opencart',
+                'user_token=' . $this->session->data['user_token'],
+                true
+            )
         );
 
         // Save and cancel button href-s.
-        $data['action'] = $this->url->link('extension/module/smaily_for_opencart', 'user_token=' . $this->session->data['user_token'], true);
-        $data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'], true);
+        $data['action'] = $this->url->link(
+            'extension/module/smaily_for_opencart',
+            'user_token=' . $this->session->data['user_token'],
+            true
+        );
+        $data['cancel'] = $this->url->link(
+            'marketplace/extension',
+            'user_token=' . $this->session->data['user_token'],
+            true
+        );
 
         /**
          * Data for fields.
@@ -294,20 +328,32 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         if (isset($this->request->post['module_smaily_for_opencart_syncronize_additional'])) {
             $data['syncronize_additional'] = $this->request->post['module_smaily_for_opencart_syncronize_additional'];
         } else {
-            $data['syncronize_additional'] = $this->config->get('module_smaily_for_opencart_syncronize_additional') ? $this->config->get('module_smaily_for_opencart_syncronize_additional') : [];
+            $data['syncronize_additional'] = [];
+            if ($this->config->get('module_smaily_for_opencart_syncronize_additional') !== null) {
+                $data['syncronize_additional'] = $this->config->get('module_smaily_for_opencart_syncronize_additional');
+            }
         }
 
         // Abandoned cart autoresponder.
         if (isset($this->request->post['module_smaily_for_opencart_abandoned_autoresponder'])) {
-            $data['abandoned_autoresponder'] = json_decode(html_entity_decode($this->request->post['module_smaily_for_opencart_abandoned_autoresponder']), true);
+            $data['abandoned_autoresponder'] = json_decode(
+                html_entity_decode($this->request->post['module_smaily_for_opencart_abandoned_autoresponder']),
+                true
+            );
         } else {
-            $data['abandoned_autoresponder'] = json_decode(html_entity_decode($this->config->get('module_smaily_for_opencart_abandoned_autoresponder')), true);
+            $data['abandoned_autoresponder'] = json_decode(
+                html_entity_decode($this->config->get('module_smaily_for_opencart_abandoned_autoresponder')),
+                true
+            );
         }
         // Abandoned cart additional fields.
         if (isset($this->request->post['module_smaily_for_opencart_abandoned_additional'])) {
             $data['abandoned_additional'] = $this->request->post['module_smaily_for_opencart_abandoned_additional'];
         } else {
-            $data['abandoned_additional'] = $this->config->get('module_smaily_for_opencart_abandoned_additional') ? $this->config->get('module_smaily_for_opencart_abandoned_additional') : [];
+            $data['abandoned_additional'] = [];
+            if ($this->config->get('module_smaily_for_opencart_abandoned_additional') !== null) {
+                $data['abandoned_additional'] = $this->config->get('module_smaily_for_opencart_abandoned_additional');
+            }
         }
         // Abandoned cart delay.
         if (isset($this->request->post['module_smaily_for_opencart_cart_delay'])) {
@@ -443,7 +489,8 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $response = [];
         // cUrl
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://' . $subdomain . '.sendsmaily.net/api/workflows.php?trigger_type=form_submitted');
+        $url = 'https://' . $subdomain . '.sendsmaily.net/api/workflows.php?trigger_type=form_submitted';
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
@@ -513,7 +560,11 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         // Create database.
         $this->model_extension_smailyforopencart_admin->install();
         // Add event listener for order.
-        $this->model_setting_event->addEvent('smaily_order', 'catalog/controller/checkout/confirm/after', 'extension/smailyforopencart/order/removeSent');
+        $this->model_setting_event->addEvent(
+            'smaily_order',
+            'catalog/controller/checkout/confirm/after',
+            'extension/smailyforopencart/order/removeSent'
+        );
     }
 
     /**
