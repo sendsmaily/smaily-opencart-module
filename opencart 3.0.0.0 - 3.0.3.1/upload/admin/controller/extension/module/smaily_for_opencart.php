@@ -180,10 +180,14 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         );
         $data['cart_cron_text'] = $this->language->get('cart_cron_text');
         // Abandoned cart option fields text.
+        $data['customer_first_name'] = $this->language->get('customer_first_name');
+        $data['customer_last_name']  = $this->language->get('customer_last_name');
         $data['product_name']        = $this->language->get('product_name');
         $data['product_description'] = $this->language->get('product_description');
+        $data['product_sku']         = $this->language->get('product_sku');
         $data['product_quantity']    = $this->language->get('product_quantity');
         $data['product_price']       = $this->language->get('product_price');
+        $data['product_base_price']  = $this->language->get('product_base_price');
 
         // Small texts.
         $data['small_subdomain']       = $this->language->get('small_subdomain');
