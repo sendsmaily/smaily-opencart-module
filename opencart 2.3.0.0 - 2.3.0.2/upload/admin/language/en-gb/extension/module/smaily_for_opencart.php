@@ -20,10 +20,14 @@ $_['lastname']            = 'Last name';
 $_['telephone']           = 'Telephone';
 $_['date_added']          = 'Date added';
 // Abandoned cart additional fields
+$_['customer_first_name'] = 'Customer first name';
+$_['customer_last_name']  = 'Customer last name';
 $_['product_name']        = 'Product name';
 $_['product_description'] = 'Product description';
+$_['product_sku']         = 'Product SKU';
 $_['product_quantity']    = 'Product quantity';
 $_['product_price']       = 'Product price';
+$_['product_base_price']  = 'Product base price';
 
 // Enable
 $_['entry_enable_module_title']        = 'Enable Smaily Module';
@@ -83,6 +87,6 @@ $_['validated_error'] = 'Something went wrong with validating!';
 $_['small_subdomain']       = 'For example "demo" from https://demo.sendsmaily.net/';
 $_['small_password']        = 'How to create API credentials?';
 $_['small_sync_additional'] = 'Select fields you wish to synchronize';
-$_['small_cart_additional'] = 'Select fields wish to send to Smaily template along with customer first- and lastname';
+$_['small_cart_additional'] = 'Select fields wish to send to Smaily template.';
 $_['small_cart_delay']      = 'Time when cart is considered abandoned. Minimum 15 minutes.';
 $_['small_token']           = 'Token is required for cron security. Use this auto generated one or replace with your own.';
