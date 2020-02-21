@@ -55,42 +55,42 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
 
         // Send out cart emails.
         foreach ($abandoned_carts as $cart) {
-            // Addresses array for smaily api call.
-            $addresses = array(
+            // Address array for smaily api call.
+            $address = array(
                 'email' => $cart['email'],
             );
 
             //Add customer fields.
             if (in_array('first_name', $cart_sync_values)) {
-                $addresses['first_name'] = isset($cart['firstname']) ? $cart['firstname'] : '';
+                $address['first_name'] = isset($cart['firstname']) ? $cart['firstname'] : '';
             }
             if (in_array('last_name', $cart_sync_values)) {
-                $addresses['last_name'] = isset($cart['lastname']) ? $cart['lastname'] : '';
+                $address['last_name'] = isset($cart['lastname']) ? $cart['lastname'] : '';
             }
 
             // Populate products list with empty values for legacy api.
             foreach ($selected_fields as $sync_value) {
                 for ($i=1; $i < 11; $i++) {
-                    $addresses['product_' . $sync_value . '_' . $i] = '';
+                    $address['product_' . $sync_value . '_' . $i] = '';
                 }
             }
 
-            // Populate addresses fields with up to 10 products.
+            // Populate address fields with up to 10 products.
             $j = 1;
             foreach ($cart['products'] as $product) {
                 if ($j > 10) {
-                    $addresses['over_10_products'] = 'true';
+                    $address['over_10_products'] = 'true';
                     break;
                 }
                 foreach ($selected_fields as $sync_value) {
                     switch ($sync_value) {
                         case 'description':
-                            $addresses['product_description_' . $j] = htmlspecialchars(
+                            $address['product_description_' . $j] = htmlspecialchars(
                                 $product['data'][$sync_value]
                             );
                             break;
                         case 'quantity':
-                            $addresses['product_quantity_' . $j] = $product[$sync_value];
+                            $address['product_quantity_' . $j] = $product[$sync_value];
                             break;
                         case 'price':
                             // Use special price if available.
@@ -99,19 +99,19 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
                             } else {
                                 $price = $product['data']['price'];
                             }
-                            $addresses['product_price_' . $j] = $this->getProductDisplayPrice(
+                            $address['product_price_' . $j] = $this->getProductDisplayPrice(
                                 $price,
                                 $product['data']['tax_class_id']
                             );
                             break;
                         case 'base_price':
-                            $addresses['product_base_price_' . $j] = $this->getProductDisplayPrice(
+                            $address['product_base_price_' . $j] = $this->getProductDisplayPrice(
                                 $product['data']['price'],
                                 $product['data']['tax_class_id']
                             );
                             break;
                         default:
-                            $addresses['product_' . $sync_value . '_' . $j] = $product['data'][$sync_value];
+                            $address['product_' . $sync_value . '_' . $j] = $product['data'][$sync_value];
                             break;
                     }
                 }
@@ -126,7 +126,7 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
             // Api call query.
             $query = array(
                 'autoresponder' => $autoresponder_id,
-                'addresses' => [$addresses],
+                'addresses' => [$address],
             );
             // Make api call.
             $response = $this->model_extension_smailyforopencart_helper->apiCall('autoresponder', $query, 'POST');
