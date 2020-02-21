@@ -35,24 +35,40 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
 
         // Get abandoned carts.
         $abandoned_carts = $this->model_extension_smailyforopencart_helper->getAbandonedCarts();
-        if (!empty($abandoned_carts)) {
+        if (empty($abandoned_carts)) {
             echo('No abandoned carts');
             die();
         }
 
         // Sync values selected from admin panel.
         $cart_sync_values = $this->model_extension_smailyforopencart_helper->getAbandonedSyncFields();
+        $fields_available = [
+            'name',
+            'description',
+            'sku',
+            'quantity',
+            'price',
+            'base_price'
+        ];
+        $selected_fields = array_intersect($fields_available, $cart_sync_values);
 
         foreach ($abandoned_carts as $cart) {
             // Address array for smaily api call.
             $address = array(
                 'email' => $cart['email'],
-                'firstname' => isset($cart['firstname']) ? $cart['firstname'] : '',
-                'lastname' => isset($cart['lastname']) ? $cart['lastname'] : '',
             );
 
+            // Add customer fields.
+            if (in_array('first_name', $cart_sync_values)) {
+                $address['first_name'] = isset($cart['firstname']) ? $cart['firstname'] : '';
+            }
+            if (in_array('last_name', $cart_sync_values)) {
+                $address['last_name'] = isset($cart['lastname']) ? $cart['lastname'] : '';
+            }
+
+
             // Populate products list with empty values for legacy api.
-            foreach ($cart_sync_values as $sync_value) {
+            foreach ($selected_fields as $sync_value) {
                 for ($i=1; $i < 11; $i++) {
                     $address['product_' . $sync_value . '_' . $i] = '';
                 }
@@ -61,16 +77,44 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
             // Populate address fields with up to 10 products.
             $j = 1;
             foreach ($cart['products'] as $product) {
-                if ($j <= 10) {
-                    foreach ($cart_sync_values as $sync_value) {
-                        if ($sync_value === 'quantity') {
-                            $address['product_' . $sync_value . '_' . $j] = $product[$sync_value];
-                        } else {
-                            $address['product_' . $sync_value . '_' . $j] = $product['data'][$sync_value];
-                        }
-                    }
-                    $j++;
+                if ($j > 10) {
+                    $address['over_10_products'] = 'true';
+                    break;
                 }
+                foreach ($selected_fields as $sync_value) {
+                    switch ($sync_value) {
+                        case 'description':
+                            $address['product_description_' . $j] = htmlspecialchars(
+                                $product['data'][$sync_value]
+                            );
+                            break;
+                        case 'quantity':
+                            $address['product_quantity_' . $j] = $product[$sync_value];
+                            break;
+                        case 'price':
+                            // Use special price if available.
+                            if (isset($product['data']['special'])) {
+                                $price = $product['data']['special'];
+                            } else {
+                                $price = $product['data']['price'];
+                            }
+                            $address['product_price_' . $j] = $this->getProductDisplayPrice(
+                                $price,
+                                $product['data']['tax_class_id']
+                            );
+                            break;
+                        case 'base_price':
+                            $address['product_base_price_' . $j] = $this->getProductDisplayPrice(
+                                $product['data']['price'],
+                                $product['data']['tax_class_id']
+                            );
+                            break;
+                        default:
+                            $address['product_' . $sync_value . '_' . $j] = $product['data'][$sync_value];
+                            break;
+                    }
+                }
+                $j++;
             }
 
             // Get autoresponder from settings.
@@ -89,7 +133,27 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
             if (array_key_exists('code', $response) && (int) $response['code'] === 101) {
                 $this->model_extension_smailyforopencart_helper->addSentCart($cart['customer_id']);
             }
+            echo 'Abandoned carts sent!';
         }
-        echo 'Abandoned carts sent!';
+    }
+
+    /**
+     * Calculates and returns product display price with tax and default currency code.
+     *
+     * @param string $price         Product price.
+     * @param string $tax_class_id  Product tax class number.
+     * @return void
+     */
+    public function getProductDisplayPrice($price, $tax_class_id) {
+        $price_with_tax = $this->tax->calculate(
+            $price,
+            $tax_class_id,
+            $this->config->get('config_tax')
+        );
+
+        return $this->currency->format(
+            $price_with_tax,
+            $this->config->get('config_currency')
+        );
     }
 }
