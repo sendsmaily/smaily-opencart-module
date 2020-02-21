@@ -77,7 +77,7 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
             $this->model_extension_smailyforopencart_helper->editSettingValue(
                 'module_smaily_for_opencart',
                 'module_smaily_for_opencart_sync_time',
-                $sync_time,
+                $sync_time
             );
 
             $this->log->write('smaily subscriber sync finished: ' . json_encode($response));
