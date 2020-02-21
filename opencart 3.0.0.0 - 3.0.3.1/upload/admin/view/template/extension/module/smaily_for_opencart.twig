@@ -238,10 +238,14 @@
                   <select class="form-control" name="module_smaily_for_opencart_abandoned_additional[]" id="abandoned_sync_fields" multiple="multiple">
                     {# All available options #}
                     {% set cart_options = {
-                      'name' : product_name,
+                      'first_name'  : customer_first_name,
+                      'last_name'   : customer_last_name,
+                      'name'        : product_name,
                       'description' : product_description,
-                      'quantity' : product_quantity,
-                      'price' : product_price
+                      'sku'         : product_sku,
+                      'quantity'    : product_quantity,
+                      'price'       : product_price,
+                      'base_price'  : product_base_price
                     } %}
                     {# Add options for select #}
                     {% for key, value in cart_options %}
