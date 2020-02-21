@@ -114,6 +114,8 @@ Up to 10 products can be received in Smaily templating engine. You can refrence 
 
 - Products price: `{{ product_price_[1-10] }}`.
 
+- Products base price: `{{ product_base_price_[1-10] }}`.
+
 Also you can determine if customer had more than 10 items in cart
 
 - More than 10 items: `{{ over_10_products }}`.
