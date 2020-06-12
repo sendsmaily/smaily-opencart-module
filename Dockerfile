@@ -5,7 +5,7 @@ ENV OPENCART_VERSION 3.0.3.1
 # Install packages required for OpenCart.
 RUN apt-get update && apt-get install -y --no-install-recommends \
         curl \
-        tar \
+        unzip \
         libmcrypt-dev \
         zlib1g-dev \
         libzip-dev \
@@ -26,10 +26,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /var/www/html
 
 # Download, extract and prepare OpenCart for installation.
-RUN curl -L https://github.com/opencart/opencart/archive/$OPENCART_VERSION.tar.gz > opencart.tar.gz \
-    && tar xf opencart.tar.gz \
+RUN curl -L https://github.com/opencart/opencart/releases/download/$OPENCART_VERSION/opencart-$OPENCART_VERSION.zip > opencart.zip \
+    && unzip -q opencart.zip -d opencart-$OPENCART_VERSION \
     && mv opencart-$OPENCART_VERSION/upload/* . \
-    && rm -rf opencart.tar.gz opencart-$OPENCART_VERSION/
+    && rm -rf opencart.zip opencart-$OPENCART_VERSION/
 
 RUN mv config-dist.php config.php \
     && mv admin/config-dist.php admin/config.php
