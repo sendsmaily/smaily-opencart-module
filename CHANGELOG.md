@@ -36,7 +36,7 @@ Bugfixes:
 
 - Wrong URL redirect after joining newsletter
 - Additional sync values did't stay selected when there was form validaton error in settings page
-- Opencart 3+ version no autoresponder error message when enabling abandoned cart sync
+- OpenCart 3+ version no autoresponder error message when enabling abandoned cart sync
 - Added description for cron tokens
 
 ### 1.1.0

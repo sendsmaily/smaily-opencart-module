@@ -42,7 +42,7 @@ Online documentation and code samples are available via our [Help Center](http:/
 
 ## Contribute
 
-All development for Smaily for Opencart is [handled via GitHub](https://github.com/sendsmaily/smaily-opencart-module). Opening new issues and submitting pull requests are welcome.
+All development for Smaily for OpenCart is [handled via GitHub](https://github.com/sendsmaily/smaily-opencart-module). Opening new issues and submitting pull requests are welcome.
 
 ## Installation
 
