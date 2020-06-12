@@ -3,7 +3,7 @@ version: '2'
 services:
   app:
     build: ./
-    image: opencart-2.2x
+    image: opencart-2.2.x
     restart: always
     ports:
       - 8080:80
