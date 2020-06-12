@@ -1,6 +1,6 @@
 <?php
 /**
- * This is a plugin for Opencart to handle subscribers directly
+ * This is a plugin for OpenCart to handle subscribers directly
  * to your Smaily contacts, generate rss-feed of products and send
  * abandoned cart emails with Smaily templates.
  *
@@ -9,25 +9,25 @@
  * @license GPL-3.0+
  * @copyright 2019 Smaily
  *
- * Plugin Name: Smaily for Opencart
- * Description: Smaily email marketing and automation extension plugin for Opencart.
+ * Plugin Name: Smaily for OpenCart
+ * Description: Smaily email marketing and automation extension plugin for OpenCart.
  * Version: 1.2.0
  * License: GPL3
  * Author: Smaily
  * Author URI: https://smaily.com/
  *
- * Smaily for Opencart is free software: you can redistribute it and/or modify
+ * Smaily for OpenCart is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * any later version.
  *
- * Smaily for Opencart is distributed in the hope that it will be useful,
+ * Smaily for OpenCart is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Smaily for Opencart. If not, see <http://www.gnu.org/licenses/>.
+ * along with Smaily for OpenCart. If not, see <http://www.gnu.org/licenses/>.
  */
 class ControllerExtensionModuleSmailyForOpencart extends Controller {
     private $error = array();
