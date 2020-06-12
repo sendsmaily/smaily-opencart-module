@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libjpeg62-turbo-dev \
         # MariaDB for mysqladmin ping in entrypoint
         mariadb-client \
-    && pecl install mcrypt-1.0.2 \
+    && pecl install mcrypt-1.0.3 \
     && docker-php-ext-enable mcrypt \
     && docker-php-ext-install mysqli \
     && docker-php-ext-install gd \
