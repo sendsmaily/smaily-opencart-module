@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title']     = 'Smaily for Opencart';
+$_['heading_title']     = 'Smaily for OpenCart';
 
 // Sections
 $_['section_general']   = 'General';
@@ -10,8 +10,8 @@ $_['section_newsletter'] = 'Newsletter Widget';
 
 // Text
 $_['text_module']         = 'Modules';
-$_['text_success']        = 'Success: You have modified Smaily for Opencart module!';
-$_['text_edit']           = 'Smaily for Opencart Settings';
+$_['text_success']        = 'Success: You have modified Smaily for OpenCart module!';
+$_['text_edit']           = 'Smaily for OpenCart Settings';
 $_['text_enabled']        = 'Enabled';
 $_['text_disabled']       = 'Disabled';
 // Customer sync additional fields
@@ -63,7 +63,7 @@ $_['sync_token_placeholder'] = 'Please enter token for customer sync';
 $_['cart_token_placeholder'] = 'Please enter token for abandoned cart sync';
 
 // Error
-$_['error_permission']              = 'Warning: You do not have permission to modify Smaily for Opencart!';
+$_['error_permission']              = 'Warning: You do not have permission to modify Smaily for OpenCart!';
 $_['error_subdomain']               = 'Subdomain can\'t be empty';
 $_['error_username']                = 'Username can\'t be empty';
 $_['error_password']                = 'Password can\'t be empty';
