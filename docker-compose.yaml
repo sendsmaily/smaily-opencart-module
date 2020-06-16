@@ -8,7 +8,7 @@ services:
     ports:
       - 8080:80
     volumes:
-      - app:/var/www/html
+      - app-3.0.x:/var/www/html
       - ./upload:/var/www/html/smaily_for_opencart
 
   database:
@@ -18,7 +18,7 @@ services:
       MYSQL_DATABASE: opencart
       MYSQL_ROOT_PASSWORD: smailydev1
     volumes:
-      - database:/var/lib/mysql
+      - database-3.0.x:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -32,5 +32,5 @@ services:
       - database
 
 volumes:
-  app:
-  database:
+  app-3.0.x:
+  database-3.0.x:
