@@ -1,16 +1,5 @@
 # Changelog
 
-### 1.2.0
-
-**Breaking change**
-
-This update adds upgrade functionality to our plugin.
-For further updates to work please uninstall older version and reinstall this module.
-
-- Change `firstname` to `first_name` and `lastname` to `last_name`
-- Fix bug where running customer synchronization throws PHP error.
-
-
 ### 1.1.4
 
 - Customer synchronization is now split into chunks, increases stability.
