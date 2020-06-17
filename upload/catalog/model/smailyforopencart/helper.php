@@ -210,7 +210,7 @@ class ModelSmailyForOpencartHelper extends Model {
      */
     public function getSyncTime() {
         $this->load->model('setting/setting');
-        $sync_time = $this->model_setting_setting->getSettingValue('smaily_for_opencart_sync_time') ?: date('c', 0);
+        $sync_time = $this->model_setting_setting->getSetting('smaily_for_opencart_sync_time') ?: date('c', 0);
         return date("Y-m-d H:i:s", strtotime($sync_time));
     }
 
