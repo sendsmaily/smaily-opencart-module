@@ -1,0 +1,3 @@
+/.sandbox export-ignore
+/docker-compose.yaml export-ignore
+/Dockerfile export-ignore
