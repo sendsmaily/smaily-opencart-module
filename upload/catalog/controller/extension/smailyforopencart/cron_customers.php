@@ -27,7 +27,7 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
             (int) $settings['smaily_for_opencart_enable_subscribe'] === 1) {
             $offset_unsub = 0;
             while (true) {
-                $unsubscribers = $this->model_smailyforopencart_helper->apiCall('contact', [
+                $unsubscribers = $this->model_extension_smailyforopencart_helper->apiCall('contact', [
                     'list' => 2,
                     'offset' => $offset_unsub,
                     'limit' => 2500,
@@ -42,7 +42,7 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
                     array_push($unsubscribers_emails, $unsubscriber['email']);
                 }
                 // unsubscribeCustomers method would compile a single update query.
-                $this->model_smailyforopencart_helper->unsubscribeCustomers($unsubscribers_emails);
+                $this->model_extension_smailyforopencart_helper->unsubscribeCustomers($unsubscribers_emails);
                 $offset_unsub += 1;
             }
 
@@ -51,14 +51,17 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
             $last_sync = $this->model_extension_smailyforopencart_helper->getSyncTime();
             $sync_time = date('c');
             while (true) {
-                $subscribers = $this->model_smailyforopencart_helper->getSubscribedCustomers($offset_sub, $last_sync);
+                $subscribers = $this->model_extension_smailyforopencart_helper->getSubscribedCustomers(
+                    $offset_sub,
+                    $last_sync
+                );
                 if (empty($subscribers)) {
                     break;
                 }
                 $list = [];
                 foreach ($subscribers as $subscriber) {
                     // Get customer info based of selected fields from admin.
-                    $sync_fields = $this->model_smailyforopencart_helper->getSyncFields();
+                    $sync_fields = $this->model_extension_smailyforopencart_helper->getSyncFields();
                     $customer = [];
                     foreach ($sync_fields as $field) {
                         $customer[$field] = $subscriber[$field];
@@ -68,7 +71,7 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
                     array_push($list, $customer);
                 }
                 // Send subscribers to smaily.
-                $response = $this->model_smailyforopencart_helper->apiCall('contact', $list, 'POST');
+                $response = $this->model_extension_smailyforopencart_helper->apiCall('contact', $list, 'POST');
                 // Error handling for apiCall POST.
                 if (isset($response['code']) && $response['code'] != "101") {
                     die('Error with request to Smaily API, try again later.');

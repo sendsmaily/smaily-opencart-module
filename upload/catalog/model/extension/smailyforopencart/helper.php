@@ -204,14 +204,18 @@ class ModelExtensionSmailyForOpencartHelper extends Model{
     }
 
     /**
-     * Get ISO sync time from settings and convert it to MySQL format.
+     * Get UTC sync time from settings.
      *
      * @return string $sync_time Time of last sync
      */
     public function getSyncTime() {
         $this->load->model('setting/setting');
-        $sync_time = $this->model_setting_setting->getSettingValue('smaily_for_opencart_sync_time') ?: date('c', 0);
-        return date("Y-m-d H:i:s", strtotime($sync_time));
+        $settings = $this->model_setting_setting->getSetting('smaily_for_opencart');
+        $sync_time = date('c', 0); // Failsafe for first sync.
+        if (array_key_exists('smaily_for_opencart_sync_time', $settings)) {
+            $sync_time = $settings['smaily_for_opencart_sync_time'];
+        }
+        return $sync_time;
     }
 
     public function editSettingValue($code = '', $key = '', $value = '', $store_id = 0) {

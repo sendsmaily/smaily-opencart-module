@@ -54,6 +54,13 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             if ($validated) {
                 $data['smaily_for_opencart_validated'] = $validated;
             }
+            // Add sync time.
+            $sync_time = $this->model_setting_setting->getSettingValue('smaily_for_opencart_sync_time');
+            // Add init time before sync.
+            if (!isset($sync_time)){
+                $sync_time = date('c', 0);
+            }
+            $data['smaily_for_opencart_sync_time'] = $sync_time;
             // Get credentials.
             $data['smaily_for_opencart_subdomain'] = $this->model_setting_setting->getSettingValue(
                 'smaily_for_opencart_subdomain'
