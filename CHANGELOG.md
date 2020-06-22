@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.2.1
+
+- Fixes customer synchronization cron not executing
+
 ### 1.2.0
 
 **Breaking change**
@@ -12,7 +16,6 @@ For further updates to work please uninstall older version and reinstall this mo
 - Add `product_base_price` field. Product `price` and `base_price` fields now pass prices with currency symbol.
 - Add `product_sku` field.
 - Fix bug where running customer synchronization throws PHP error.
-
 
 ### 1.1.4
 
