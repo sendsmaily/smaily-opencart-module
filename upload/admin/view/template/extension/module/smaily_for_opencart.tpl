@@ -126,15 +126,39 @@
                 <p><?php echo $rss_feed_text ?></p>
               </div>
             </div>
-            <?php if(!$validated) : ?>
-            <div class="form-group" id="validate-form-group">
-              <label class="col-sm-2 control-label"><?php echo $validate_title ?></label>
+            <?php if($validated) : ?>
+            <div class="form-group" id="reset-form-group">
+              <label class="col-sm-2 control-label">
+                <?php echo $reset_credentials_title?>
+              </label>
               <div class="col-sm-10">
-                <button id="validate" type="button" title="<?php echo $button_validate; ?>" class="btn btn-primary">
-                  <?php echo $button_validate; ?>
-                  <span id="smaily-validate-loader" hidden>
-                    <i class="fa fa-spinner fa-spin" hidden></i>
-                  </span>
+                <button
+                  id="reset-credentials"
+                  type="button" 
+                  title="<?php echo $button_reset_credentials; ?>"
+                  class="btn btn-primary">
+                    <?php echo $button_reset_credentials ?>
+                    <span id="smaily-reset-loader" hidden>
+                      <i class="fa fa-spinner fa-spin" hidden></i>
+                    </span>
+                  </button>
+              </div>
+            </div>
+            <?php else : ?>
+            <div class="form-group" id="validate-form-group">
+              <label class="col-sm-2 control-label">
+                <?php echo $validate_title; ?>
+              </label>
+              <div class="col-sm-10">
+                <button
+                  id="validate"
+                  type="button" 
+                  title="<?php $button_validate; ?>"
+                  class="btn btn-primary">
+                    <?php echo $button_validate; ?>
+                    <span id="smaily-validate-loader" hidden>
+                      <i class="fa fa-spinner fa-spin" hidden></i>
+                    </span>
                   </button>
               </div>
             </div>
@@ -402,6 +426,8 @@
             $('#validate-div').addClass('alert-success').show();
             // Hide validate button section.
             validateSection.hide();
+            // Set module status to enabled.
+            $('#input-status').val("1");
           }
         },
         error: function(error) {
@@ -411,6 +437,52 @@
           $('#validate-div').addClass('alert-danger').show();
         }
       });
+   });
+  // Reset credentials.
+  $('#reset-credentials').on('click', function(e) {
+    // Scroll top.
+    $("html, body").animate(
+      {
+        scrollTop: "0px"
+      },
+      "slow"
+    );
+    var spinner = $('#smaily-reset-loader');
+
+    // Start spinner.
+    spinner.show();
+    $.ajax({
+      url: 'index.php?route=extension/module/smaily_for_opencart/ajaxResetCredentials&token=<?php echo $token ?>',
+      dataType: 'json',
+      method: "POST",
+      success: function(response) {
+        // Hide spinner.
+        spinner.hide();
+        // Success message.
+        if (response['success']) {
+          // Remove alert messages.
+          $('div.alert-danger, div.text-danger').hide();
+          $('div.has-success').removeClass('has-success');
+          // Add text, remove danger class had errors.
+          $('#validate-message').text(response['success']);
+          $('#validate-div').removeClass('alert-danger');
+          // Show response
+          $('#validate-div').addClass('alert-success').show();
+          // Set module status to disabled.
+          $('#input-status').val("0");
+          // Reset Smaily credentials.
+          var subdomain = $("#subdomain").val('');
+          var username = $("#username").val('');
+          var password = $("#password").val('');
+        }
+      },
+      error: function(error) {
+        // Hide spinner.
+        spinner.hide();
+        $('#validate-message').text('Something went wrong!');
+        $('#validate-div').addClass('alert-danger').show();
+      }
+    });
    });
   });
 })(jQuery);
