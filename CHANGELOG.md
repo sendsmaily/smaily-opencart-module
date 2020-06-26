@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.3.0
+
+- Enable module on successful credentials validation
+- Add section to reset module credentials
+
 ### 1.2.1
 
 - Fixes customer synchronization cron not executing
