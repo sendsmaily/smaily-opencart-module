@@ -448,36 +448,31 @@
       "slow"
     );
     var spinner = $('#smaily-reset-loader');
-
-    // Start spinner.
     spinner.show();
+
     $.ajax({
       url: 'index.php?route=extension/module/smaily_for_opencart/ajaxResetCredentials&token=<?php echo $token ?>',
       dataType: 'json',
       method: "POST",
       success: function(response) {
-        // Hide spinner.
         spinner.hide();
-        // Success message.
         if (response['success']) {
-          // Remove alert messages.
-          $('div.alert-danger, div.text-danger').hide();
+          // Remove success style from credentials input.
           $('div.has-success').removeClass('has-success');
-          // Add text, remove danger class had errors.
-          $('#validate-message').text(response['success']);
-          $('#validate-div').removeClass('alert-danger');
           // Show response
+          $('#validate-message').text(response['success']);
           $('#validate-div').addClass('alert-success').show();
-          // Set module status to disabled.
-          $('#input-status').val("0");
+          // Disable module functions.
+          $('#input-status').val('0');
+          $('#input-subscriber-status').val('0');
+          $('#input-abandoned-status').val('0');
           // Reset Smaily credentials.
-          var subdomain = $("#subdomain").val('');
-          var username = $("#username").val('');
-          var password = $("#password").val('');
+          $("#subdomain").val('');
+          $("#username").val('');
+          $("#password").val('');
         }
       },
       error: function(error) {
-        // Hide spinner.
         spinner.hide();
         $('#validate-message').text('Something went wrong!');
         $('#validate-div').addClass('alert-danger').show();

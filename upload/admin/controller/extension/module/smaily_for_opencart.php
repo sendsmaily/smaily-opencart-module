@@ -437,6 +437,8 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $settings['smaily_for_opencart_password'] = '';
         $settings['smaily_for_opencart_validated'] = 0;
         $settings['smaily_for_opencart_status'] = 0;
+        $settings['smaily_for_opencart_enable_abandoned'] = 0;
+        $settings['smaily_for_opencart_enable_subscribe'] = 0;
         $this->model_setting_setting->editSetting('smaily_for_opencart', $settings);
         $response['success'] = $this->language->get('credentials_reset');
         echo json_encode($response);
