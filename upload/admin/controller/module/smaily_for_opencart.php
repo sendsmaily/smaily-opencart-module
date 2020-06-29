@@ -120,6 +120,9 @@ class ControllerModuleSmailyForOpencart extends Controller {
         // Validate button.
         $data['button_validate'] = $this->language->get('button_validate');
         $data['validate_title']  = $this->language->get('validate_title');
+        // Reset credentials.
+        $data['button_reset_credentials'] = $this->language->get('button_reset_credentials');
+        $data['reset_credentials_title']  = $this->language->get('reset_credentials_title');
         // Autoresponder title.
         $data['entry_autoresponder_title'] = $this->language->get('entry_autoresponder_title');
         // Rss feed.
