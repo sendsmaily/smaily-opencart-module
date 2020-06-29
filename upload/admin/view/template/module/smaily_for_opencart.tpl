@@ -484,6 +484,8 @@
             // Show response
             $('#validate-alert').addClass('alert-success').show();
             switchValidateResetSection();
+            // Set module status to enabled.
+            $('#input-status').val("1");
           }
         },
         error: function(error) {
