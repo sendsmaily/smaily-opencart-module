@@ -39,9 +39,9 @@
       <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
     </div>
     <?php } ?>
-    <div class="alert" id="validate-div" hidden>
+    <div class="alert" id="validate-alert" hidden>
       <i class="fa fa-exclamation-circle"></i><span id="validate-message"></span>
-      <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
+      <button type="button" class="close" area-label="Close">&times;</button>
     </div>
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -335,6 +335,10 @@
    $(window).on("load", function() {
      // Open first tab.
     $('#sections a:first').tab('show');
+     // Hide validate display messages.
+    $('#validate-alert button').on('click', function() {
+      $('#validate-alert').hide();
+    });
     // Populate autoresponders list
     getAutoresponders();
     function getAutoresponders() {
@@ -402,7 +406,7 @@
             $('div.has-success').removeClass('has-success');
             // Show response
             $('#validate-message').text(response['success']);
-            $('#validate-div').addClass('alert-success').show();
+            $('#validate-alert').addClass('alert-success').show();
             // Disable module functions.
             $('#input-status').val('0');
             $('#input-subscriber-status').val('0');
@@ -417,7 +421,7 @@
         error: function(error) {
           spinner.hide();
           $('#validate-message').text('Something went wrong!');
-          $('#validate-div').addClass('alert-danger').show();
+          $('#validate-alert').addClass('alert-danger').show();
         }
       })
     });
@@ -462,10 +466,10 @@
           // Error message
           if (response['error']) {
             $('#validate-message').text(response['error']);
-            $('#validate-div').addClass('alert-danger').show();
+            $('#validate-alert').addClass('alert-danger').show();
           } else if (!response) {
             $('#validate-message').text('Something went wrong with request to smaily');
-            $('#validate-div').addClass('alert-danger').show();
+            $('#validate-alert').addClass('alert-danger').show();
           }
           // Success message.
           if (response['success']) {
@@ -476,9 +480,9 @@
             $('div.has-error').removeClass('has-error').addClass('has-success');
             // Add text, remove danger class had errors.
             $('#validate-message').text(response['success']);
-            $('#validate-div').removeClass('alert-danger');
+            $('#validate-alert').removeClass('alert-danger');
             // Show response
-            $('#validate-div').addClass('alert-success').show();
+            $('#validate-alert').addClass('alert-success').show();
             switchValidateResetSection();
           }
         },
@@ -486,7 +490,7 @@
           // Hide spinner.
           spinner.hide();
           $('#validate-message').text('No connection to smaily');
-          $('#validate-div').addClass('alert-danger').show();
+          $('#validate-alert').addClass('alert-danger').show();
         }
       });
    });
