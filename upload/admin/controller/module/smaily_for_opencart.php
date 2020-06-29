@@ -453,6 +453,34 @@ class ControllerModuleSmailyForOpencart extends Controller {
     }
 
     /**
+     * Delete current credentials and disable module.
+     * Runs when reset credentials button is pressed on admin menu.
+     *
+     * @return array AJAX response
+     */
+    public function ajaxResetCredentials() {
+        if ($this->request->server['REQUEST_METHOD'] != 'POST') {
+            return;
+        }
+        $response = [];
+
+        $this->load->language('module/smaily_for_opencart');
+        $this->load->model('setting/setting');
+
+        $settings = $this->model_setting_setting->getSetting('smaily_for_opencart');
+        $settings['smaily_for_opencart_subdomain'] = '';
+        $settings['smaily_for_opencart_username'] = '';
+        $settings['smaily_for_opencart_password'] = '';
+        $settings['smaily_for_opencart_validated'] = 0;
+        $settings['smaily_for_opencart_status'] = 0;
+        $settings['smaily_for_opencart_enable_abandoned'] = 0;
+        $settings['smaily_for_opencart_enable_subscribe'] = 0;
+        $this->model_setting_setting->editSetting('smaily_for_opencart', $settings);
+        $response['success'] = $this->language->get('credentials_reset');
+        echo json_encode($response);
+    }
+
+    /**
      * Runs when validate button is pressed.
      *
      * @param string $subdomain

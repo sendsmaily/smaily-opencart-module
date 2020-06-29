@@ -84,6 +84,7 @@ $_['validated_success'] = 'Validated!';
 $_['validated_unauthorized'] = 'Wrong credentials!';
 $_['validated_subdomain_error'] = 'Wrong subdomain!';
 $_['validated_error'] = 'Something went wrong with validating!';
+$_['credentials_reset'] = 'Credentials successfully reset!';
 
 // Small text
 $_['small_subdomain']       = 'For example "demo" from https://demo.sendsmaily.net/';
