@@ -108,8 +108,6 @@
         },
         "slow"
       );
-      // Validate form button section.
-      var validateSection = $("#validate-form-group");
       // Spinner
       var spinner = $("#smaily-validate-loader");
       // Smaily credentials.
@@ -167,8 +165,9 @@
             $("#validate-alert").removeClass("alert-danger");
             // Show response
             $("#validate-alert").addClass("alert-success").show();
-            // Hide validate button section.
-            validateSection.hide();
+            switchValidateResetSection();
+            // Set module status to enabled.
+            $("#input-status").val("1");
           }
         },
         error: function (error) {

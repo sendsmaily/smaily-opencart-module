@@ -499,6 +499,8 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 if ($this->user->hasPermission('modify', 'extension/module/smaily_for_opencart')) {
                     $this->load->model('setting/setting');
                     $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
+                    // Activate module.
+                    $settings['module_smaily_for_opencart_status'] = 1;
                     // Used because save button saves whole form.
                     $settings['module_smaily_for_opencart_validated'] = 1;
                     $settings['module_smaily_for_opencart_subdomain'] = $subdomain;
