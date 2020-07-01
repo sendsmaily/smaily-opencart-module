@@ -92,7 +92,6 @@
           }
         },
         error: function (error) {
-          console.log(error);
           spinner.hide();
           $("#validate-message").text("Something went wrong!");
           $("#validate-alert").addClass("alert-danger").show();
