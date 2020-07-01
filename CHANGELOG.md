@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.1.5
+
+- Fix valid credentials not accepted when validating connection with Smaily
+
 ### 1.1.4
 
 - Customer synchronization is now split into chunks, increases stability.
