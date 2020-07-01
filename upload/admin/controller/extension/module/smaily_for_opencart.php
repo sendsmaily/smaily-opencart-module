@@ -487,10 +487,9 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 $subdomain = $parts[0];
             }
             $subdomain = preg_replace('/[^a-zA-Z0-9]+/', '', $subdomain);
+            $username = html_entity_decode($this->request->post['username']);
+            $password = html_entity_decode($this->request->post['password']);
 
-            $subdomain = $this->db->escape($subdomain);
-            $username =  $this->db->escape($this->request->post['username']);
-            $password = $this->db->escape($this->request->post['password']);
             // Validate credentials with a call to Smaily.
             $validate = $this->validateSmailyCredentials($subdomain, $username, $password);
 
@@ -503,9 +502,9 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                     $settings['module_smaily_for_opencart_status'] = 1;
                     // Used because save button saves whole form.
                     $settings['module_smaily_for_opencart_validated'] = 1;
-                    $settings['module_smaily_for_opencart_subdomain'] = $subdomain;
-                    $settings['module_smaily_for_opencart_username'] = $username;
-                    $settings['module_smaily_for_opencart_password'] = $password;
+                    $settings['module_smaily_for_opencart_subdomain'] = $this->db->escape($subdomain);
+                    $settings['module_smaily_for_opencart_username'] = $this->db->escape($username);
+                    $settings['module_smaily_for_opencart_password'] = $this->db->escape($password);
                     // Save credentials to db.
                     $this->model_setting_setting->editSetting('module_smaily_for_opencart', $settings);
                     $response['success'] = $validate['success'];
