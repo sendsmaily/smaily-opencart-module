@@ -11,7 +11,7 @@
  *
  * Plugin Name: Smaily for OpenCart
  * Description: Smaily email marketing and automation extension plugin for OpenCart.
- * Version: 1.2.1
+ * Version: 1.3.0
  * License: GPL3
  * Author: Smaily
  * Author URI: https://smaily.com/
@@ -148,6 +148,9 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         );
         $data['button_validate'] = $this->language->get('button_validate');
         $data['validate_title']  = $this->language->get('validate_title');
+        // Reset credentials.
+        $data['reset_credentials_title'] = $this->language->get('reset_credentials_title');
+        $data['button_reset_credentials'] = $this->language->get('button_reset_credentials');
         // Autoresponder title.
         $data['entry_autoresponder_title'] = $this->language->get('entry_autoresponder_title');
         // Rss feed.
@@ -423,6 +426,34 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
     }
 
     /**
+     * Delete current credentials and disable module.
+     * Runs when reset credentials button is pressed on admin menu.
+     *
+     * @return array AJAX response
+     */
+    public function ajaxResetCredentials() {
+        if ($this->request->server['REQUEST_METHOD'] != 'POST') {
+            return;
+        }
+        $response = [];
+
+        $this->load->language('extension/module/smaily_for_opencart');
+        $this->load->model('setting/setting');
+
+        $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
+        $settings['module_smaily_for_opencart_username'] = '';
+        $settings['module_smaily_for_opencart_subdomain'] = '';
+        $settings['module_smaily_for_opencart_password'] = '';
+        $settings['module_smaily_for_opencart_validated'] = 0;
+        $settings['module_smaily_for_opencart_status'] = 0;
+        $settings['module_smaily_for_opencart_enable_abandoned'] = 0;
+        $settings['module_smaily_for_opencart_enable_subscribe'] = 0;
+        $this->model_setting_setting->editSetting('module_smaily_for_opencart', $settings);
+        $response['success'] = $this->language->get('credentials_reset');
+        echo json_encode($response);
+    }
+
+    /**
      * When validate button is pressed on admin screen.
      *
      * @return void
@@ -468,6 +499,8 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 if ($this->user->hasPermission('modify', 'extension/module/smaily_for_opencart')) {
                     $this->load->model('setting/setting');
                     $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
+                    // Activate module.
+                    $settings['module_smaily_for_opencart_status'] = 1;
                     // Used because save button saves whole form.
                     $settings['module_smaily_for_opencart_validated'] = 1;
                     $settings['module_smaily_for_opencart_subdomain'] = $subdomain;
