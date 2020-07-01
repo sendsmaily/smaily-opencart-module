@@ -41,7 +41,7 @@
     {% endif %}
     <div class="alert" id="validate-div" hidden>
       <i class="fa fa-exclamation-circle"></i><span id="validate-message"></span>
-      <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
+      <button type="button" class="close" area-label="Close">&times;</button>
     </div>
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -127,19 +127,48 @@
                 <p>{{ rss_feed_text }}</p>
               </div>
             </div>
-            {% if not validated %}
             <div class="form-group" id="validate-form-group">
-              <label class="col-sm-2 control-label">{{ validate_title }}</label>
+              <label
+                class="col-sm-2 control-label"
+                id="validate-title"
+                {% if validated %} style="display: none;" {% endif %}
+                >
+                {{ validate_title }}
+              </label>
+              <label
+                class="col-sm-2 control-label"
+                id="reset-title"
+                {% if not validated %} style="display: none;" {% endif %}
+                >
+                {{ reset_credentials_title }}
+              </label>
               <div class="col-sm-10">
-                <button id="validate" type="button" title="{{ button_validate }}" class="btn btn-primary">
+                <button
+                  id="validate"
+                  type="button"
+                  title="{{ button_validate }}"
+                  class="btn btn-primary"
+                  {% if validated%} style="display: none;" {% endif %}
+                >
                   {{ button_validate }}
                   <span id="smaily-validate-loader" hidden>
                     <i class="fa fa-spinner fa-spin" hidden></i>
                   </span>
-                  </button>
+                </button>
+                <button
+                  id="reset-credentials"
+                  type="button"
+                  title="{{ button_reset_credentials }}"
+                  class="btn btn-primary"
+                  {% if not validated%} style="display: none;" {% endif %}
+                >
+                  {{ button_reset_credentials }}
+                  <span id="smaily-reset-loader" hidden>
+                    <i class="fa fa-spinner fa-spin" hidden></i>
+                  </span>
+                </button>
               </div>
             </div>
-            {% endif %}
             </div>
             <!-- Customer sync -->
             <div id="section2" class="tab-pane fade in">

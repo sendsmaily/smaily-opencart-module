@@ -39,6 +39,7 @@ $_['entry_subdomain_title']            = 'Subdomain*';
 $_['entry_username_title']             = 'Username*';
 $_['entry_password_title']             = 'Password*';
 $_['validate_title']                   = 'Validate credentials';
+$_['reset_credentials_title']          = 'Reset credentials';
 $_['rss_feed_title']                   = 'Product RSS feed';
 $_['rss_feed_text']                    = "Copy this URL into your template editor's RSS block, to receive RSS-feed";
 // Customer sync form
@@ -76,6 +77,7 @@ $_['cart_delay_error']              = 'Delay time must be atleast 15 minutes';
 $_['button_save']     = 'Save';
 $_['button_cancel']   = 'Cancel';
 $_['button_validate'] = 'Validate';
+$_['button_reset_credentials'] = 'Reset';
 
 // Validation responses
 $_['validated_success'] = 'Validated!';
