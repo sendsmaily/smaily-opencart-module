@@ -39,9 +39,9 @@
       <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
     </div>
     <?php } ?>
-    <div class="alert" id="validate-div" hidden>
+    <div class="alert" id="validate-alert" hidden>
       <i class="fa fa-exclamation-circle"></i><span id="validate-message"></span>
-      <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
+      <button type="button" class="close" area-label="Close">&times;</button>
     </div>
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -126,19 +126,48 @@
                 <p><?php echo $rss_feed_text ?></p>
               </div>
             </div>
-            <?php if(!$validated) : ?>
-            <div class="form-group" id="validate-form-group">
-              <label class="col-sm-2 control-label"><?php echo $validate_title ?></label>
+            <div class="form-group">
+              <label
+                class="col-sm-2 control-label"
+                id="validate-title"
+                <?php echo $validated ? 'style="display: none;"' : ''; ?>
+              >
+                <?php echo $validate_title ?>
+              </label>
+              <label
+                class="col-sm-2 control-label"
+                id="reset-title"
+                <?php echo $validated ? '' : 'style="display: none;"'; ?>
+              >
+                <?php echo $reset_credentials_title ?>
+              </label>
               <div class="col-sm-10">
-                <button id="validate" type="button" title="<?php echo $button_validate; ?>" class="btn btn-primary">
-                  <?php echo $button_validate; ?>
-                  <span id="smaily-validate-loader" hidden>
+                <button
+                  type="button"
+                  title="<?php echo $button_reset_credentials; ?>"
+                  class="btn btn-primary"
+                  id="reset-credentials"
+                  <?php echo $validated ? '' : 'style="display: none;"' ?>
+                >
+                  <?php echo $button_reset_credentials ?>
+                  <span id="smaily-reset-loader" hidden>
                     <i class="fa fa-spinner fa-spin" hidden></i>
                   </span>
-                  </button>
+                </button>
+                <button
+                    type="button"
+                    title="<?php $button_validate; ?>"
+                    class="btn btn-primary"
+                    id="validate"
+                    <?php echo $validated ? 'style="display: none;"' : '' ?>
+                  >
+                    <?php echo $button_validate; ?>
+                    <span id="smaily-validate-loader" hidden>
+                      <i class="fa fa-spinner fa-spin" hidden></i>
+                    </span>
+                </button>
               </div>
             </div>
-            <?php endif; ?>
             </div>
             <!-- Customer sync -->
             <div id="section2" class="tab-pane fade in">
@@ -306,6 +335,10 @@
    $(window).on("load", function() {
      // Open first tab.
     $('#sections a:first').tab('show');
+     // Hide validate display messages.
+    $('#validate-alert button').on('click', function() {
+      $('#validate-alert').hide();
+    });
     // Populate autoresponders list
     getAutoresponders();
     function getAutoresponders() {
@@ -335,7 +368,63 @@
             }
           })
         }
+    }
+    function switchValidateResetSection(currently_validated=false) {
+      if (currently_validated) {
+        // Switch reset section to validate section.
+        $('#reset-title').hide();
+        $('#validate-title').show();
+        $('#reset-credentials').hide();
+        $('#validate').show();
+      } else {
+        // Switch validate section to reset section.
+        $('#reset-title').show();
+        $('#validate-title').hide();
+        $('#reset-credentials').show();
+        $('#validate').hide();
       }
+    }
+    // Reset credentials.
+    $('#reset-credentials').on('click', function(){
+      // Scroll top.
+      $("html, body").animate(
+        {
+          scrollTop: "0px"
+        },
+        "slow"
+      );
+      var spinner = $('#smaily-reset-loader');
+      spinner.show();
+      $.ajax({
+        url: 'index.php?route=module/smaily_for_opencart/ajaxResetCredentials&token=<?php echo $token ?>',
+        dataType: 'json',
+        method: "POST",
+        success: function(response) {
+          spinner.hide();
+          if (response['success']) {
+            // Remove success style from credentials input.
+            $('div.has-success').removeClass('has-success');
+            // Show response
+            $('#validate-message').text(response['success']);
+            $('#validate-alert').addClass('alert-success').show();
+            // Disable module functions.
+            $('#input-status').val('0');
+            $('#input-subscriber-status').val('0');
+            $('#input-abandoned-status').val('0');
+            // Reset Smaily credentials.
+            $("#subdomain").val('');
+            $("#username").val('');
+            $("#password").val('');
+            switchValidateResetSection(true);
+          }
+        },
+        error: function(error) {
+          spinner.hide();
+          $('#validate-message').text('Something went wrong!');
+          $('#validate-alert').addClass('alert-danger').show();
+        }
+      })
+    });
     // Validate autoresponders.
     $('#validate').on('click', function(e) {
       // Scroll top.
@@ -346,10 +435,7 @@
         "slow"
       );
       // Validate form button section.
-      var validateSection = $('#validate-form-group');
-      // Spinner
       var spinner = $("#smaily-validate-loader");
-      // Smaily credentials.
       var subdomain = $("#subdomain").val();
       var username = $("#username").val();
       var password = $("#password").val();
@@ -365,7 +451,6 @@
         $('#password').parent().addClass('has-error');
       }
 
-      // Start spinner.
       spinner.show();
       $.ajax({
         url: 'index.php?route=module/smaily_for_opencart/ajaxValidateCredentials&token=<?php echo $token ?>',
@@ -377,19 +462,17 @@
           password:password
         },
         success: function(response) {
-          // Hide spinner.
           spinner.hide();
           // Error message
           if (response['error']) {
             $('#validate-message').text(response['error']);
-            $('#validate-div').addClass('alert-danger').show();
+            $('#validate-alert').addClass('alert-danger').show();
           } else if (!response) {
             $('#validate-message').text('Something went wrong with request to smaily');
-            $('#validate-div').addClass('alert-danger').show();
+            $('#validate-alert').addClass('alert-danger').show();
           }
           // Success message.
           if (response['success']) {
-            // Get autoresponders.
             getAutoresponders();
             // Remove alert messages.
             $('div.alert-danger, div.text-danger').hide();
@@ -397,18 +480,19 @@
             $('div.has-error').removeClass('has-error').addClass('has-success');
             // Add text, remove danger class had errors.
             $('#validate-message').text(response['success']);
-            $('#validate-div').removeClass('alert-danger');
+            $('#validate-alert').removeClass('alert-danger');
             // Show response
-            $('#validate-div').addClass('alert-success').show();
-            // Hide validate button section.
-            validateSection.hide();
+            $('#validate-alert').addClass('alert-success').show();
+            switchValidateResetSection();
+            // Set module status to enabled.
+            $('#input-status').val("1");
           }
         },
         error: function(error) {
           // Hide spinner.
           spinner.hide();
           $('#validate-message').text('No connection to smaily');
-          $('#validate-div').addClass('alert-danger').show();
+          $('#validate-alert').addClass('alert-danger').show();
         }
       });
    });
