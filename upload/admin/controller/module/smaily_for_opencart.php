@@ -11,7 +11,7 @@
  *
  * Plugin Name: Smaily for OpenCart
  * Description: Smaily email marketing and automation extension plugin for OpenCart.
- * Version: 1.3.0
+ * Version: 1.3.1
  * License: GPL3
  * Author: Smaily
  * Author URI: https://smaily.com/
@@ -426,10 +426,9 @@ class ControllerModuleSmailyForOpencart extends Controller {
             $subdomain = $parts[0];
         }
         $subdomain = preg_replace('/[^a-zA-Z0-9]+/', '', $subdomain);
+        $username = html_entity_decode($this->request->post['username']);
+        $password = html_entity_decode($this->request->post['password']);
 
-        $subdomain = $this->db->escape($subdomain);
-        $username =  $this->db->escape($this->request->post['username']);
-        $password = $this->db->escape($this->request->post['password']);
         // Validate credentials with a call to Smaily.
         $validate = $this->validateSmailyCredentials($subdomain, $username, $password);
 
@@ -440,9 +439,9 @@ class ControllerModuleSmailyForOpencart extends Controller {
                 $settings = $this->model_setting_setting->getSetting('smaily_for_opencart');
                 // Used because save button saves whole form.
                 $settings['smaily_for_opencart_validated'] = 1;
-                $settings['smaily_for_opencart_subdomain'] = $subdomain;
-                $settings['smaily_for_opencart_username'] = $username;
-                $settings['smaily_for_opencart_password'] = $password;
+                $settings['smaily_for_opencart_subdomain'] = $this->db->escape($subdomain);
+                $settings['smaily_for_opencart_username'] = $this->db->escape($username);
+                $settings['smaily_for_opencart_password'] = $this->db->escape($password);
                 // Enable module on successful validation.
                 $settings['smaily_for_opencart_status'] = 1;
                 // Save credentials to db.
