@@ -74,16 +74,17 @@ $_['abandoned_autoresponder_error'] = 'Please select autoresponder for abandoned
 $_['cart_delay_error']              = 'Delay time must be atleast 15 minutes';
 
 // Buttons
-$_['button_save']     = 'Save';
-$_['button_cancel']   = 'Cancel';
-$_['button_validate'] = 'Validate';
+$_['button_save']              = 'Save';
+$_['button_cancel']            = 'Cancel';
+$_['button_validate']          = 'Validate';
 $_['button_reset_credentials'] = 'Reset';
 
 // Validation responses
-$_['validated_success'] = 'Validated!';
-$_['validated_unauthorized'] = 'Wrong credentials!';
+$_['validated_success']         = 'Validated!';
+$_['validated_unauthorized']    = 'Wrong credentials!';
 $_['validated_subdomain_error'] = 'Wrong subdomain!';
-$_['validated_error'] = 'Something went wrong with validating!';
+$_['validated_error']           = 'Something went wrong with validating!';
+$_['credentials_reset']         = 'Credentials successfully reset!';
 
 // Small text
 $_['small_subdomain']       = 'For example "demo" from https://demo.sendsmaily.net/';

@@ -3,8 +3,8 @@
     // Open first tab.
     $("#sections a:first").tab("show");
     // Hide validate display messages.
-    $("#validate-message button").on("click", function () {
-      $("#validate-message").hide();
+    $("#validate-alert button").on("click", function () {
+      $("#validate-alert").hide();
     });
     // Populate autoresponders list
     getAutoresponders();
@@ -56,7 +56,48 @@
     }
     // Reset credentials.
     $("#reset-credentials").on("click", function () {
-      switchValidateResetSection(true);
+      // Scroll top.
+      $("html, body").animate(
+        {
+          scrollTop: "0px",
+        },
+        "slow"
+      );
+      var user_token = $("#user_token").val();
+      var spinner = $("#smaily-reset-loader");
+      spinner.show();
+      $.ajax({
+        url:
+          "index.php?route=extension/module/smaily_for_opencart/ajaxResetCredentials&user_token=" +
+          user_token,
+        dataType: "json",
+        method: "POST",
+        success: function (response) {
+          spinner.hide();
+          if (response["success"]) {
+            // Remove success style from credentials input.
+            $("div.has-success").removeClass("has-success");
+            // Show response
+            $("#validate-message").text(response["success"]);
+            $("#validate-alert").addClass("alert-success").show();
+            // Disable module functions.
+            $("#input-status").val("0");
+            $("#input-subscriber-status").val("0");
+            $("#input-abandoned-status").val("0");
+            // Reset Smaily credentials.
+            $("#subdomain").val("");
+            $("#username").val("");
+            $("#password").val("");
+            switchValidateResetSection(true);
+          }
+        },
+        error: function (error) {
+          console.log(error);
+          spinner.hide();
+          $("#validate-message").text("Something went wrong!");
+          $("#validate-alert").addClass("alert-danger").show();
+        },
+      });
     });
     // Validate autoresponders.
     $("#validate").on("click", function (e) {
@@ -106,12 +147,12 @@
           // Error message
           if (response["error"]) {
             $("#validate-message").text(response["error"]);
-            $("#validate-div").addClass("alert-danger").show();
+            $("#validate-alert").addClass("alert-danger").show();
           } else if (!response) {
             $("#validate-message").text(
               "Something went wrong with request to smaily"
             );
-            $("#validate-div").addClass("alert-danger").show();
+            $("#validate-alert").addClass("alert-danger").show();
           }
           // Success message.
           if (response["success"]) {
@@ -123,9 +164,9 @@
             $("div.has-error").removeClass("has-error").addClass("has-success");
             // Add text, remove danger class had errors.
             $("#validate-message").text(response["success"]);
-            $("#validate-div").removeClass("alert-danger");
+            $("#validate-alert").removeClass("alert-danger");
             // Show response
-            $("#validate-div").addClass("alert-success").show();
+            $("#validate-alert").addClass("alert-success").show();
             // Hide validate button section.
             validateSection.hide();
           }
@@ -134,7 +175,7 @@
           // Hide spinner.
           spinner.hide();
           $("#validate-message").text("No connection to smaily");
-          $("#validate-div").addClass("alert-danger").show();
+          $("#validate-alert").addClass("alert-danger").show();
         },
       });
     });
