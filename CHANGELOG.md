@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.3.1
+
+- Fix valid credentials not accepted when validating connection with Smaily
+
 ### 1.3.0
 
 - Enable module on successful credentials validation
