@@ -579,6 +579,11 @@ class ControllerModuleSmailyForOpencart extends Controller {
             'admin/model/extension/modification/addModification/after',
             'smailyforopencart/upgrade/upgrade'
         );
+        $this->model_extension_event->addEvent(
+            'smaily_reset_empty_cart',
+            'catalog/controller/checkout/cart/remove/after',
+            'smailyforopencart/order/removeWhenCartEmpty'
+        );
     }
 
     /**
