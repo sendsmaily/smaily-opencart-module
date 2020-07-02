@@ -36,5 +36,5 @@ jobs:
         with:
           upload_url: ${{ steps.get_release_url.outputs.upload_url }}
           asset_path: ./release.zip
-          asset_name: smailyforopencart-${{ steps.version.outputs.version }}.ocmod.zip
+          asset_name: smailyforopencart-${{ steps.version.outputs.version }}.zip
           asset_content_type: application/zip
