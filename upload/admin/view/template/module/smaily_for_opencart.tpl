@@ -221,7 +221,11 @@
               </td>
           </table>
         </div>
-        <table id="module" class="list">
+        <table
+          id="module"
+          class="list"
+          <?php echo $validated ? '' : 'style="display: none;"' ?>
+        >
           <thead>
             <tr>
               <td class="left"><?php echo $table_header_layout_text; ?></td>
@@ -393,6 +397,8 @@ function addModule() {
             // Show response
             $('#validate-div').addClass('success').show();
             $('div.save_button').show();
+            // Show layout section.
+            $('#module').show();
           }
         },
         'json');

@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.1.6
+
+- Show layout section after successful module validation
+
 ### 1.1.5
 
 - Fix valid credentials not accepted when validating connection with Smaily
