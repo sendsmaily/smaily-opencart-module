@@ -596,9 +596,9 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->load->model('smailyforopencart/admin');
         // Remove smaily table
         $this->model_smailyforopencart_admin->uninstall();
-        // Remove event handler.
+        // Remove event handlers.
         $this->model_extension_event->deleteEvent('smaily_order');
-        // Remove upgrade handler.
         $this->model_extension_event->deleteEvent('smaily_upgrade');
+        $this->model_extension_event->deleteEvent('smaily_reset_empty_cart');
     }
 }
