@@ -1,9 +1,5 @@
 # Changelog
 
-### 1.3.2
-
-- Reset abandoned cart sent status when customer empties cart
-
 ### 1.3.1
 
 - Fix valid credentials not accepted when validating connection with Smaily
