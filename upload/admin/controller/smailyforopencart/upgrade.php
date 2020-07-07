@@ -68,7 +68,7 @@ class ControllerSmailyForOpencartUpgrade extends Controller {
         }
 
         // Version 1.3.2 - new event smaily_reset_empty_cart.
-        if (version_compare($version, '1.3.2', '=')) {
+        if (version_compare($version, '1.3.2', '>=')) {
             $query = $this->db->query(
                 "SELECT * FROM " . DB_PREFIX . "event WHERE code='smaily_reset_empty_cart'"
             );
