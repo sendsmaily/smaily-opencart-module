@@ -62,7 +62,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
             );
             // Update start time only if abandoned cart was previously disabled and now being activated.
             if (! $abandoned_cart_enabled && (int) $data['smaily_for_opencart_enable_abandoned']) {
-                $data['smaily_for_opencart_abandoned_cart_time'] = date('c');
+                $data['smaily_for_opencart_abandoned_cart_time'] = date('Y-m-d H:i:s');
             }
 
             // Add sync time.
