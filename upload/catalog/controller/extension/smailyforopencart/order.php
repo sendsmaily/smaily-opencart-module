@@ -27,8 +27,8 @@ class ControllerExtensionSmailyForOpencartOrder extends Controller {
     public function removeWhenCartEmpty() {
         $customer_id = $this->customer->getId();
         if (isset($customer_id)) {
-            $this->load->model('smailyforopencart/helper');
-            if ($this->model_smailyforopencart_helper->isCartEmpty((int) $customer_id)) {
+            $this->load->model('extension/smailyforopencart/helper');
+            if ($this->model_extension_smailyforopencart_helper->isCartEmpty((int) $customer_id)) {
                 $this->db->query(
                     "DELETE FROM " . DB_PREFIX . "smaily_abandoned_carts " .
                     "WHERE customer_id ='" . $this->db->escape((int) $customer_id) . "'"
