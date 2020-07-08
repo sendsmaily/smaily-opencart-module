@@ -225,4 +225,24 @@ class ModelExtensionSmailyForOpencartHelper extends Model{
             $this->db->query("UPDATE " . DB_PREFIX . "setting SET `value` = '" . $this->db->escape(json_encode($value)) . "', serialized = '1' WHERE `code` = '" . $this->db->escape($code) . "' AND `key` = '" . $this->db->escape($key) . "' AND store_id = '" . (int)$store_id . "'");
         }
     }
+
+    /**
+     * Checks if customer cart is empty.
+     *
+     * @param int $customer_id
+     * @return boolean
+     */
+    public function isCartEmpty($customer_id) {
+        $query = $this->db->query(
+            "SELECT COUNT(*) AS cart_items FROM " . DB_PREFIX . "cart " .
+            "WHERE customer_id='" . $this->db->escape($customer_id) ."'"
+        );
+
+        $data = $query->row;
+        if ((int) $data['cart_items'] != 0) {
+            return false;
+        };
+
+        return true;
+    }
 }
