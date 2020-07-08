@@ -147,20 +147,21 @@ class ModelExtensionSmailyForOpencartHelper extends Model{
         // Get delay time.
         $delay_time = $this->config->get('smaily_for_opencart_cart_delay');
         $abandoned_carts = [];
-        // Select all customers with abandoned carts. Carts before now - delay time.
+        // Select all customers with abandoned carts. Last cart item addition time - delay time.
         // And customer doesn't have record in smaily_abandoned_carts table.
-        // Customer data available id, email, firstname, lastname.
+        // Customer data available id, email, firstname, lastname, last_date_added.
         $customers = $this->db->query(
-            "SELECT cart.customer_id, customer.email, customer.firstname, customer.lastname " .
+            "SELECT cart.customer_id, customer.email, customer.firstname, customer.lastname, " .
+            "MAX(cart.date_added) AS last_date_added " .
             "FROM " . DB_PREFIX . "cart AS cart " .
             "LEFT JOIN " . DB_PREFIX . "customer AS customer " .
             "ON cart.customer_id = customer.customer_id " .
             "LEFT JOIN " . DB_PREFIX . "smaily_abandoned_carts AS smaily " .
             "ON cart.customer_id = smaily.customer_id " .
             "WHERE smaily.customer_id IS NULL " .
-            "AND cart.date_added <= DATE_SUB(NOW(), INTERVAL " . (int) $delay_time . " MINUTE) " .
             "AND cart.customer_id > '0' " .
-            "GROUP BY cart.customer_id"
+            "GROUP BY cart.customer_id " .
+            "HAVING last_date_added <= DATE_SUB(NOW(), INTERVAL " . (int) $delay_time . " MINUTE)"
         );
 
         // Select all products and quantities for customer.
