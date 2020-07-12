@@ -3,7 +3,6 @@ name: Bug report
 about: Create a report to help us improve
 title: "A short description of the issue"
 labels: bug
-assignees: sinukaarel
 ---
 
 **Bug description**
