@@ -54,6 +54,19 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             if ($validated) {
                 $data['module_smaily_for_opencart_validated'] = $validated;
             }
+
+            // Abandoned cart start time.
+            $abandoned_cart_enabled = (int) $this->model_setting_setting->getSettingValue(
+                'module_smaily_for_opencart_enable_abandoned'
+            );
+            $data['module_smaily_for_opencart_abandoned_cart_time'] = $this->model_setting_setting->getSettingValue(
+                'module_smaily_for_opencart_abandoned_cart_time'
+            );
+            // Update start time only if abandoned cart was previously disabled and now being activated.
+            if (! $abandoned_cart_enabled && (int) $data['module_smaily_for_opencart_enable_abandoned']) {
+                $data['module_smaily_for_opencart_abandoned_cart_time'] = date('Y-m-d H:i:s');
+            }
+
             // Add sync time.
             $sync_time = $this->model_setting_setting->getSettingValue('module_smaily_for_opencart_sync_time');
             // Init value before sync.
