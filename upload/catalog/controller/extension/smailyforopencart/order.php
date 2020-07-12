@@ -17,4 +17,22 @@ class ControllerExtensionSmailyForOpencartOrder extends Controller {
             );
         }
     }
+    /**
+     * Removes customer from abandoned carts table when clearing all items from cart.
+     * Event handler for catalog/controller/checkout/cart/remove/after.
+     *
+     * @return void
+     */
+    public function removeWhenCartEmpty() {
+        $customer_id = $this->customer->getId();
+        if (isset($customer_id)) {
+            $this->load->model('extension/smailyforopencart/helper');
+            if ($this->model_extension_smailyforopencart_helper->isCartEmpty((int) $customer_id)) {
+                $this->db->query(
+                    "DELETE FROM " . DB_PREFIX . "smaily_abandoned_carts " .
+                    "WHERE customer_id ='" . $this->db->escape((int) $customer_id) . "'"
+                );
+            }
+        }
+    }
 }
