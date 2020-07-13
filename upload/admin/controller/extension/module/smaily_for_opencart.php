@@ -602,7 +602,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $this->load->model('extension/smailyforopencart/admin');
         // Create database.
         $this->model_extension_smailyforopencart_admin->install();
-        // Add event listener for order.
+        // Add event handlers.
         $this->model_setting_event->addEvent(
             'smaily_order',
             'catalog/controller/checkout/confirm/after',
@@ -612,6 +612,11 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             'smaily_upgrade',
             'admin/model/setting/modification/addModification/after',
             'extension/smailyforopencart/upgrade/upgrade'
+        );
+        $this->model_setting_event->addEvent(
+            'smaily_reset_empty_cart',
+            'catalog/controller/checkout/cart/remove/after',
+            'extension/smailyforopencart/order/removeWhenCartEmpty'
         );
     }
 
@@ -625,9 +630,9 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $this->load->model('extension/smailyforopencart/admin');
         // Remove smaily table
         $this->model_extension_smailyforopencart_admin->uninstall();
-        // Remove event handler.
-        $this->model_setting_event->deleteEvent('smaily_order');
-        // Remove upgrade event handler.
-        $this->model_setting_event->deleteEvent('smaily_upgrade');
+        // Remove event handlers.
+        $this->model_setting_event->deleteEventByCode('smaily_order');
+        $this->model_setting_event->deleteEventByCode('smaily_upgrade');
+        $this->model_setting_event->deleteEventByCode('smaily_reset_empty_cart');
     }
 }
