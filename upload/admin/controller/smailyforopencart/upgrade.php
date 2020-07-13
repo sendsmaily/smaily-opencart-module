@@ -67,12 +67,15 @@ class ControllerSmailyForOpencartUpgrade extends Controller {
             }
         }
 
-        // Version 1.3.2 - new event smaily_reset_empty_cart.
+        // Version 1.3.2:
+        // - New event smaily_reset_empty_cart
+        // - Init time for abandoned cart sync when activating feature.
         if (version_compare($version, '1.3.2', '>=')) {
             $query = $this->db->query(
                 "SELECT * FROM " . DB_PREFIX . "event WHERE code='smaily_reset_empty_cart'"
             );
 
+            // Event hook check.
             $data = $query->row;
             if (empty($data)) {
                 $this->load->model('extension/event');
@@ -81,6 +84,13 @@ class ControllerSmailyForOpencartUpgrade extends Controller {
                     'catalog/controller/checkout/cart/remove/after',
                     'smailyforopencart/order/removeWhenCartEmpty'
                 );
+            }
+
+            // Init time check.
+            $settings = $this->model_setting_setting->getSetting('smaily_for_opencart');
+            if (! array_key_exists('smaily_for_opencart_abandoned_cart_time', $settings)) {
+                $settings['smaily_for_opencart_abandoned_cart_time'] = date('Y-m-d H:i:s');
+                $this->model_setting_setting->editSetting('smaily_for_opencart', $settings);
             }
         }
     }
