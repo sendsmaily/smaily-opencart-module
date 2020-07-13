@@ -146,6 +146,8 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
         $this->load->model('catalog/product');
         // Get delay time.
         $delay_time = $this->config->get('module_smaily_for_opencart_cart_delay');
+        // Get abandoned cart activation time.
+        $start_time = $this->config->get('module_smaily_for_opencart_abandoned_cart_time');
         $abandoned_carts = [];
         // Select all customers with abandoned carts. Last cart item addition time - delay time.
         // And customer doesn't have record in smaily_abandoned_carts table.
@@ -161,7 +163,8 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
             "WHERE smaily.customer_id IS NULL " .
             "AND cart.customer_id > '0' " .
             "GROUP BY cart.customer_id " .
-            "HAVING last_date_added <= DATE_SUB(NOW(), INTERVAL " . (int) $delay_time . " MINUTE)"
+            "HAVING last_date_added <= DATE_SUB(NOW(), INTERVAL " . (int) $delay_time . " MINUTE) " .
+            "AND last_date_added >= '" . $this->db->escape($start_time) . "'"
         );
 
         // Select all products and quantities for customer.
