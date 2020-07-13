@@ -1,5 +1,12 @@
 # Changelog
 
+### 1.3.2
+
+- Abandoned cart sent status is reset when customer empties cart
+- Abandoned cart status is now calculated from last item adding time instead of the first item
+- Abandoned cart activation time is used to calculate the oldest abandoned cart. Abandoned cart emails are no longer sent to very old carts.
+- Module created event hooks are now removed when uninstalling module
+
 ### 1.3.1
 
 - Fix valid credentials not accepted when validating connection with Smaily
