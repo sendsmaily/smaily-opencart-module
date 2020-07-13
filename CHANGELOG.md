@@ -2,9 +2,9 @@
 
 ### 1.3.2
 
-- Abandoned cart sent status is reset when customer empties cart
-- Abandoned cart status is now calculated from last item adding time instead of the first item
-- Abandoned cart activation time is used to calculate the oldest abandoned cart. Abandoned cart emails are no longer sent to very old carts.
+- Abandoned cart sent status is reset when customer empties cart [#73]
+- Abandoned cart status is now calculated from last item adding time instead of the first item [#75]
+- Abandoned cart activation time is used to calculate the oldest abandoned cart. Abandoned cart emails are no longer sent to very old carts. [#72]
 
 ### 1.3.1
 
