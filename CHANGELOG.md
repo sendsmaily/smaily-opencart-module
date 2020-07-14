@@ -2,10 +2,10 @@
 
 ### 1.3.2
 
-- Abandoned cart sent status is reset when customer empties cart [#73]
-- Abandoned cart status is now calculated from last item adding time instead of the first item [#75]
-- Abandoned cart activation time is used to calculate the oldest abandoned cart. Abandoned cart emails are no longer sent to very old carts. [#72]
-- Module created event hooks are now removed when uninstalling module [#81]
+- Abandoned cart sent status is reset when customer empties cart [[#73](https://github.com/sendsmaily/smaily-opencart-module/issues/73)]
+- Abandoned cart status is now calculated from last item adding time instead of the first item [[#75](https://github.com/sendsmaily/smaily-opencart-module/issues/75)]
+- Abandoned cart activation time is used to calculate the oldest abandoned cart. Abandoned cart emails are no longer sent to very old carts. [[#72](https://github.com/sendsmaily/smaily-opencart-module/issues/72)]
+- Module created event hooks are now removed when uninstalling module [[#81](https://github.com/sendsmaily/smaily-opencart-module/issues/81)]
 
 ### 1.3.1
 
