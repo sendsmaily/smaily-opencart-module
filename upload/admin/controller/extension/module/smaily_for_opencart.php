@@ -110,6 +110,10 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 'section_id' => 3,
                 'name' => $this->language->get('section_abandoned'),
             ),
+            array(
+                'section_id' => 4,
+                'name' => $this->language->get('section_rss'),
+            ),
         );
         // Get URL for CRON links.
         $url = new Url(HTTP_CATALOG, $this->config->get('config_secure') ? HTTPS_CATALOG : '');
@@ -141,6 +145,8 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $data['text_edit']     = $this->language->get('text_edit');
         $data['text_enabled']  = $this->language->get('text_enabled');
         $data['text_disabled'] = $this->language->get('text_disabled');
+        $data['text_ascending'] = $this->language->get('text_ascending');
+        $data['text_descending'] = $this->language->get('text_descending');
 
         // Enable module.
         $data['entry_enable_module_title']     = $this->language->get('entry_enable_module_title');

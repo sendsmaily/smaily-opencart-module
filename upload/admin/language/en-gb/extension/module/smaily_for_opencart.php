@@ -6,6 +6,7 @@ $_['heading_title']     = 'Smaily for OpenCart';
 $_['section_general']   = 'General';
 $_['section_customer']  = 'Subscriber Synchronization';
 $_['section_abandoned'] = 'Abandoned Cart';
+$_['section_rss']       = 'RSS Feed';
 $_['section_newsletter'] = 'Newsletter Widget';
 
 // Text
@@ -14,6 +15,8 @@ $_['text_success']        = 'Success: You have modified Smaily for OpenCart modu
 $_['text_edit']           = 'Smaily for OpenCart Settings';
 $_['text_enabled']        = 'Enabled';
 $_['text_disabled']       = 'Disabled';
+$_['text_ascending']      = 'Ascending';
+$_['text_descending']     = 'Descending';
 // Customer sync additional fields
 $_['firstname']           = 'First name';
 $_['lastname']            = 'Last name';
@@ -55,6 +58,18 @@ $_['abandoned_minutes']                = 'minutes';
 $_['cart_token_title']                 = 'Abandoned Cart Token*';
 $_['sync_cart_url_title']              = 'Abandoned Cart Url';
 $_['cart_cron_text']                   = 'Use this url to run cron.';
+// Rss form
+$_['rss_category_title']               = 'Product category';
+$_['rss_sort_by_title']                = 'Sort products by';
+$_['rss_sort_order_title']             = 'Sort direction';
+$_['rss_limit_title']                  = 'Product limit';
+$_['rss_limit_products']               = 'products';
+$_['name']                             = 'Name';
+$_['model']                            = 'Model';
+$_['price']                            = 'Price';
+$_['status']                           = 'Status';
+$_['sort_order']                       = 'Sort Order';
+
 
 //Placeholders
 $_['placeholder_subdomain']  = 'Please enter subdomain';
