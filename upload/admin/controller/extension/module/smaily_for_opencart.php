@@ -296,6 +296,12 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         } else {
             $data['error_delay'] = '';
         }
+        // RSS product limit error.
+        if (isset($this->error['rss_limit'])) {
+            $data['error_limit'] = $this->error['rss_limit'];
+        } else {
+            $data['error_limit'] = '';
+        }
 
         // BreadCrumb
         $data['breadcrumbs'] = array();
@@ -477,6 +483,11 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $validated = $this->model_setting_setting->getSettingValue('module_smaily_for_opencart_validated');
         if (! $validated) {
             $this->error['validate'] = $this->language->get('error_validate');
+        }
+
+        $rss_limit = $this->request->post['module_smaily_for_opencart_rss_limit'];
+        if ($rss_limit < 1 || $rss_limit > 250) {
+            $this->error['rss_limit'] = $this->language->get('rss_limit_error');
         }
 
         return !$this->error;

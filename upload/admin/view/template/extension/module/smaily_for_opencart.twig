@@ -34,6 +34,11 @@
       <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
     </div>
     {% endif %}
+    {% if error_limit %}
+      <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>{{ error_limit }}
+      <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
     {% if success %}
     <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }}
       <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>

@@ -87,6 +87,7 @@ $_['error_validate']                = 'Please validate credentials before saving
 $_['error_validate_empty']          = 'Please fill out all fields before validating';
 $_['abandoned_autoresponder_error'] = 'Please select autoresponder for abandoned cart';
 $_['cart_delay_error']              = 'Delay time must be atleast 15 minutes';
+$_['rss_limit_error']               = 'RSS product limit value must be between 1 and 250';
 
 // Buttons
 $_['button_save']              = 'Save';
