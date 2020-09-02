@@ -124,12 +124,14 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->data['rss_category_title'] = $this->language->get('rss_category_title');
         $this->data['rss_categories'] = $this->model_catalog_category->getCategories(array());
         $this->data['rss_sort_by_title'] = $this->language->get('rss_sort_by_title');
-        $this->data['sort_name'] = $this->language->get('sort_name');
-        $this->data['sort_model'] = $this->language->get('sort_model');
-        $this->data['sort_price'] = $this->language->get('sort_price');
-        $this->data['sort_status'] = $this->language->get('sort_status');
+        $this->data['sort_options'] = [
+            'pd.name' => $this->language->get('sort_name'),
+            'p.model' => $this->language->get('sort_model'),
+            'p.price' => $this->language->get('sort_price'),
+            'p.status' => $this->language->get('sort_status'),
+            'p.sort_order' => $this->language->get('sort_order')
+        ];
         $this->data['rss_sort_order_title'] = $this->language->get('rss_sort_order_title');
-        $this->data['sort_order'] = $this->language->get('sort_order');
         $this->data['rss_limit_title'] = $this->language->get('rss_limit_title');
         $this->data['rss_limit_products'] = $this->language->get('rss_limit_products');
         // Optin form settings text.
