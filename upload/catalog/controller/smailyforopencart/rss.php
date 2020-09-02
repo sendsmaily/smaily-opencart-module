@@ -9,7 +9,7 @@ class ControllerSmailyForOpencartRss extends Controller {
 
         $category = null;
         $limit = 50;
-        $sort = 'p.date_added';
+        $sort = 'pd.name';
         $order = 'DESC';
         // Get params from URL for filtering products.
         if (isset($this->request->get['category'])) {
@@ -23,7 +23,7 @@ class ControllerSmailyForOpencartRss extends Controller {
         }
         if (isset($this->request->get['sort_by'])) {
             $sort = $this->request->get['sort_by'];
-            $sort = in_array($sort, array('pd.name', 'p.model', 'p.price', 'p.status', 'p.sort_order'), true) ? $sort : 'p.date_added';
+            $sort = in_array($sort, array('pd.name', 'p.model', 'p.price', 'p.quantity', 'p.status', 'p.sort_order'), true) ? $sort : 'pd.name';
         }
         if (isset($this->request->get['sort_order'])) {
             $order = $this->request->get['sort_order'];
