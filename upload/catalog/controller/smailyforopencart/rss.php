@@ -15,7 +15,7 @@ class ControllerSmailyForOpencartRss extends Controller {
         if (isset($this->request->get['category'])) {
             $category = $this->request->get['category'];
             // Category parameter can be either in string format or category ID.
-            $category = $this->getCategoryIdByName($category) !== '' ? $this->getCategoryIdByName($category) : (int) $category;
+            $category = (int) $category > 0 ? (int) $category : $this->getCategoryIdByName($category);
         }
         if (isset($this->request->get['limit'])) {
             $limit = (int) $this->request->get['limit'];
@@ -98,7 +98,7 @@ class ControllerSmailyForOpencartRss extends Controller {
     public function getCategoryIdByName($name) {
         $this->load->model('catalog/category');
         // Load all categories.
-        $categories = $this->model_catalog_category->getCategories();
+        $categories = $this->model_catalog_category->getCategories(array());
         foreach ($categories as $category) {
             if ($category['name'] == $name) {
                 // Get id if name matches.

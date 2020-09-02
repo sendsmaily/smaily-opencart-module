@@ -285,7 +285,7 @@
                 <?php echo $rss_feed_title; ?>
               </td>
               <td>
-                <p><strong><?php echo $smaily_rss_url; ?></strong></p>
+                <p><strong id="smaily-rss-feed-url" name="rss_feed_url"><?php echo $smaily_rss_url; ?></strong></p>
                 <span class="help">
                   <?php echo $rss_feed_text; ?>
                 </span>
@@ -475,6 +475,7 @@ function addModule() {
         },
         'json');
     });
+    var smaily_rss_url_base = '<?php echo $smaily_rss_url_base; ?>';
     $(".smaily-rss-options").change(function (event) {
       var rss_url_base = smaily_rss_url_base + '&';
       var parameters = {};
@@ -502,7 +503,4 @@ function addModule() {
     });
   });
 })(jQuery);
-</script>
-<script type="text/javascript">
-    var smaily_rss_url_base = '<?php echo $smaily_rss_url_base; ?>';
 </script>
