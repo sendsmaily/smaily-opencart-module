@@ -105,21 +105,23 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->data['rss_feed_title'] = $this->language->get('rss_feed_title');
         $this->data['rss_feed_text']  = $this->language->get('rss_feed_text');
         $this->data['smaily_rss_url_base'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
-        $this->data['smaily_rss_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
+        $rss_query_parameters = array();
         $rss_settings = isset($this->model_setting_setting->getSetting('smaily')['smaily_rss'])
             ? $this->model_setting_setting->getSetting('smaily')['smaily_rss'] : array();
         if (isset($rss_settings['category']) && !empty($rss_settings['category'])) {
-            $this->data['smaily_rss_url'] .= rawurlencode('&category=' . $rss_settings['category']);
+            $rss_query_parameters['category'] = $rss_settings['category'];
         }
         if (isset($rss_settings['sort_by'])) {
-            $this->data['smaily_rss_url'] .= rawurlencode('&sort_by=' . $rss_settings['sort_by']);
+            $rss_query_parameters['sort_by'] = $rss_settings['sort_by'];
         }
         if (isset($rss_settings['sort_order'])) {
-            $this->data['smaily_rss_url'] .= rawurlencode('&sort_order=' . $rss_settings['sort_order']);
+            $rss_query_parameters['sort_order'] = $rss_settings['sort_order'];
         }
         if (isset($rss_settings['limit']) && !empty($rss_settings['limit'])) {
-            $this->data['smaily_rss_url'] .= rawurlencode('&limit=' . $rss_settings['limit']);
+            $rss_query_parameters['limit'] = $rss_settings['limit'];
         }
+        $this->data['smaily_rss_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss&'
+            . http_build_query($rss_query_parameters);
         $this->load->model('catalog/category');
         $this->data['rss_category_title'] = $this->language->get('rss_category_title');
         $this->data['rss_categories'] = $this->model_catalog_category->getCategories(array());
