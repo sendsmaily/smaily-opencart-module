@@ -108,17 +108,17 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->data['smaily_rss_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
         $rss_settings = isset($this->model_setting_setting->getSetting('smaily')['smaily_rss'])
             ? $this->model_setting_setting->getSetting('smaily')['smaily_rss'] : array();
-        if (isset($rss_settings['rss_category']) && !empty($rss_settings['rss_category'])) {
-            $this->data['smaily_rss_url'] .= rawurlencode('&category=' . $rss_settings['rss_category']);
+        if (isset($rss_settings['category']) && !empty($rss_settings['category'])) {
+            $this->data['smaily_rss_url'] .= rawurlencode('&category=' . $rss_settings['category']);
         }
-        if (isset($rss_settings['rss_sort_by'])) {
-            $this->data['smaily_rss_url'] .= rawurlencode('&sort_by=' . $rss_settings['rss_sort_by']);
+        if (isset($rss_settings['sort_by'])) {
+            $this->data['smaily_rss_url'] .= rawurlencode('&sort_by=' . $rss_settings['sort_by']);
         }
-        if (isset($rss_settings['rss_sort_order'])) {
-            $this->data['smaily_rss_url'] .= rawurlencode('&sort_order=' . $rss_settings['rss_sort_order']);
+        if (isset($rss_settings['sort_order'])) {
+            $this->data['smaily_rss_url'] .= rawurlencode('&sort_order=' . $rss_settings['sort_order']);
         }
-        if (isset($rss_settings['rss_limit']) && !empty($rss_settings['rss_limit'])) {
-            $this->data['smaily_rss_url'] .= rawurlencode('&limit=' . $rss_settings['rss_limit']);
+        if (isset($rss_settings['limit']) && !empty($rss_settings['limit'])) {
+            $this->data['smaily_rss_url'] .= rawurlencode('&limit=' . $rss_settings['limit']);
         }
         $this->load->model('catalog/category');
         $this->data['rss_category_title'] = $this->language->get('rss_category_title');
@@ -221,22 +221,22 @@ class ControllerModuleSmailyForOpencart extends Controller {
         if (isset($this->request->post['smaily_for_opencart_rss_category'])) {
             $this->data['rss_category'] = $this->request->post['smaily_for_opencart_rss_category'];
         } else {
-            $this->data['rss_category'] = isset($rss_settings['rss_category']) ? $rss_settings['rss_category'] : '';
+            $this->data['rss_category'] = isset($rss_settings['category']) ? $rss_settings['category'] : '';
         }
         if (isset($this->request->post['smaily_for_opencart_rss_sort_by'])) {
             $this->data['rss_sort_by'] = $this->request->post['smaily_for_opencart_rss_sort_by'];
         } else {
-            $this->data['rss_sort_by'] = isset($rss_settings['rss_sort_by']) ? $rss_settings['rss_sort_by'] : array();
+            $this->data['rss_sort_by'] = isset($rss_settings['sort_by']) ? $rss_settings['sort_by'] : array();
         }
         if (isset($this->request->post['smaily_for_opencart_rss_sort_order'])) {
             $this->data['rss_sort_order'] = $this->request->post['smaily_for_opencart_rss_sort_order'];
         } else {
-            $this->data['rss_sort_order'] = isset($rss_settings['rss_sort_order']) ? $rss_settings['rss_sort_order'] : '';
+            $this->data['rss_sort_order'] = isset($rss_settings['sort_order']) ? $rss_settings['sort_order'] : '';
         }
         if (isset($this->request->post['smaily_for_opencart_rss_limit'])) {
             $this->data['rss_limit'] = $this->request->post['smaily_for_opencart_rss_limit'];
         } else {
-            $this->data['rss_limit'] = isset($rss_settings['rss_limit']) ? $rss_settings['rss_limit'] : array();
+            $this->data['rss_limit'] = isset($rss_settings['limit']) ? $rss_settings['limit'] : array();
         }
 
         // Display chosen customer sync field as selected.
@@ -335,10 +335,10 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $limit = $limit >= 1 && $limit < 250 ? $limit : 50;
         // Save RSS settings to database.
         $settings = [
-            'rss_category' => $category,
-            'rss_sort_by' => $sort,
-            'rss_sort_order' => $order,
-            'rss_limit' => $limit
+            'category' => $category,
+            'sort_by' => $sort,
+            'sort_order' => $order,
+            'limit' => $limit
         ];
         $this->model_smailyforopencart_admin->editSettingValue('smaily', 'smaily_rss', $settings);
     }
