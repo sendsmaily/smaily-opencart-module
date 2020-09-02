@@ -215,7 +215,7 @@
               </td>
               <td>
                 <select name="smaily_for_opencart_rss_category" id="rss-category" class="smaily-rss-options">
-                    <option value=''>All Products</option>
+                    <option value="">All Products</option>
                     <?php
                     foreach ($rss_categories as $category) {
                       $selected = (int) $category['category_id'] === $rss_category ? 'selected' : '';
