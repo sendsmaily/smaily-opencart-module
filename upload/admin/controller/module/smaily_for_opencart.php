@@ -330,14 +330,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $limit = $this->request->post['smaily_for_opencart_rss_limit'];
         // Data validation.
         $category = (int) $category > 0 ? (int) $category : '';
-        $sort_options = [
-            'pd.name',
-            'p.model',
-            'p.price',
-            'p.status',
-            'p.sort_order'
-        ];
-        $sort = in_array($sort, $sort_options, true) ? $sort : 'p.date_added';
+        $sort = in_array($sort, array('pd.name', 'p.model', 'p.price', 'p.status', 'p.sort_order'), true) ? $sort : 'p.date_added';
         $order = in_array($order, array('ASC', 'DESC'), true) ? $order : 'DESC';
         $limit = $limit >= 1 && $limit < 250 ? $limit : 50;
         // Save RSS settings to database.
