@@ -16,7 +16,7 @@ class ControllerExtensionSmailyForOpencartRss extends Controller{
         if (isset($this->request->get['category'])) {
             $category = $this->request->get['category'];
             // Category parameter can be either in string format or category ID.
-            $category = $this->getCategoryIdByName($category) !== '' ? $this->getCategoryIdByName($category) : (int) $category;
+            $category = (int) $category > 0 ? (int) $category : $this->getCategoryIdByName($category);
         }
         if (isset($this->request->get['limit'])) {
             $limit = (int) $this->request->get['limit'];
