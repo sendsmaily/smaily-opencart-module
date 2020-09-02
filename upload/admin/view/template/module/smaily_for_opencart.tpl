@@ -218,10 +218,9 @@
                     <option value="">All Products</option>
                     <?php
                     foreach ($rss_categories as $category) {
-                      $selected = (int) $category['category_id'] === $rss_category ? 'selected' : '';
-                      echo("<option value=$category[category_id] $selected>$category[name]</option>");
-                    }
-                    ?>
+                      $selected = (int) $category['category_id'] === $rss_category ? 'selected' : ''; ?>
+                      <option value="<?php echo $category['category_id']; ?>"<?php echo $selected; ?>><?php echo $category['name']; ?></option>
+                    <?php } ?>
                 </select>
               </td>
             </tr>
@@ -242,10 +241,9 @@
                     ];
                     // Add options for select.
                     foreach ($sort_options as $sort_code => $sort_name) {
-                      $selected = $rss_sort_by === $sort_code ? 'selected' : '';
-                      echo("<option value='$sort_code' $selected>$sort_name</option>");
-                    }
-                    ?>
+                      $selected = $rss_sort_by === $sort_code ? 'selected' : ''; ?>
+                      <option value="<?php echo $sort_code; ?>"<?php echo $selected; ?>><?php echo $sort_name; ?></option>
+                    <?php } ?>
                 </select>
               </td>
             </tr>
