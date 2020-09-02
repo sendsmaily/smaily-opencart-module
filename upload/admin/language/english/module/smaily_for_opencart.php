@@ -64,7 +64,7 @@ $_['customer_sync_cron_url_help'] = 'Use this url to run cron. Token must be pro
 
 // RSS text
 $_['rss_feed_title']                   = 'Product RSS feed';
-$_['rss_feed_text']                    = "Copy this URL into your template editor's RSS block, to receive RSS-feed";
+$_['rss_feed_text']                    = 'Copy this URL into your template editor\'s RSS block, to receive RSS-feed';
 $_['rss_category_title']               = 'Product category';
 $_['rss_sort_by_title']                = 'Sort products by';
 $_['rss_sort_order_title']             = 'Sort direction';
