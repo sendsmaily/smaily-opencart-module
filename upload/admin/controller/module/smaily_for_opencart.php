@@ -83,6 +83,8 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->data['small_password'] = $this->language->get('small_password');
         $this->data['text_enabled'] = $this->language->get('text_enabled');
         $this->data['text_disabled'] = $this->language->get('text_disabled');
+        $this->data['text_ascending'] = $this->language->get('text_ascending');
+        $this->data['text_descending'] = $this->language->get('text_descending');
         $this->data['token'] = $this->session->data['token'];
 
         // Subscriber sync fields.
@@ -99,9 +101,33 @@ class ControllerModuleSmailyForOpencart extends Controller {
 
         // RSS feed text.
         $this->data['rss_feed_title'] = $this->language->get('rss_feed_title');
-        $this->data['rss_feed_text'] = $this->language->get('rss_feed_text');
-        $this->data['rss_feed_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
-
+        $this->data['rss_feed_text']  = $this->language->get('rss_feed_text');
+        $this->data['smaily_rss_url_base'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
+        $this->data['smaily_rss_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
+        if ($this->config->get('smaily_for_opencart_rss_category')) {
+            $this->data['smaily_rss_url'] .= '&category=' . $this->config->get('smaily_for_opencart_rss_category');
+        }
+        if ($this->config->get('smaily_for_opencart_rss_sort_by')) {
+            $this->data['smaily_rss_url'] .= '&sort_by=' . $this->config->get('smaily_for_opencart_rss_sort_by');
+        }
+        if ($this->config->get('smaily_for_opencart_rss_sort_order')) {
+            $this->data['smaily_rss_url'] .= '&sort_order=' . $this->config->get('smaily_for_opencart_rss_sort_order');
+        }
+        if ($this->config->get('smaily_for_opencart_rss_limit')) {
+            $this->data['smaily_rss_url'] .= '&limit=' . $this->config->get('smaily_for_opencart_rss_limit');
+        }
+        $this->load->model('catalog/category');
+        $this->data['rss_category_title'] = $this->language->get('rss_category_title');
+        $this->data['rss_categories'] = $this->model_catalog_category->getCategories();
+        $this->data['rss_sort_by_title'] = $this->language->get('rss_sort_by_title');
+        $this->data['sort_name'] = $this->language->get('sort_name');
+        $this->data['sort_model'] = $this->language->get('sort_model');
+        $this->data['sort_price'] = $this->language->get('sort_price');
+        $this->data['sort_status'] = $this->language->get('sort_status');
+        $this->data['rss_sort_order_title'] = $this->language->get('rss_sort_order_title');
+        $this->data['sort_order'] = $this->language->get('sort_order');
+        $this->data['rss_limit_title'] = $this->language->get('rss_limit_title');
+        $this->data['rss_limit_products'] = $this->language->get('rss_limit_products');
         // Optin form settings text.
         $this->data['table_header_layout_text'] = $this->language->get('table_header_layout_text');
         $this->data['table_header_position_text'] = $this->language->get('table_header_position_text');

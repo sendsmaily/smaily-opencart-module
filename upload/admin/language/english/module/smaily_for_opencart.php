@@ -30,6 +30,7 @@ $_['placeholder_password'] = 'Please enter password';
 $_['error_permission'] = 'Warning: You do not have permission to modify Smaily for OpenCart!';
 $_['error_validate'] = 'Please validate credentials before saving settings';
 $_['error_validate_empty'] = 'Please fill out all fields before validating';
+$_['rss_limit_error'] = 'RSS product limit value must be between 1 and 250';
 
 // Buttons
 $_['button_validate'] = 'Validate';
@@ -47,6 +48,8 @@ $_['small_subdomain'] = 'For example "demo" from https://demo.sendsmaily.net/';
 $_['small_password'] = 'How to create API credentials?';
 $_['text_enabled'] = 'Enabled';
 $_['text_disabled'] = 'Disabled';
+$_['text_ascending']      = 'Ascending';
+$_['text_descending']     = 'Descending';
 
 // Customer sync form
 $_['customer_sync_enable_title'] = 'Enable Customer Synchronization';
@@ -60,8 +63,18 @@ $_['customer_sync_cron_url_title'] = 'Cron url';
 $_['customer_sync_cron_url_help'] = 'Use this url to run cron. Token must be provided';
 
 // RSS text
-$_['rss_feed_title'] = 'Product RSS feed';
-$_['rss_feed_text'] = "Copy this URL into your template editor's RSS block, to receive RSS-feed";
+$_['rss_feed_title']                   = 'Product RSS feed';
+$_['rss_feed_text']                    = "Copy this URL into your template editor's RSS block, to receive RSS-feed";
+$_['rss_category_title']               = 'Product category';
+$_['rss_sort_by_title']                = 'Sort products by';
+$_['rss_sort_order_title']             = 'Sort direction';
+$_['rss_limit_title']                  = 'Product limit';
+$_['rss_limit_products']               = 'products';
+$_['sort_name']                        = 'Name';
+$_['sort_model']                       = 'Model';
+$_['sort_price']                       = 'Price';
+$_['sort_status']                      = 'Status';
+$_['sort_order']                       = 'Sort Order';
 
 // Layout texts
 $_['table_header_layout_text'] = 'Layout:';
