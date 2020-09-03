@@ -148,23 +148,19 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $data['rss_feed_title'] = $this->language->get('rss_feed_title');
         $data['rss_feed_text']  = $this->language->get('rss_feed_text');
         $data['smaily_rss_url_base'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
-        $rss_query_parameters = array();
-        $rss_settings = isset($this->model_setting_setting->getSetting('smaily')['smaily_rss'])
-            ? $this->model_setting_setting->getSetting('smaily')['smaily_rss'] : array();
-        if (isset($rss_settings['category']) && !empty($rss_settings['category'])) {
-            $rss_query_parameters['category'] = $rss_settings['category'];
+        $data['smaily_rss_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
+        if ($this->config->get('smaily_for_opencart_rss_category')) {
+            $data['smaily_rss_url'] .= '&category=' . $this->config->get('smaily_for_opencart_rss_category');
         }
-        if (isset($rss_settings['sort_by'])) {
-            $rss_query_parameters['sort_by'] = $rss_settings['sort_by'];
+        if ($this->config->get('smaily_for_opencart_rss_sort_by')) {
+            $data['smaily_rss_url'] .= '&sort_by=' . $this->config->get('smaily_for_opencart_rss_sort_by');
         }
-        if (isset($rss_settings['sort_order'])) {
-            $rss_query_parameters['sort_order'] = $rss_settings['sort_order'];
+        if ($this->config->get('smaily_for_opencart_rss_sort_order')) {
+            $data['smaily_rss_url'] .= '&sort_order=' . $this->config->get('smaily_for_opencart_rss_sort_order');
         }
-        if (isset($rss_settings['limit']) && !empty($rss_settings['limit'])) {
-            $rss_query_parameters['limit'] = $rss_settings['limit'];
+        if ($this->config->get('smaily_for_opencart_rss_limit')) {
+            $data['smaily_rss_url'] .= '&limit=' . $this->config->get('smaily_for_opencart_rss_limit');
         }
-        $this->data['smaily_rss_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss&'
-            . http_build_query($rss_query_parameters);
         $this->load->model('catalog/category');
         $data['rss_category_title'] = $this->language->get('rss_category_title');
         $data['rss_categories'] = $this->model_catalog_category->getCategories();
