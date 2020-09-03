@@ -44,7 +44,7 @@ $_['entry_password_title']             = 'Password*';
 $_['validate_title']                   = 'Validate credentials';
 $_['reset_credentials_title']          = 'Reset credentials';
 $_['rss_feed_title']                   = 'Product RSS feed';
-$_['rss_feed_text']                    = "Copy this URL into your template editor's RSS block, to receive RSS-feed";
+$_['rss_feed_text']                    = 'Copy this URL into your template editor\'s RSS block, to receive RSS-feed';
 // Customer sync form
 $_['entry_customer_sync_fields_title'] = 'Customer Synchronization fields';
 $_['sync_token_title']                 = 'Customer Cron Token*';
