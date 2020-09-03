@@ -275,7 +275,7 @@
                 <?php echo $rss_feed_title; ?>
               </td>
               <td>
-                <p><strong id="smaily-rss-feed-url" name="rss_feed_url"><?php echo $smaily_rss_url; ?></strong></p>
+                <p><strong id="smaily-rss-feed-url"><?php echo $smaily_rss_url; ?></strong></p>
                 <span class="help">
                   <?php echo $rss_feed_text; ?>
                 </span>
