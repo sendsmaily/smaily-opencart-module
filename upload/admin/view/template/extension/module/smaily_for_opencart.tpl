@@ -331,7 +331,7 @@
                 <label class="col-sm-2 control-label" for="rss-category"><?php echo $rss_category_title ?></label>
                 <div class="col-sm-10">
                   <select name="smaily_for_opencart_rss_category" id="rss-category" class="form-control smaily-rss-options">
-                    <option value=''>All Products</option>
+                    <option value="">All Products</option>
                     <?php
                     foreach ($rss_categories as $category) {
                       $selected = is_array($rss_category) && in_array($category['category_id'], $rss_category) ? 'selected' : '';
