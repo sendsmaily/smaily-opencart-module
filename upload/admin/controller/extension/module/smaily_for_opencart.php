@@ -177,6 +177,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             'pd.name' => $this->language->get('sort_name'),
             'p.model' => $this->language->get('sort_model'),
             'p.price' => $this->language->get('sort_price'),
+            'p.quantity' => $this->language->get('sort_quantity'),
             'p.status' => $this->language->get('sort_status'),
             'p.sort_order' => $this->language->get('sort_order')
         ];
