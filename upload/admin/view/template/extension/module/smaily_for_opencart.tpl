@@ -332,7 +332,7 @@
                     <option value="">All Products</option>
                     <?php
                     foreach ($rss_categories as $category) {
-                      $selected = is_array($rss_category) && in_array($category['category_id'], $rss_category) ? 'selected' : ''; ?>
+                      $selected = $rss_category === $category['category_id'] ? 'selected' : ''; ?>
                       <option value='<?php echo $category['category_id'] ?>'<?php echo $selected; ?>><?php echo $category['name']?></option>
                     <?php } ?>
                     </select>
