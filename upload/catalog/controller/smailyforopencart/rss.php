@@ -98,7 +98,7 @@ class ControllerSmailyForOpencartRss extends Controller {
     public function getCategoryIdByName($name) {
         $this->load->model('catalog/category');
         // Load all categories.
-        $categories = $this->model_catalog_category->getCategories(array());
+        $categories = $this->model_catalog_category->getCategories();
         foreach ($categories as $category) {
             if ($category['name'] == $name) {
                 // Get id if name matches.
