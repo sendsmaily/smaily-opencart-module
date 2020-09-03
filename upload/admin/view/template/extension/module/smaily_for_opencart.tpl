@@ -571,6 +571,7 @@
     });
    });
 
+   var smaily_rss_url_base = '<?php echo $smaily_rss_url_base; ?>';
    $(".smaily-rss-options").change(function (event) {
       var rss_url_base = smaily_rss_url_base + '&';
       var parameters = {};
@@ -598,7 +599,4 @@
     });
   });
 })(jQuery);
-</script>
-<script type="text/javascript">
-    var smaily_rss_url_base = '<?php echo $smaily_rss_url_base; ?>';
 </script>
