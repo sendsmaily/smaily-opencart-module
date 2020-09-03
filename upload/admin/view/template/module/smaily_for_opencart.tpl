@@ -197,10 +197,9 @@
                     ];
                     // Add options for select.
                     foreach ($sync_options as $value => $name) {
-                      $selected = is_array($syncronize_additional) && in_array($value, $syncronize_additional) ? 'selected' : '';
-                      echo("<option value='$value' $selected>$name</option>");
-                    }
-                    ?>
+                      $selected = is_array($syncronize_additional) && in_array($value, $syncronize_additional) ? 'selected' : ''; ?>
+                      <option value="<?php echo $value; ?>"<?php echo $selected; ?>><?php echo $name; ?></option>
+                    <?php } ?>
                     </select>
                   <small><?php echo $small_sync_additional; ?></small>
                 </div>
@@ -273,10 +272,9 @@
                     ];
                     // Add options for select.
                     foreach ($cart_options as $value => $name) {
-                      $selected = is_array($abandoned_additional) && in_array($value, $abandoned_additional) ? 'selected' : '';
-                      echo("<option value='$value' $selected>$name</option>");
-                    }
-                    ?>
+                      $selected = is_array($abandoned_additional) && in_array($value, $abandoned_additional) ? 'selected' : ''; ?>
+                      <option value="<?php echo $value; ?>"<?php echo $selected; ?>><?php echo $name; ?></option>
+                    <?php } ?>
                     </select>
                     <small><?php echo $small_cart_additional; ?></small>
                 </div>
@@ -328,10 +326,9 @@
                     <option value=''>All Products</option>
                     <?php
                     foreach ($rss_categories as $category) {
-                      $selected = $category['category_id'] === $rss_category ? 'selected' : '';
-                      echo("<option value=$category[category_id] $selected>$category[name]</option>");
-                    }
-                    ?>
+                      $selected = $category['category_id'] === $rss_category ? 'selected' : ''; ?>
+                      <option value="<?php echo $category['category_id']; ?>"<?php echo $selected; ?>><?php echo $category['name']; ?></option>
+                    <?php } ?>
                     </select>
                 </div>
               </div>
@@ -350,10 +347,9 @@
                     ];
                     // Add options for select.
                     foreach ($sort_options as $sort_code => $sort_name) {
-                      $selected = $rss_sort_by === $sort_code ? 'selected' : '';
-                      echo("<option value='$sort_code' $selected>$sort_name</option>");
-                    }
-                    ?>
+                      $selected = $rss_sort_by === $sort_code ? 'selected' : ''; ?>
+                      <option value="<?php echo $sort_code; ?>"<?php echo $selected; ?>><?php echo $sort_name; ?></option>
+                    <?php } ?>
                     </select>
                 </div>
               </div>
