@@ -562,7 +562,7 @@
    });
    var smaily_rss_url_base = '<?php echo $smaily_rss_url_base; ?>';
    $(".smaily-rss-options").change(function (event) {
-      var rss_url_base = smaily_rss_url_base + '&';
+      var rss_url_base = smaily_rss_url_base;
       var parameters = {};
 
       var rss_category = $('#rss-category').val();
