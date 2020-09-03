@@ -219,7 +219,7 @@
                     <?php
                     foreach ($rss_categories as $category) {
                       $selected = (int) $category['category_id'] === $rss_category ? 'selected' : ''; ?>
-                      <option value="<?php echo $category['category_id']; ?>"<?php echo $selected; ?>><?php echo $category['name']; ?></option>
+                      <option value="<?php echo $category['category_id']; ?>" <?php echo $selected; ?>><?php echo $category['name']; ?></option>
                     <?php } ?>
                 </select>
               </td>
@@ -234,7 +234,7 @@
                     // Add options for select.
                     foreach ($sort_options as $sort_code => $sort_name) {
                       $selected = $rss_sort_by === $sort_code ? 'selected' : ''; ?>
-                      <option value="<?php echo $sort_code; ?>"<?php echo $selected; ?>><?php echo $sort_name; ?></option>
+                      <option value="<?php echo $sort_code; ?>" <?php echo $selected; ?>><?php echo $sort_name; ?></option>
                     <?php } ?>
                 </select>
               </td>
