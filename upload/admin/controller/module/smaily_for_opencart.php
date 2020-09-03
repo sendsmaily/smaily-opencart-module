@@ -148,19 +148,20 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $data['rss_feed_title'] = $this->language->get('rss_feed_title');
         $data['rss_feed_text']  = $this->language->get('rss_feed_text');
         $data['smaily_rss_url_base'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
-        $data['smaily_rss_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
         if ($this->config->get('smaily_for_opencart_rss_category')) {
-            $data['smaily_rss_url'] .= '&category=' . $this->config->get('smaily_for_opencart_rss_category');
+            $query_parameters['category'] = $this->config->get('smaily_for_opencart_rss_category');
         }
         if ($this->config->get('smaily_for_opencart_rss_sort_by')) {
-            $data['smaily_rss_url'] .= '&sort_by=' . $this->config->get('smaily_for_opencart_rss_sort_by');
+            $query_parameters['sort_by'] = $this->config->get('smaily_for_opencart_rss_sort_by');
         }
         if ($this->config->get('smaily_for_opencart_rss_sort_order')) {
-            $data['smaily_rss_url'] .= '&sort_order=' . $this->config->get('smaily_for_opencart_rss_sort_order');
+            $query_parameters['sort_order'] = $this->config->get('smaily_for_opencart_rss_sort_order');
         }
         if ($this->config->get('smaily_for_opencart_rss_limit')) {
-            $data['smaily_rss_url'] .= '&limit=' . $this->config->get('smaily_for_opencart_rss_limit');
+            $query_parameters['limit'] = $this->config->get('smaily_for_opencart_rss_limit');
         }
+        $data['smaily_rss_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss&'
+            . http_build_query($query_parameters);
         $this->load->model('catalog/category');
         $data['rss_category_title'] = $this->language->get('rss_category_title');
         $data['rss_categories'] = $this->model_catalog_category->getCategories();
