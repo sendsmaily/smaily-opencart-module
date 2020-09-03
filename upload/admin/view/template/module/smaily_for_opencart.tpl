@@ -337,14 +337,6 @@
                 <div class="col-sm-10">
                   <select name="smaily_for_opencart_rss_sort_by" id="rss-sort-by" class="form-control smaily-rss-options">
                    <?php
-                    // All available options
-                    $sort_options = [
-                      'pd.name' => $sort_name,
-                      'p.model' => $sort_model,
-                      'p.price' => $sort_price,
-                      'p.status' => $sort_status,
-                      'p.sort_order' => $sort_order
-                    ];
                     // Add options for select.
                     foreach ($sort_options as $sort_code => $sort_name) {
                       $selected = $rss_sort_by === $sort_code ? 'selected' : ''; ?>

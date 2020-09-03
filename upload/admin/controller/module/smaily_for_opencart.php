@@ -167,12 +167,14 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $data['rss_category_title'] = $this->language->get('rss_category_title');
         $data['rss_categories'] = $this->model_catalog_category->getCategories();
         $data['rss_sort_by_title'] = $this->language->get('rss_sort_by_title');
-        $data['sort_name'] = $this->language->get('sort_name');
-        $data['sort_model'] = $this->language->get('sort_model');
-        $data['sort_price'] = $this->language->get('sort_price');
-        $data['sort_status'] = $this->language->get('sort_status');
+        $data['sort_options'] = [
+            'pd.name' => $this->language->get('sort_name'),
+            'p.model' => $this->language->get('sort_model'),
+            'p.price' => $this->language->get('sort_price'),
+            'p.status' => $this->language->get('sort_status'),
+            'p.sort_order' => $this->language->get('sort_order')
+        ];
         $data['rss_sort_order_title'] = $this->language->get('rss_sort_order_title');
-        $data['sort_order'] = $this->language->get('sort_order');
         $data['rss_limit_title'] = $this->language->get('rss_limit_title');
         $data['rss_limit_products'] = $this->language->get('rss_limit_products');
         // Subscriber sync fields.
