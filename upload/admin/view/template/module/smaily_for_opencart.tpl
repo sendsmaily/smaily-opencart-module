@@ -198,7 +198,7 @@
                     // Add options for select.
                     foreach ($sync_options as $value => $name) {
                       $selected = is_array($syncronize_additional) && in_array($value, $syncronize_additional) ? 'selected' : ''; ?>
-                      <option value="<?php echo $value; ?>"<?php echo $selected; ?>><?php echo $name; ?></option>
+                      <option value="<?php echo $value; ?>" <?php echo $selected; ?>><?php echo $name; ?></option>
                     <?php } ?>
                     </select>
                   <small><?php echo $small_sync_additional; ?></small>
@@ -273,7 +273,7 @@
                     // Add options for select.
                     foreach ($cart_options as $value => $name) {
                       $selected = is_array($abandoned_additional) && in_array($value, $abandoned_additional) ? 'selected' : ''; ?>
-                      <option value="<?php echo $value; ?>"<?php echo $selected; ?>><?php echo $name; ?></option>
+                      <option value="<?php echo $value; ?>" <?php echo $selected; ?>><?php echo $name; ?></option>
                     <?php } ?>
                     </select>
                     <small><?php echo $small_cart_additional; ?></small>
@@ -327,7 +327,7 @@
                     <?php
                     foreach ($rss_categories as $category) {
                       $selected = $category['category_id'] === $rss_category ? 'selected' : ''; ?>
-                      <option value="<?php echo $category['category_id']; ?>"<?php echo $selected; ?>><?php echo $category['name']; ?></option>
+                      <option value="<?php echo $category['category_id']; ?>" <?php echo $selected; ?>><?php echo $category['name']; ?></option>
                     <?php } ?>
                     </select>
                 </div>
@@ -340,7 +340,7 @@
                     // Add options for select.
                     foreach ($sort_options as $sort_code => $sort_name) {
                       $selected = $rss_sort_by === $sort_code ? 'selected' : ''; ?>
-                      <option value="<?php echo $sort_code; ?>"<?php echo $selected; ?>><?php echo $sort_name; ?></option>
+                      <option value="<?php echo $sort_code; ?>" <?php echo $selected; ?>><?php echo $sort_name; ?></option>
                     <?php } ?>
                     </select>
                 </div>
