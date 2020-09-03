@@ -119,8 +119,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         if (isset($rss_settings['limit']) && !empty($rss_settings['limit'])) {
             $rss_query_parameters['limit'] = $rss_settings['limit'];
         }
-        $this->data['smaily_rss_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss&'
-            . http_build_query($rss_query_parameters);
+        $this->data['smaily_rss_url'] = $this->data['smaily_rss_url_base'] . http_build_query($rss_query_parameters);
         $this->load->model('catalog/category');
         $this->data['rss_category_title'] = $this->language->get('rss_category_title');
         $this->data['rss_categories'] = $this->model_catalog_category->getCategories(array());
