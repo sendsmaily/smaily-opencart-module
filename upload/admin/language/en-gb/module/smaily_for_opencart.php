@@ -67,6 +67,7 @@ $_['rss_limit_products']               = 'products';
 $_['sort_name']                        = 'Name';
 $_['sort_model']                       = 'Model';
 $_['sort_price']                       = 'Price';
+$_['sort_quantity']                    = 'Quantity';
 $_['sort_status']                      = 'Status';
 $_['sort_order']                       = 'Sort Order';
 
