@@ -380,7 +380,7 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label"><?php echo $rss_feed_title; ?></label>
                 <div class="col-sm-10">
-                  <p><strong id="smaily-rss-feed-url" name="rss_feed_url"><?php echo $smaily_rss_url; ?></strong></p>
+                  <p><strong id="smaily-rss-feed-url"><?php echo $smaily_rss_url; ?></strong></p>
                   <p><?php echo $rss_feed_text; ?></p>
                 </div>
               </div>
