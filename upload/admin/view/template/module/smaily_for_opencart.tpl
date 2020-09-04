@@ -34,6 +34,11 @@
       <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
     </div>
     <?php } ?>
+    <?php if ($error_limit) { ?>
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo $error_limit; ?>
+      <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
+    </div>
+    <?php } ?>
     <?php if ($success) { ?>
     <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> <?php echo $success; ?>
       <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
@@ -120,13 +125,6 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="col-sm-2 control-label"><?php echo $rss_feed_title ?></label>
-              <div class="col-sm-10">
-                <p><strong><?php echo $smaily_rss_url ?></strong></p>
-                <p><?php echo $rss_feed_text ?></p>
-              </div>
-            </div>
-            <div class="form-group">
               <label
                 class="col-sm-2 control-label"
                 id="validate-title"
@@ -199,10 +197,9 @@
                     ];
                     // Add options for select.
                     foreach ($sync_options as $value => $name) {
-                      $selected = is_array($syncronize_additional) && in_array($value, $syncronize_additional) ? 'selected' : '';
-                      echo("<option value='$value' $selected>$name</option>");
-                    }
-                    ?>
+                      $selected = is_array($syncronize_additional) && in_array($value, $syncronize_additional) ? 'selected' : ''; ?>
+                      <option value="<?php echo $value; ?>" <?php echo $selected; ?>><?php echo $name; ?></option>
+                    <?php } ?>
                     </select>
                   <small><?php echo $small_sync_additional; ?></small>
                 </div>
@@ -275,10 +272,9 @@
                     ];
                     // Add options for select.
                     foreach ($cart_options as $value => $name) {
-                      $selected = is_array($abandoned_additional) && in_array($value, $abandoned_additional) ? 'selected' : '';
-                      echo("<option value='$value' $selected>$name</option>");
-                    }
-                    ?>
+                      $selected = is_array($abandoned_additional) && in_array($value, $abandoned_additional) ? 'selected' : ''; ?>
+                      <option value="<?php echo $value; ?>" <?php echo $selected; ?>><?php echo $name; ?></option>
+                    <?php } ?>
                     </select>
                     <small><?php echo $small_cart_additional; ?></small>
                 </div>
@@ -318,6 +314,74 @@
                 <div class="col-sm-10">
                 <p><strong><?php echo $cart_cron_url ?></strong></p>
                 <p><?php echo $cart_cron_text ?></p>
+                </div>
+              </div>
+            </div>
+            <!-- RSS -->
+            <div id="section4" class="tab-pane fade in">
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="rss-category"><?php echo $rss_category_title; ?></label>
+                <div class="col-sm-10">
+                  <select name="smaily_for_opencart_rss_category" id="rss-category" class="form-control smaily-rss-options">
+                    <option value="">All Products</option>
+                    <?php
+                    foreach ($rss_categories as $category) {
+                      $selected = $category['category_id'] === $rss_category ? 'selected' : ''; ?>
+                      <option value="<?php echo $category['category_id']; ?>" <?php echo $selected; ?>><?php echo $category['name']; ?></option>
+                    <?php } ?>
+                    </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="rss-sort-by"><?php echo $rss_sort_by_title; ?></label>
+                <div class="col-sm-10">
+                  <select name="smaily_for_opencart_rss_sort_by" id="rss-sort-by" class="form-control smaily-rss-options">
+                   <?php
+                    // Add options for select.
+                    foreach ($sort_options as $sort_code => $sort_name) {
+                      $selected = $rss_sort_by === $sort_code ? 'selected' : ''; ?>
+                      <option value="<?php echo $sort_code; ?>" <?php echo $selected; ?>><?php echo $sort_name; ?></option>
+                    <?php } ?>
+                    </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="rss-sort-order"><?php echo $rss_sort_order_title; ?></label>
+                <div class="col-sm-10">
+                  <select name="smaily_for_opencart_rss_sort_order" id="rss-sort-order" class="form-control smaily-rss-options">
+                    <?php if ($rss_sort_order == 'ASC') { ?>
+                    <option value="ASC" selected="selected"><?php echo $text_ascending; ?></option>
+                    <option value="DESC"><?php echo $text_descending; ?></option>
+                    <?php } else { ?>
+                    <option value="ASC"><?php echo $text_ascending; ?></option>
+                    <option value="DESC" selected="selected"><?php echo $text_descending; ?></option>
+                    <?php } ?>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="smaily_for_opencart_rss_limit"><?php echo $rss_limit_title; ?></label>
+                <div class="col-sm-10">
+                  <div class="input-group">
+                    <input type="number"
+                          name="smaily_for_opencart_rss_limit"
+                          min="1"
+                          max="250"
+                          id="rss-limit"
+                          value="<?php echo $rss_limit; ?>"
+                          class="form-control smaily-rss-options" />
+                    <span class="input-group-addon"><?php echo $rss_limit_products; ?></span>
+                  </div>
+                  <?php if ($error_limit) { ?>
+                      <div class="text-danger"><?php echo $error_limit; ?></div>
+                  <?php } ?>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label"><?php echo $rss_feed_title; ?></label>
+                <div class="col-sm-10">
+                  <p><strong id="smaily-rss-feed-url"><?php echo $smaily_rss_url; ?></strong></p>
+                  <p><?php echo $rss_feed_text; ?></p>
                 </div>
               </div>
             </div>
@@ -439,7 +503,7 @@
       var subdomain = $("#subdomain").val();
       var username = $("#username").val();
       var password = $("#password").val();
-  
+
       // Display error if empty values.
       if (!subdomain) {
         $('#subdomain').parent().addClass('has-error');
@@ -496,6 +560,32 @@
         }
       });
    });
+   var smaily_rss_url_base = '<?php echo $smaily_rss_url_base; ?>';
+   $(".smaily-rss-options").change(function (event) {
+      var rss_url_base = smaily_rss_url_base;
+      var parameters = {};
+
+      var rss_category = $('#rss-category').val();
+      if (rss_category) {
+        parameters.category = rss_category;
+      }
+
+      var rss_sort_by = $('#rss-sort-by').val();
+      if (rss_sort_by != "none") {
+        parameters.sort_by = rss_sort_by;
+      }
+
+      var rss_sort_order = $('#rss-sort-order').val();
+      if (rss_sort_order != "" ) {
+        parameters.sort_order = rss_sort_order;
+      }
+
+      var rss_limit = $('#rss-limit').val();
+      if (rss_limit != "") {
+        parameters.limit = rss_limit;
+      }
+      $('#smaily-rss-feed-url').html(rss_url_base + $.param(parameters));
+    });
   });
 })(jQuery);
 </script>

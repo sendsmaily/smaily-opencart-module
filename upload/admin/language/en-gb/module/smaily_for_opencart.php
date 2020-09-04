@@ -6,6 +6,7 @@ $_['heading_title']     = 'Smaily for OpenCart';
 $_['section_general']   = 'General';
 $_['section_customer']  = 'Subscriber Synchronization';
 $_['section_abandoned'] = 'Abandoned Cart';
+$_['section_rss']       = 'RSS Feed';
 $_['section_newsletter'] = 'Newsletter Widget';
 
 // Text
@@ -14,6 +15,8 @@ $_['text_success']        = 'Success: You have modified Smaily for OpenCart modu
 $_['text_edit']           = 'Smaily for OpenCart Settings';
 $_['text_enabled']        = 'Enabled';
 $_['text_disabled']       = 'Disabled';
+$_['text_ascending']      = 'Ascending';
+$_['text_descending']     = 'Descending';
 // Customer sync additional fields
 $_['firstname']           = 'First name';
 $_['lastname']            = 'Last name';
@@ -41,7 +44,7 @@ $_['entry_password_title']             = 'Password*';
 $_['validate_title']                   = 'Validate credentials';
 $_['reset_credentials_title']          = 'Reset credentials';
 $_['rss_feed_title']                   = 'Product RSS feed';
-$_['rss_feed_text']                    = "Copy this URL into your template editor's RSS block, to receive RSS-feed";
+$_['rss_feed_text']                    = 'Copy this URL into your template editor\'s RSS block, to receive RSS-feed';
 // Customer sync form
 $_['entry_customer_sync_fields_title'] = 'Customer Synchronization fields';
 $_['sync_token_title']                 = 'Customer Cron Token*';
@@ -55,6 +58,18 @@ $_['abandoned_minutes']                = 'minutes';
 $_['cart_token_title']                 = 'Abandoned Cart Token*';
 $_['sync_cart_url_title']              = 'Abandoned Cart Url';
 $_['cart_cron_text']                   = 'Use this url to run cron. Token must be provided';
+// Rss form
+$_['rss_category_title']               = 'Product category';
+$_['rss_sort_by_title']                = 'Sort products by';
+$_['rss_sort_order_title']             = 'Sort direction';
+$_['rss_limit_title']                  = 'Product limit';
+$_['rss_limit_products']               = 'products';
+$_['sort_name']                        = 'Name';
+$_['sort_model']                       = 'Model';
+$_['sort_price']                       = 'Price';
+$_['sort_quantity']                    = 'Quantity';
+$_['sort_status']                      = 'Status';
+$_['sort_order']                       = 'Sort Order';
 
 //Placeholders
 $_['placeholder_subdomain']  = 'Please enter subdomain';
@@ -72,6 +87,7 @@ $_['error_validate']                = 'Please validate credentials before saving
 $_['error_validate_empty']          = 'Please fill out all fields before validating';
 $_['abandoned_autoresponder_error'] = 'Please select autoresponder for abandoned cart';
 $_['cart_delay_error']              = 'Delay time must be atleast 15 minutes';
+$_['rss_limit_error']               = 'RSS product limit value must be between 1 and 250';
 
 // Buttons
 $_['button_save']              = 'Save';
