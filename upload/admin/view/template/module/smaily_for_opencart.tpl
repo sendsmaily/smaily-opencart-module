@@ -211,14 +211,76 @@
           <table class="form">
             <tr>
               <td>
+                <?php echo $rss_category_title; ?>
+              </td>
+              <td>
+                <select name="smaily_for_opencart_rss_category" id="rss-category" class="smaily-rss-options">
+                    <option value="">All Products</option>
+                    <?php
+                    foreach ($rss_categories as $category) {
+                      $selected = (int) $category['category_id'] === $rss_category ? 'selected' : ''; ?>
+                      <option value="<?php echo $category['category_id']; ?>" <?php echo $selected; ?>><?php echo $category['name']; ?></option>
+                    <?php } ?>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <?php echo $rss_sort_by_title; ?>
+              </td>
+              <td>
+                <select name="smaily_for_opencart_rss_sort_by" id="rss-sort-by" class="smaily-rss-options">
+                   <?php
+                    // Add options for select.
+                    foreach ($sort_options as $sort_code => $sort_name) {
+                      $selected = $rss_sort_by === $sort_code ? 'selected' : ''; ?>
+                      <option value="<?php echo $sort_code; ?>" <?php echo $selected; ?>><?php echo $sort_name; ?></option>
+                    <?php } ?>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <?php echo $rss_sort_order_title; ?>
+              </td>
+              <td>
+                <select name="smaily_for_opencart_rss_sort_order" id="rss-sort-order" class="smaily-rss-options">
+                    <?php if ($rss_sort_order == 'ASC') { ?>
+                    <option value="ASC" selected="selected"><?php echo $text_ascending; ?></option>
+                    <option value="DESC"><?php echo $text_descending; ?></option>
+                    <?php } else { ?>
+                    <option value="ASC"><?php echo $text_ascending; ?></option>
+                    <option value="DESC" selected="selected"><?php echo $text_descending; ?></option>
+                    <?php } ?>
+                  </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <?php echo $rss_limit_title; ?>
+              </td>
+              <td>
+                <input type="number"
+                    name="smaily_for_opencart_rss_limit"
+                    min="1"
+                    max="250"
+                    id="rss-limit"
+                    value="<?php echo $rss_limit; ?>"
+                    class="smaily-rss-options" />
+                <span class="input-group-addon"><?php echo $rss_limit_products; ?></span>
+              </td>
+            </tr>
+            <tr>
+              <td>
                 <?php echo $rss_feed_title; ?>
               </td>
               <td>
-                <p><strong><?php echo $rss_feed_url; ?></strong></p>
+                <p><strong id="smaily-rss-feed-url"><?php echo $smaily_rss_url; ?></strong></p>
                 <span class="help">
                   <?php echo $rss_feed_text; ?>
                 </span>
               </td>
+            </tr>
           </table>
         </div>
         <table
@@ -402,6 +464,32 @@ function addModule() {
           }
         },
         'json');
+    });
+    var smaily_rss_url_base = '<?php echo $smaily_rss_url_base; ?>';
+    $(".smaily-rss-options").change(function (event) {
+      var rss_url_base = smaily_rss_url_base;
+      var parameters = {};
+
+      var rss_category = $('#rss-category').val();
+      if (rss_category) {
+        parameters.category = rss_category;
+      }
+
+      var rss_sort_by = $('#rss-sort-by').val();
+      if (rss_sort_by != "none") {
+        parameters.sort_by = rss_sort_by;
+      }
+
+      var rss_sort_order = $('#rss-sort-order').val();
+      if (rss_sort_order != "" ) {
+        parameters.sort_order = rss_sort_order;
+      }
+
+      var rss_limit = $('#rss-limit').val();
+      if (rss_limit != "") {
+        parameters.limit = rss_limit;
+      }
+      $('#smaily-rss-feed-url').html(rss_url_base + $.param(parameters));
     });
   });
 })(jQuery);

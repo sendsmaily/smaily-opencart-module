@@ -45,6 +45,8 @@ class ControllerModuleSmailyForOpencart extends Controller {
         if ($this->request->server['REQUEST_METHOD'] == 'POST') {
             // Save optin form settings.
             $this->handleLayoutSaving();
+            // Save RSS settings.
+            $this->handleRss();
             // Save Customer Sync settings and redirect page.
             $this->handleCustomerSync();
             // Code execution stops here.
@@ -83,6 +85,8 @@ class ControllerModuleSmailyForOpencart extends Controller {
         $this->data['small_password'] = $this->language->get('small_password');
         $this->data['text_enabled'] = $this->language->get('text_enabled');
         $this->data['text_disabled'] = $this->language->get('text_disabled');
+        $this->data['text_ascending'] = $this->language->get('text_ascending');
+        $this->data['text_descending'] = $this->language->get('text_descending');
         $this->data['token'] = $this->session->data['token'];
 
         // Subscriber sync fields.
@@ -99,9 +103,38 @@ class ControllerModuleSmailyForOpencart extends Controller {
 
         // RSS feed text.
         $this->data['rss_feed_title'] = $this->language->get('rss_feed_title');
-        $this->data['rss_feed_text'] = $this->language->get('rss_feed_text');
-        $this->data['rss_feed_url'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss';
-
+        $this->data['rss_feed_text']  = $this->language->get('rss_feed_text');
+        $this->data['smaily_rss_url_base'] = $this->config->get('config_url') . 'index.php?route=smailyforopencart/rss&';
+        $rss_query_parameters = array();
+        $rss_settings = (is_array($settings) && isset($settings['smaily_rss'])) ? $settings['smaily_rss'] : array();
+        if (isset($rss_settings['category']) && !empty($rss_settings['category'])) {
+            $rss_query_parameters['category'] = $rss_settings['category'];
+        }
+        if (isset($rss_settings['sort_by'])) {
+            $rss_query_parameters['sort_by'] = $rss_settings['sort_by'];
+        }
+        if (isset($rss_settings['sort_order'])) {
+            $rss_query_parameters['sort_order'] = $rss_settings['sort_order'];
+        }
+        if (isset($rss_settings['limit']) && !empty($rss_settings['limit'])) {
+            $rss_query_parameters['limit'] = $rss_settings['limit'];
+        }
+        $this->data['smaily_rss_url'] = $this->data['smaily_rss_url_base'] . http_build_query($rss_query_parameters);
+        $this->load->model('catalog/category');
+        $this->data['rss_category_title'] = $this->language->get('rss_category_title');
+        $this->data['rss_categories'] = $this->model_catalog_category->getCategories(array());
+        $this->data['rss_sort_by_title'] = $this->language->get('rss_sort_by_title');
+        $this->data['sort_options'] = [
+            'pd.name' => $this->language->get('sort_name'),
+            'p.model' => $this->language->get('sort_model'),
+            'p.price' => $this->language->get('sort_price'),
+            'p.quantity' => $this->language->get('sort_quantity'),
+            'p.status' => $this->language->get('sort_status'),
+            'p.sort_order' => $this->language->get('sort_order')
+        ];
+        $this->data['rss_sort_order_title'] = $this->language->get('rss_sort_order_title');
+        $this->data['rss_limit_title'] = $this->language->get('rss_limit_title');
+        $this->data['rss_limit_products'] = $this->language->get('rss_limit_products');
         // Optin form settings text.
         $this->data['table_header_layout_text'] = $this->language->get('table_header_layout_text');
         $this->data['table_header_position_text'] = $this->language->get('table_header_position_text');
@@ -161,6 +194,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
          */
         $api_credentials = isset($settings['smaily_api_credentials']) ? $settings['smaily_api_credentials'] : array();
         $sync_settings = isset($settings['smaily_customer_sync']) ? $settings['smaily_customer_sync'] : array();
+        $rss_settings = isset($settings['smaily_rss']) ? $settings['smaily_rss'] : array();
 
         $this->data['subdomain'] = isset($api_credentials['subdomain']) ? $api_credentials['subdomain'] : '';
         $this->data['username'] = isset($api_credentials['username']) ? $api_credentials['username'] : '';
@@ -185,6 +219,27 @@ class ControllerModuleSmailyForOpencart extends Controller {
         } else {
             // Read sync token from db, if it's not in there, create one.
             $this->data['sync_token'] = isset($sync_settings['token']) ? $sync_settings['token'] : uniqid();
+        }
+        // RSS settings.
+        if (isset($this->request->post['smaily_for_opencart_rss_category'])) {
+            $this->data['rss_category'] = $this->request->post['smaily_for_opencart_rss_category'];
+        } else {
+            $this->data['rss_category'] = isset($rss_settings['category']) ? $rss_settings['category'] : '';
+        }
+        if (isset($this->request->post['smaily_for_opencart_rss_sort_by'])) {
+            $this->data['rss_sort_by'] = $this->request->post['smaily_for_opencart_rss_sort_by'];
+        } else {
+            $this->data['rss_sort_by'] = isset($rss_settings['sort_by']) ? $rss_settings['sort_by'] : array();
+        }
+        if (isset($this->request->post['smaily_for_opencart_rss_sort_order'])) {
+            $this->data['rss_sort_order'] = $this->request->post['smaily_for_opencart_rss_sort_order'];
+        } else {
+            $this->data['rss_sort_order'] = isset($rss_settings['sort_order']) ? $rss_settings['sort_order'] : '';
+        }
+        if (isset($this->request->post['smaily_for_opencart_rss_limit'])) {
+            $this->data['rss_limit'] = $this->request->post['smaily_for_opencart_rss_limit'];
+        } else {
+            $this->data['rss_limit'] = isset($rss_settings['limit']) ? $rss_settings['limit'] : array();
         }
 
         // Display chosen customer sync field as selected.
@@ -263,6 +318,32 @@ class ControllerModuleSmailyForOpencart extends Controller {
         }
         // Save layout settings. OC requires '_module' key scheme for it.
         $this->model_smailyforopencart_admin->editSettingValue('smaily', 'smaily_for_opencart_module', $optin_form_settings);
+    }
+
+    protected function handleRss() {
+        if (!$this->user->hasPermission('modify', 'module/smaily_for_opencart')) {
+            return;
+        }
+        // Load Smaily admin model for saving settings.
+        $this->load->model('smailyforopencart/admin');
+        // Get all options.
+        $category = $this->request->post['smaily_for_opencart_rss_category'];
+        $sort = $this->request->post['smaily_for_opencart_rss_sort_by'];
+        $order = $this->request->post['smaily_for_opencart_rss_sort_order'];
+        $limit = $this->request->post['smaily_for_opencart_rss_limit'];
+        // Data validation.
+        $category = (int) $category > 0 ? (int) $category : '';
+        $sort = in_array($sort, array('pd.name', 'p.model', 'p.price', 'p.quantity', 'p.status', 'p.sort_order'), true) ? $sort : 'pd.name';
+        $order = in_array($order, array('ASC', 'DESC'), true) ? $order : 'DESC';
+        $limit = $limit >= 1 && $limit < 250 ? $limit : 50;
+        // Save RSS settings to database.
+        $settings = [
+            'category' => $category,
+            'sort_by' => $sort,
+            'sort_order' => $order,
+            'limit' => $limit
+        ];
+        $this->model_smailyforopencart_admin->editSettingValue('smaily', 'smaily_rss', $settings);
     }
 
     protected function handleCustomerSync() {
