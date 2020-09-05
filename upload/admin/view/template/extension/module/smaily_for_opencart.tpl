@@ -198,8 +198,8 @@
                   <?php
                     // All available options
                     $sync_options = [
-                      'firstname'  => $firstname,
-                      'lastname'  => $lastname,
+                      'first_name'  => $firstname,
+                      'last_name'  => $lastname,
                       'telephone'  => $telephone,
                       'date_added' => $date_added
                     ];
