@@ -60,17 +60,14 @@ class ControllerSmailyForOpencartCronCustomers extends Controller {
                     // Get customer info based of selected fields from admin.
                     $sync_fields = $this->model_smailyforopencart_helper->getSyncFields();
                     $customer = [];
-                    foreach ($sync_fields as $field) {
-                        // Add customer fields.
-                        if ($field === 'first_name') {
-                            $customer['first_name'] = isset($subscriber['firstname']) ? $subscriber['firstname'] : '';
-                            continue;
+                    foreach ($sync_fields as $from_field) {
+                        $to_field = $from_field;
+                        if ($from_field === 'firstname') {
+                            $to_field = 'first_name';
+                        } elseif ($from_field === 'lastname') {
+                            $to_field = 'last_name';
                         }
-                        if ($field === 'last_name') {
-                            $customer['last_name'] = isset($subscriber['lastname']) ? $subscriber['lastname'] : '';
-                            continue;
-                        }
-                        $customer[$field] = $subscriber[$field];
+                        $customer[$to_field] = $subscriber[$from_field];
                     }
                     $offset_sub = $subscriber['customer_id'];
                     $customer['is_unsubscribed'] = "0";
