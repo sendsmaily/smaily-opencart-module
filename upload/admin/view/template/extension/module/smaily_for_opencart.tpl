@@ -198,8 +198,8 @@
                   <?php
                     // All available options
                     $sync_options = [
-                      'first_name'  => $firstname,
-                      'last_name'  => $lastname,
+                      'firstname'  => $firstname,
+                      'lastname'  => $lastname,
                       'telephone'  => $telephone,
                       'date_added' => $date_added
                     ];
@@ -404,7 +404,7 @@
       var username = $("#username").val();
       var password = $("#password").val();
       var validateDiv = $('#validate-alert');
-  
+
       // Display error if empty values.
       if (!subdomain) {
         $('#subdomain').parent().addClass('has-error');
