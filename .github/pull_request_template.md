@@ -1,6 +1,4 @@
-# OpenCart Version : 1.5.x | 2.2.x | 2.3.x | 3.0.x
-
-## Plugin Version : X.X.X (next version number)
+# Plugin Version : X.X.X (next version number)
 
 **Version changelog**
 
@@ -11,7 +9,7 @@ A list of changes regarding the next version release:
 
 **Release checklist**
 
-- [ ] Added `release` tag to this pull request
+- [ ] Added `release` and appropriate platform version tag to this pull request
 - [ ] Updated README.md
 - [ ] Updated CHANGELOG.md
 - [ ] Updated plugin version number
