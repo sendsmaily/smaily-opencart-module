@@ -13,6 +13,7 @@
       </div>
       <?php endif; ?>
       <form class="form" action="https://<?php echo $subdomain; ?>.sendsmaily.net/api/opt-in/" method="post" autocomplete="off">
+        <input type="hidden" name="language" value='<?php echo $language ?>' />
         <input type="hidden" name="success_url" value="<?php echo $current_url; ?>" />
         <input type="hidden" name="failure_url" value="<?php echo $current_url; ?>" />
         <div class="form-group">
