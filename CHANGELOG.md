@@ -3,7 +3,7 @@
 ### 1.2.0
 
 - More user-friendly RSS URL generation with extra parameters - [#94](https://github.com/sendsmaily/smaily-opencart-module/pull/94)
-- Add language field to form - #100(https://github.com/sendsmaily/smaily-opencart-module/issues/100)
+- Add language field to form - [#100](https://github.com/sendsmaily/smaily-opencart-module/issues/100)
 
 ### 1.1.6
 
