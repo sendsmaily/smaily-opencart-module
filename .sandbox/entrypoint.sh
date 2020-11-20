@@ -25,7 +25,7 @@ if [ -d install ]; then
         --password smailydev1 \
         --email admin@smaily.sandbox \
         --agree_tnc yes \
-        --http_server http://127.0.0.1:8080/
+        --http_server http://localhost:8080/
 
     # Remove install directory.
     rm -rd ./install
