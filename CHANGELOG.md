@@ -2,9 +2,9 @@
 
 ### 1.4.0
 
-- More user-friendly RSS URL generation with extra parameters
-- Unify use of first_name & last_name as field names
-- Add language field to form
+- More user-friendly RSS URL generation with extra parameters [[#95](https://github.com/sendsmaily/smaily-opencart-module/pull/95)]
+- Unify use of first_name & last_name as field names [[#54](https://github.com/sendsmaily/smaily-opencart-module/issues/54)]
+- Add language field to form [[#104](https://github.com/sendsmaily/smaily-opencart-module/pull/104)]
 
 ### 1.3.2
 
