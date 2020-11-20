@@ -87,13 +87,9 @@ We recommend to run Customer Synchronization daily and Abandoned Carts not more 
 
 ## Frequently Asked Questions
 
-### Why RSS-feed is not displaying products from category?
-
-Product categories must be entered as found from **Catalog** &rarr; **Categories** page and must be url-encoded. For example category `Laptops & Notebooks` becomes `Laptops%20%26%20Notebooks`. Lower- and uppercase also matters.
-
 ### How can I filter RSS-feed output by category and limit results?
 
-You can access RSS feed by visiting ulr `[store_url]/index.php?route=smailyforopencart/rss` or `index.php?route=extension/smailyforopencart/rss` for version 2.3+ and you can add parameters (category and limit) by appending them to url. For example `store_url/index.php?route=smailyforopencart/rss&category=Laptops%20%26%20Notebooks&limit=3`. Regular RSS-feed shows 50 last updated products.
+Go to the RSS feed tab under **Extensions** &rarr; **Modules** &rarr; **Smaily for OpenCart** and select the category of products to be displayed.
 
 ### How can I access additional Abandoned cart parameters in Smaily template editor?
 
