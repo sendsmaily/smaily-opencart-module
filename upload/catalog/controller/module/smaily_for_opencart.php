@@ -25,6 +25,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
             $request_scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
             $url = $request_scheme .'://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ;
             $data['current_url'] =  $url;
+            $data['language'] = $this->session->data['language'];
             // Get smaily response from url.
             $response_code = isset($this->request->get['code']) ? (int) $this->request->get['code'] : null;
             if ($response_code && $response_code === 101) {
