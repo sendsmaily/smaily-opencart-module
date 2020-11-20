@@ -6,32 +6,37 @@ services:
     image: opencart-1.5.x
     restart: always
     ports:
-      - 8080:80
+    - 8080:80
+    environment:
+      DB_HOST: database
+      DB_USER: root
+      DB_PASSWORD: root
     volumes:
-      - app-1.5.x:/var/www/html
-      - ./upload:/var/www/html/smaily_for_opencart
+    - app-1.5.x:/var/www/html
+    - ./upload:/smaily_for_opencart
     depends_on:
-      - database
+    - database
 
   database:
     image: mysql:5.7
     restart: always
     environment:
       MYSQL_DATABASE: opencart
-      MYSQL_ROOT_PASSWORD: smailydev1
+      MYSQL_ROOT_PASSWORD: root
     volumes:
-      - database-1.5.x:/var/lib/mysql
+    - database-1.5.x:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
     ports:
-      - '8888:80'
+    - '8888:80'
     environment:
       PMA_HOST: database
-      MYSQL_ROOT_PASSWORD: smailydev1
+      PMA_USER: root
+      PMA_PASSWORD: root
     depends_on:
-      - database
+    - database
 
 volumes:
   app-1.5.x:
