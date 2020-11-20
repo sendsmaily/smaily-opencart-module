@@ -1,5 +1,11 @@
 # Changelog
 
+### 1.4.0
+
+- More user-friendly RSS URL generation with extra parameters
+- Unify use of first_name & last_name as field names
+- Add language field to form
+
 ### 1.3.2
 
 - Abandoned cart sent status is reset when customer empties cart [[#73](https://github.com/sendsmaily/smaily-opencart-module/issues/73)]
