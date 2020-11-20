@@ -8,16 +8,27 @@ class ControllerExtensionSmailyForOpencartRss extends Controller {
         $this->load->model('tool/image');
         $this->load->model('localisation/currency');
 
-        // Get params from url for filtering products.
+        $category = null;
+        $limit = 50;
+        $sort = 'p.date_added';
+        $order = 'DESC';
+        // Get params from URL for filtering products.
         if (isset($this->request->get['category'])) {
             $category = $this->request->get['category'];
-        } else {
-            $category = null;
+            // Category parameter can be either in string format or category ID.
+            $category = (int) $category > 0 ? (int) $category : $this->getCategoryIdByName($category);
         }
         if (isset($this->request->get['limit'])) {
             $limit = (int) $this->request->get['limit'];
-        } else {
-            $limit = 50;
+            $limit = $limit >= 1 && $limit < 250 ? $limit : 50;
+        }
+        if (isset($this->request->get['sort_by'])) {
+            $sort = $this->request->get['sort_by'];
+            $sort = in_array($sort, array('pd.name', 'p.model', 'p.price', 'p.status', 'p.sort_order'), true) ? $sort : 'p.date_added';
+        }
+        if (isset($this->request->get['sort_order'])) {
+            $order = $this->request->get['sort_order'];
+            $order = in_array($order, array('ASC', 'DESC'), true) ? $order : 'DESC';
         }
 
         // Xml header.
@@ -34,14 +45,14 @@ class ControllerExtensionSmailyForOpencartRss extends Controller {
         $data['currency'] = $this->session->data['currency'];
         // Filter for query.
         $filter = array(
-            'sort' => 'p.date_added',
-            'order' => 'DESC',
+            'sort' => $sort,
+            'order' => $order,
             'start' => 0,
             'limit' => $limit
         );
         // Add category if set.
         if ($category) {
-            $filter['filter_category_id'] = $this->getCategoryIdByName($category);
+            $filter['filter_category_id'] = $category;
             $filter['filter_sub_category'] = true;
         }
         // Get items based on filer.

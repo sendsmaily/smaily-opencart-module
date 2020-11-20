@@ -177,5 +177,30 @@
         },
       });
     });
+    $(".smaily-rss-options").change(function (event) {
+      var rss_url_base = smaily_rss_url_base + '&';
+      var parameters = {};
+
+      var rss_category = $('#rss-category').val();
+      if (rss_category != "") {
+        parameters.category = rss_category;
+      }
+
+      var rss_sort_by = $('#rss-sort-by').val();
+      if (rss_sort_by != "none") {
+        parameters.sort_by = rss_sort_by;
+      }
+
+      var rss_sort_order = $('#rss-sort-order').val();
+      if (rss_sort_order != "" ) {
+        parameters.sort_order = rss_sort_order;
+      }
+
+      var rss_limit = $('#rss-limit').val();
+      if (rss_limit != "") {
+        parameters.limit = rss_limit;
+      }
+      $('#smaily-rss-feed-url').html(rss_url_base + $.param(parameters));
+    });
   });
 })(jQuery);
