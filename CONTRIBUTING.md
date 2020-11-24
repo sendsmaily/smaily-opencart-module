@@ -38,7 +38,7 @@ And run the environment:
 
 The repository is split into multiple parts:
 
-- `assets` - screenshots for Wordpress.org plugin page;
+- `assets` - screenshots for plugin page;
 - `upload` - module files;
 
 In addition there are system directories:
@@ -81,6 +81,6 @@ Environment can be stopped by executing:
 
 ## Resetting the environment
 
-If you need to reset the Wordpress installation in the development environment, just simply delete environment's Docker volumes. Easiest way to achieve this is by running:
+If you need to reset the installation, just simply delete environment's Docker volumes. Easiest way to achieve this is by running:
 
     $ docker-compose down -v
