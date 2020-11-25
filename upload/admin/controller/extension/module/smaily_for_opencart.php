@@ -120,7 +120,6 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             ),
         );
 
-
         // Get URL for CRON links.
         $url = new Url(HTTP_CATALOG, $this->config->get('config_secure') ? HTTPS_CATALOG : '');
         $data['product_url_without_id'] = $url->link('product/product', array('product_id' => '' ), true);
