@@ -7,6 +7,7 @@ $_['section_general']   = 'General';
 $_['section_customer']  = 'Subscriber Synchronization';
 $_['section_abandoned'] = 'Abandoned Cart';
 $_['section_rss']       = 'RSS Feed';
+$_['section_status']    = 'Abandoned Cart Status';
 $_['section_newsletter'] = 'Newsletter Widget';
 
 // Text
@@ -69,6 +70,13 @@ $_['model']                            = 'Model';
 $_['price']                            = 'Price';
 $_['status']                           = 'Status';
 $_['sort_order']                       = 'Sort Order';
+// Abandoned cart status table
+$_['header_id']                        = 'Customer ID';
+$_['header_name']                      = 'Customer Name';
+$_['header_email']                     = 'Customer E-Mail';
+$_['header_cart']                      = 'Shopping Cart';
+$_['header_date']                      = 'Email Date & Time';
+$_['header_status']                    = 'Status';
 
 
 //Placeholders

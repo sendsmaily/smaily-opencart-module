@@ -408,6 +408,51 @@
                 </div>
               </div>
             </div>
+            <div id="section5" class="tab-pane fade in">
+              <div class="form-group">
+                <table class="table table-bordered table-hover SmailyAbandonedCartsTable">
+                  <thead>
+                    <tr>
+                      <th scope="col">{{ header_id }}</th>
+                      <th class="text-left">{% if sort == 'lastname' %}<a href="{{ sort_name }}" class="{{ order|lower }}">{{ header_name }}</a>{% else %}<a href="{{ sort_name }}">{{ header_name }}</a>{% endif %}</td>
+                      <th class="text-left">{% if sort == 'email' %}<a href="{{ sort_email }}" class="{{ order|lower }}">{{ header_email }}</a>{% else %}<a href="{{ sort_email }}">{{ header_email }}</a>{% endif %}</td>
+                      <th class="text-left">{{ header_cart }}</th>
+                      <th class="text-left">{% if sort == 'sent_time' %}<a href="{{ sort_date }}" class="{{ order|lower }}">{{ header_date }}</a>{% else %}<a href="{{ sort_date }}">{{ header_date }}</a>{% endif %}</td>
+                      <th class="text-left">{% if sort == 'is_sent' %}<a href="{{ sort_status }}" class="{{ order|lower }}">{{ header_status }}</a>{% else %}<a href="{{ sort_status }}">{{ header_status }}</a>{% endif %}</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for abandoned_cart in abandoned_cart_list %}
+                    <tr>
+                      <th scope="row">{{ abandoned_cart.customer_id }}</th>
+                        <td>{{ abandoned_cart.firstname ~ " " ~ abandoned_cart.lastname}}</td>
+                        <td>{{ abandoned_cart.email }}</td>
+                      <td>
+                        <table class="table table-bordered" >
+                          <tbody >
+                            {% for product in abandoned_cart.products %}
+                            <tr>
+                              <td width="70%"><a href={{ product_url_without_id ~ product.data.product_id }} /a>{{ product.data.name }}</td>
+                              <td width="15%">{{ "x " ~ product.quantity }}</td>
+                              <td width="15%">{{ "$" ~ product.data.price }}</td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </td>
+                      <td>{{ abandoned_cart.sent_time ?: '' }}<br></td>
+                      <td><b>{{ abandoned_cart.is_sent == '1' ? 'SENT' : 'PENDING' }}<b></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <div class="row">
+                  <div class="col-sm-6 text-left">{{ pagination }}</div>
+                  <div class="col-sm-6 text-right">{{ results }}</div>
+                </div>
+              </div>
+            </div>
+            </div>
             </div> <!-- .tab-content -->
             </div> <!-- .tab-pane -->
           </form>
@@ -418,5 +463,6 @@
   <script type="text/javascript">
     var smaily_rss_url_base = '{{ smaily_rss_url_base }}';
   </script>
+  <link rel="stylesheet" type="text/css" href="view/theme/default/stylesheet/smaily_oc.css" />
 {{ footer }}
 </div>
