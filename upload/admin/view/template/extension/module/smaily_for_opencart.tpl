@@ -587,7 +587,7 @@
       }
 
       var rss_sort_order = $('#rss-sort-order').val();
-      if (rss_sort_order != "" ) {
+      if (rss_sort_order != "") {
         parameters.sort_order = rss_sort_order;
       }
 
