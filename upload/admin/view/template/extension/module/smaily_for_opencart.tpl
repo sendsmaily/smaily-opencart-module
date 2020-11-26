@@ -398,11 +398,11 @@
                   <thead>
                     <tr>
                       <th scope="col"><?php echo $cart_status_table_header_id; ?></th>
-                      <th class="text-left"><a href="<?php echo $sort_name; ?>" class="<?php echo $sort ==='lastname' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_name; ?></a></th>
-                      <th class="text-left"><a href="<?php echo $sort_email; ?>" class="<?php echo $sort ==='email' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_email; ?></a></th>
+                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_name_link; ?>" class="<?php echo $sort ==='lastname' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_name; ?></a></th>
+                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_email_link; ?>" class="<?php echo $sort ==='email' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_email; ?></a></th>
                       <th class="text-left"><?php echo $cart_status_table_header_cart; ?></th>
-                      <th class="text-left"><a href="<?php echo $sort_date; ?>" class="<?php echo $sort ==='sent_time' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_date; ?></a></th>
-                      <th class="text-left"><a href="<?php echo $sort_status; ?>" class="<?php echo $sort ==='is_sent' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_status; ?></a></th>
+                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_date_link; ?>" class="<?php echo $sort ==='sent_time' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_date; ?></a></th>
+                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_status_link; ?>" class="<?php echo $sort ==='is_sent' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_status; ?></a></th>
                     </tr>
                   </thead>
                   <tbody>

@@ -492,10 +492,10 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             $url_parameters['order'] = 'ASC';
         }
 
-        $data['sort_name'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'lastname')), true);
-        $data['sort_email'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'email')), true);
-        $data['sort_date'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'sent_time')), true);
-        $data['sort_status'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'is_sent')), true);
+        $data['cart_status_table_sort_name_link'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'lastname')), true);
+        $data['cart_status_table_sort_email_link'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'email')), true);
+        $data['cart_status_table_sort_date_link'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'sent_time')), true);
+        $data['cart_status_table_sort_status_link'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'is_sent')), true);
         $data['sort'] = $sort;
         $data['order'] = $order;
 
