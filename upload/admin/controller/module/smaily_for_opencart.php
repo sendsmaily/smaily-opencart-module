@@ -294,7 +294,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         );
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('text_module'),
-            'href' => $this->url->link('module', 'token=' . $this->session->data['token'], true)
+            'href' => $this->url->link('extension/module', 'token=' . $this->session->data['token'], true)
         );
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
@@ -303,7 +303,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
 
         // Save and cancel button href-s.
         $data['action'] = $this->url->link('module/smaily_for_opencart', 'token=' . $this->session->data['token'], true);
-        $data['cancel'] = $this->url->link('module', 'token=' . $this->session->data['token'], true);
+        $data['cancel'] = $this->url->link('extension/module', 'token=' . $this->session->data['token'], true);
 
         /**
          * Data for fields.
