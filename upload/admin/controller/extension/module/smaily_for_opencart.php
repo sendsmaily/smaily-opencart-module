@@ -460,8 +460,8 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             $data['rss_limit'] = $this->config->get('smaily_for_opencart_rss_limit');
         }
         // Abandoned Cart status table.
-        // Abandoned Cart status table.
         $this->load->model('extension/smailyforopencart/admin');
+        $data['product_url_without_id'] = $url->link('product/product', array('product_id' => ''), true);
         $url_parameters = array();
         if (isset($this->session->data['token'])) {
             $url_parameters['token'] = $this->session->data['token'];
