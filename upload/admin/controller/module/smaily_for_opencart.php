@@ -429,6 +429,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         }
         // Abandoned Cart status table.
         $this->load->model('smailyforopencart/admin');
+        $data['product_url_without_id'] = $this->config->get('config_url') . 'index.php?route=product/product&product_id=';
         $url_parameters = array();
         if (isset($this->session->data['token'])) {
             $url_parameters['token'] = $this->session->data['token'];
