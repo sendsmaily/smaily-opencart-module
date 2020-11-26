@@ -211,11 +211,9 @@
     var search_params = ['sort', 'order', 'page'];
     var query_parameters = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
     var i;
-    var search_param_in_url = false;
     for (i = 0; i < query_parameters.length; i++) {
       parameter = query_parameters[i].split('=')[0];
       if ($.inArray(parameter, search_params) !== -1) {
-        search_param_in_url = true;
         return true;
       }
     }
