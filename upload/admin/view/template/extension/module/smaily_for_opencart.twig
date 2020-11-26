@@ -413,12 +413,12 @@
                 <table class="table table-bordered table-hover SmailyAbandonedCartsTable">
                   <thead>
                     <tr>
-                      <th scope="col">{{ header_id }}</th>
-                      <th class="text-left">{% if sort == 'lastname' %}<a href="{{ sort_name }}" class="{{ order|lower }}">{{ header_name }}</a>{% else %}<a href="{{ sort_name }}">{{ header_name }}</a>{% endif %}</td>
-                      <th class="text-left">{% if sort == 'email' %}<a href="{{ sort_email }}" class="{{ order|lower }}">{{ header_email }}</a>{% else %}<a href="{{ sort_email }}">{{ header_email }}</a>{% endif %}</td>
-                      <th class="text-left">{{ header_cart }}</th>
-                      <th class="text-left">{% if sort == 'sent_time' %}<a href="{{ sort_date }}" class="{{ order|lower }}">{{ header_date }}</a>{% else %}<a href="{{ sort_date }}">{{ header_date }}</a>{% endif %}</td>
-                      <th class="text-left">{% if sort == 'is_sent' %}<a href="{{ sort_status }}" class="{{ order|lower }}">{{ header_status }}</a>{% else %}<a href="{{ sort_status }}">{{ header_status }}</a>{% endif %}</td>
+                      <th scope="col">{{ cart_status_table_header_id }}</th>
+                      <th class="text-left">{% if sort == 'lastname' %}<a href="{{ sort_name }}" class="{{ order|lower }}">{{ cart_status_table_header_name }}</a>{% else %}<a href="{{ sort_name }}">{{ cart_status_table_header_name }}</a>{% endif %}</td>
+                      <th class="text-left">{% if sort == 'email' %}<a href="{{ sort_email }}" class="{{ order|lower }}">{{ cart_status_table_header_email }}</a>{% else %}<a href="{{ sort_email }}">{{ cart_status_table_header_email }}</a>{% endif %}</td>
+                      <th class="text-left">{{ cart_status_table_header_cart }}</th>
+                      <th class="text-left">{% if sort == 'sent_time' %}<a href="{{ sort_date }}" class="{{ order|lower }}">{{ cart_status_table_header_date }}</a>{% else %}<a href="{{ sort_date }}">{{ cart_status_table_header_date }}</a>{% endif %}</td>
+                      <th class="text-left">{% if sort == 'is_sent' %}<a href="{{ sort_status }}" class="{{ order|lower }}">{{ cart_status_table_header_status }}</a>{% else %}<a href="{{ sort_status }}">{{ cart_status_table_header_status }}</a>{% endif %}</td>
                     </tr>
                   </thead>
                   <tbody>

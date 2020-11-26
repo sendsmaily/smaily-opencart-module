@@ -71,12 +71,12 @@ $_['price']                            = 'Price';
 $_['status']                           = 'Status';
 $_['sort_order']                       = 'Sort Order';
 // Abandoned cart status table
-$_['header_id']                        = 'Customer ID';
-$_['header_name']                      = 'Customer Name';
-$_['header_email']                     = 'Customer E-Mail';
-$_['header_cart']                      = 'Shopping Cart';
-$_['header_date']                      = 'Email Date & Time';
-$_['header_status']                    = 'Status';
+$_['cart_status_table_header_id']      = 'Customer ID';
+$_['cart_status_table_header_name']    = 'Customer Name';
+$_['cart_status_table_header_email']   = 'Customer E-Mail';
+$_['cart_status_table_header_cart']    = 'Shopping Cart';
+$_['cart_status_table_header_date']    = 'Email Date & Time';
+$_['cart_status_table_header_status']  = 'Status';
 
 
 //Placeholders

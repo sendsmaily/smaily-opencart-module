@@ -200,12 +200,12 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $data['status'] = $this->language->get('status');
         $data['sort_order'] = $this->language->get('sort_order');
         // Abandoned cart status table.
-        $data['header_id'] = $this->language->get('header_id');
-        $data['header_name'] = $this->language->get('header_name');
-        $data['header_email'] = $this->language->get('header_email');
-        $data['header_cart'] = $this->language->get('header_cart');
-        $data['header_date'] = $this->language->get('header_date');
-        $data['header_status'] = $this->language->get('header_status');
+        $data['cart_status_table_header_id'] = $this->language->get('cart_status_table_header_id');
+        $data['cart_status_table_header_name'] = $this->language->get('cart_status_table_header_name');
+        $data['cart_status_table_header_email'] = $this->language->get('cart_status_table_header_email');
+        $data['cart_status_table_header_cart'] = $this->language->get('cart_status_table_header_cart');
+        $data['cart_status_table_header_date'] = $this->language->get('cart_status_table_header_date');
+        $data['cart_status_table_header_status'] = $this->language->get('cart_status_table_header_status');
         // Subscriber sync title.
         $data['entry_customer_sync_fields_title'] = $this->language->get('entry_customer_sync_fields_title');
         // Subscriber sync fields.
