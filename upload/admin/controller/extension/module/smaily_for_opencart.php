@@ -509,8 +509,19 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $pagination->text = $this->language->get('text_pagination');
         $pagination->url = $this->url->link('extension/module/smaily_for_opencart', 'user_token=' . $this->session->data['user_token'] . '&page={page}', true);
         $data['pagination'] = $pagination->render();
-        $data['results'] = sprintf($this->language->get('text_pagination'), ($abanonded_carts_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($abanonded_carts_total - $this->config->get('config_limit_admin'))) ? $abanonded_carts_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $abanonded_carts_total, ceil($abanonded_carts_total / $this->config->get('config_limit_admin')));
-
+        $data['results'] = sprintf(
+            $this->language->get('text_pagination'),
+            // Offset.
+            ($abanonded_carts_total) ? (($page - 1) * $limit) + 1 : 0,
+            // Limit.
+            ((($page - 1) * $limit) > ($abanonded_carts_total - $limit))
+                ? $abanonded_carts_total
+                : ((($page - 1) * $limit) + $limit),
+            // Total.
+            $abanonded_carts_total,
+            // Number of pages.
+            ceil($abanonded_carts_total / $limit)
+        );
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
