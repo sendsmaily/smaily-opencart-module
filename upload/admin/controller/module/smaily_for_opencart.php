@@ -448,6 +448,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
 
         if (isset($this->request->get['page'])) {
             $page = $this->request->get['page'];
+            $url_parameters['page'] = $this->request->get['page'];
         } else {
             $page = 1;
         }
@@ -456,10 +457,6 @@ class ControllerModuleSmailyForOpencart extends Controller {
             $url_parameters['order'] = 'DESC';
         } else {
             $url_parameters['order'] = 'ASC';
-        }
-
-        if (isset($this->request->get['page'])) {
-            $url_parameters['page'] = $this->request->get['page'];
         }
 
         $data['cart_status_table_sort_name_link'] = $this->url->link('module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'lastname')), true);
