@@ -1,7 +1,11 @@
 (function ($) {
   $(window).on("load", function () {
-    // Open first tab.
-    $("#sections a:first").tab("show");
+    // Open first tab or abandoned cart status tab;
+    if (isCustomerInAbandonedCartStatusTab() == true) {
+      $("#sections a:last").tab("show");
+    } else {
+      $("#sections a:first").tab("show");
+    }
     // Hide validate display messages.
     $("#validate-alert button").on("click", function () {
       $("#validate-alert").hide();
@@ -192,7 +196,7 @@
       }
 
       var rss_sort_order = $('#rss-sort-order').val();
-      if (rss_sort_order != "" ) {
+      if (rss_sort_order != "") {
         parameters.sort_order = rss_sort_order;
       }
 
@@ -203,4 +207,16 @@
       $('#smaily-rss-feed-url').html(rss_url_base + $.param(parameters));
     });
   });
+  function isCustomerInAbandonedCartStatusTab() {
+    var search_params = ['sort', 'order', 'page'];
+    var query_parameters = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    var i;
+    for (i = 0; i < query_parameters.length; i++) {
+      parameter = query_parameters[i].split('=')[0];
+      if ($.inArray(parameter, search_params) !== -1) {
+        return true;
+      }
+    }
+    return false;
+  }
 })(jQuery);
