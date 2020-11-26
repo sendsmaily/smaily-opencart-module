@@ -455,7 +455,10 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         }
         // Abandoned Cart status table.
         $this->load->model('extension/smailyforopencart/admin');
-        $arguments = '';
+        $url_parameters = array();
+        if (isset($this->session->data['user_token'])) {
+            $url_parameters['user_token'] = $this->session->data['user_token'];
+        }
 
         if (isset($this->request->get['sort'])) {
             $sort = $this->request->get['sort'];
@@ -476,19 +479,19 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         }
 
         if ($order === 'ASC') {
-            $arguments .= '&order=DESC';
+            $url_parameters['order'] = 'DESC';
         } else {
-            $arguments .= '&order=ASC';
+            $url_parameters['order'] = 'ASC';
         }
 
         if (isset($this->request->get['page'])) {
-            $arguments .= '&page=' . $this->request->get['page'];
+            $url_parameters['page'] = $this->request->get['page'];
         }
 
-        $data['sort_name'] = $this->url->link('extension/module/smaily_for_opencart', 'user_token=' . $this->session->data['user_token'] . '&sort=lastname' . $arguments, true);
-        $data['sort_email'] = $this->url->link('extension/module/smaily_for_opencart', 'user_token=' . $this->session->data['user_token'] . '&sort=email' . $arguments, true);
-        $data['sort_date'] = $this->url->link('extension/module/smaily_for_opencart', 'user_token=' . $this->session->data['user_token'] . '&sort=sent_time' . $arguments, true);
-        $data['sort_status'] = $this->url->link('extension/module/smaily_for_opencart', 'user_token=' . $this->session->data['user_token'] . '&sort=is_sent' . $arguments, true);
+        $data['sort_name'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'lastname')), true);
+        $data['sort_email'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'email')), true);
+        $data['sort_date'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'sent_time')), true);
+        $data['sort_status'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'is_sent')), true);
         $data['sort'] = $sort;
         $data['order'] = $order;
 
@@ -507,7 +510,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $pagination->page = $page;
         $pagination->limit = $limit;
         $pagination->text = $this->language->get('text_pagination');
-        $pagination->url = $this->url->link('extension/module/smaily_for_opencart', 'user_token=' . $this->session->data['user_token'] . '&page={page}', true);
+        $pagination->url = $this->url->link('extension/module/smaily_for_opencart', array('user_token' => $this->session->data['user_token'], 'page' => '{page}'), true);
         $data['pagination'] = $pagination->render();
         $data['results'] = sprintf(
             $this->language->get('text_pagination'),
