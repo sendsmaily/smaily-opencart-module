@@ -398,18 +398,18 @@
                   <thead>
                     <tr>
                       <th scope="col"><?php echo $cart_status_table_header_id; ?></th>
-                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_name_link; ?>" class="<?php echo $sort ==='lastname' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_name; ?></a></th>
-                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_email_link; ?>" class="<?php echo $sort ==='email' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_email; ?></a></th>
+                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_name_link; ?>" class="<?php echo $sort === 'lastname' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_name; ?></a></th>
+                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_email_link; ?>" class="<?php echo $sort === 'email' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_email; ?></a></th>
                       <th class="text-left"><?php echo $cart_status_table_header_cart; ?></th>
-                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_date_link; ?>" class="<?php echo $sort ==='sent_time' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_date; ?></a></th>
-                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_status_link; ?>" class="<?php echo $sort ==='is_sent' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_status; ?></a></th>
+                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_date_link; ?>" class="<?php echo $sort === 'sent_time' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_date; ?></a></th>
+                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_status_link; ?>" class="<?php echo $sort === 'is_sent' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_status; ?></a></th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php foreach($abandoned_cart_list as $abandoned_cart): ?>
                     <tr>
                       <th scope="row"><?php echo $abandoned_cart['customer_id']; ?></th>
-                        <td><?php echo $abandoned_cart['firstname'] . $abandoned_cart['lastname']; ?></td>
+                        <td><?php echo $abandoned_cart['firstname'] . " " . $abandoned_cart['lastname']; ?></td>
                         <td><?php echo $abandoned_cart['email']; ?></td>
                       <td>
                         <table class="table table-bordered" >
@@ -647,17 +647,17 @@
       $('#smaily-rss-feed-url').html(rss_url_base + $.param(parameters));
     });
     function isCustomerInAbandonedCartStatusTab() {
-    var search_params = ['sort', 'order', 'page'];
-    var query_parameters = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    var i;
-    for (i = 0; i < query_parameters.length; i++) {
-      parameter = query_parameters[i].split('=')[0];
-      if ($.inArray(parameter, search_params) !== -1) {
-        return true;
+      var search_params = ['sort', 'order', 'page'];
+      var query_parameters = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+      var i;
+      for (i = 0; i < query_parameters.length; i++) {
+        parameter = query_parameters[i].split('=')[0];
+        if ($.inArray(parameter, search_params) !== -1) {
+          return true;
+        }
       }
+      return false;
     }
-    return false;
-  }
   });
 })(jQuery);
 </script>
