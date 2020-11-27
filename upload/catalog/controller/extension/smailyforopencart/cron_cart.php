@@ -129,8 +129,12 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
             );
             // Make api call.
             $response = $this->model_extension_smailyforopencart_helper->apiCall('autoresponder', $query, 'POST');
-            // If successful add customer to smaily_abandoned_carts table
-            if (array_key_exists('code', $response) && (int) $response['code'] === 101) {
+            // If no response from apiCall, most likely connection issue. Retry sending later.
+            if (!array_key_exists('code', $response)) {
+                continue;
+            }
+            // If successful response or email invalid: add customer to table and don't retry sending.
+            if ((int) $response['code'] === 101 || (int) $response['code'] === 203) {
                 $this->model_extension_smailyforopencart_helper->addSentCart($cart['customer_id']);
             }
             echo 'Abandoned carts sent!';

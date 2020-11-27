@@ -56,7 +56,7 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
         if ($http_code === 200) {
             // POST.
             if ($method === 'POST') {
-                if (array_key_exists('code', $api_call) && (int) $api_call['code'] === 101) {
+                if (array_key_exists('code', $api_call)) {
                     $response = $api_call;
                 }
             // GET.
