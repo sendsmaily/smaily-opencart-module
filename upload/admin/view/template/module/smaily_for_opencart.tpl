@@ -402,8 +402,8 @@
                     <?php foreach($abandoned_cart_list as $abandoned_cart): ?>
                     <tr>
                       <td scope="row"><?php echo $abandoned_cart['customer_id']; ?></td>
-                        <td><?php echo $abandoned_cart['firstname'] . " " . $abandoned_cart['lastname']; ?></td>
-                        <td><?php echo $abandoned_cart['email']; ?></td>
+                      <td><?php echo $abandoned_cart['firstname'] . " " . $abandoned_cart['lastname']; ?></td>
+                      <td><?php echo $abandoned_cart['email']; ?></td>
                       <td>
                         <table class="table table-bordered" >
                           <tbody >
