@@ -401,7 +401,7 @@
                   <tbody>
                     <?php foreach($abandoned_cart_list as $abandoned_cart): ?>
                     <tr>
-                      <th scope="row"><?php echo $abandoned_cart['customer_id']; ?></th>
+                      <td scope="row"><?php echo $abandoned_cart['customer_id']; ?></td>
                         <td><?php echo $abandoned_cart['firstname'] . " " . $abandoned_cart['lastname']; ?></td>
                         <td><?php echo $abandoned_cart['email']; ?></td>
                       <td>
