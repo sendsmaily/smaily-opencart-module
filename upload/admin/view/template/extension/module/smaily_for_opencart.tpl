@@ -425,7 +425,7 @@
                         </table>
                       </td>
                       <td><?php echo $abandoned_cart['sent_time'] ?: ''; ?><br></td>
-                      <td><b><?php echo $abandoned_cart['is_sent'] == '1' ? 'SENT' : 'PENDING'; ?><b></td>
+                      <td><b><?php echo $abandoned_cart['is_sent'] == '1' ? 'SENT' : 'PENDING'; ?></b></td>
                     </tr>
                     <?php endforeach; ?>
                   </tbody>
