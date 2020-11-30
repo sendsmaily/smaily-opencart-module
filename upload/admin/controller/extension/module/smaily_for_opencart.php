@@ -114,6 +114,10 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 'section_id' => 4,
                 'name' => $this->language->get('section_rss'),
             ),
+            array(
+                'section_id' => 5,
+                'name' => $this->language->get('section_status'),
+            ),
         );
 
         // Text fields
@@ -215,6 +219,13 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $data['product_quantity']    = $this->language->get('product_quantity');
         $data['product_price']       = $this->language->get('product_price');
         $data['product_base_price']  = $this->language->get('product_base_price');
+        // Abandoned Cart status table.
+        $data['cart_status_table_header_id'] = $this->language->get('cart_status_table_header_id');
+        $data['cart_status_table_header_name'] = $this->language->get('cart_status_table_header_name');
+        $data['cart_status_table_header_email'] = $this->language->get('cart_status_table_header_email');
+        $data['cart_status_table_header_cart'] = $this->language->get('cart_status_table_header_cart');
+        $data['cart_status_table_header_date'] = $this->language->get('cart_status_table_header_date');
+        $data['cart_status_table_header_status'] = $this->language->get('cart_status_table_header_status');
 
         // Small texts.
         $data['small_subdomain']       = $this->language->get('small_subdomain');
@@ -448,6 +459,76 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         } else {
             $data['rss_limit'] = $this->config->get('smaily_for_opencart_rss_limit');
         }
+        // Abandoned Cart status table.
+        $this->load->model('extension/smailyforopencart/admin');
+        $data['product_url_without_id'] = $url->link('product/product', array('product_id' => ''), true);
+        $url_parameters = array();
+        if (isset($this->session->data['token'])) {
+            $url_parameters['token'] = $this->session->data['token'];
+        }
+
+        if (isset($this->request->get['sort'])) {
+            $sort = $this->request->get['sort'];
+        } else {
+            $sort = 'customer_id';
+        }
+
+        if (isset($this->request->get['order'])) {
+            $order = $this->request->get['order'];
+        } else {
+            $order = 'ASC';
+        }
+
+        if (isset($this->request->get['page'])) {
+            $page = $this->request->get['page'];
+            $url_parameters['page'] = $this->request->get['page'];
+        } else {
+            $page = 1;
+        }
+
+        if ($order === 'ASC') {
+            $url_parameters['order'] = 'DESC';
+        } else {
+            $url_parameters['order'] = 'ASC';
+        }
+
+        $data['cart_status_table_sort_name_link'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'lastname')), true);
+        $data['cart_status_table_sort_email_link'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'email')), true);
+        $data['cart_status_table_sort_date_link'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'sent_time')), true);
+        $data['cart_status_table_sort_status_link'] = $this->url->link('extension/module/smaily_for_opencart', array_merge($url_parameters, array('sort' => 'is_sent')), true);
+        $data['sort'] = $sort;
+        $data['order'] = $order;
+
+        $limit = $this->config->get('config_limit_admin');
+        $filter_data = [
+            'start' => ($page - 1) * 2,
+            'limit' => $limit,
+            'sort'  => $sort,
+            'order' => $order
+        ];
+        $data['abandoned_cart_list'] = $this->model_extension_smailyforopencart_admin->getAbandonedCartsForTemplate($filter_data);
+        $abanonded_carts_total = sizeof($this->model_extension_smailyforopencart_admin->getAbandonedCartsForTemplate());
+
+        $pagination = new Pagination();
+        $pagination->total = $abanonded_carts_total;
+        $pagination->page = $page;
+        $pagination->limit = $limit;
+        $pagination->text = $this->language->get('text_pagination');
+        $pagination->url = $this->url->link('extension/module/smaily_for_opencart', array('token' => $this->session->data['token'], 'page' => '{page}'), true);
+        $data['pagination'] = $pagination->render();
+        $data['results'] = sprintf(
+            $this->language->get('text_pagination'),
+            // Offset.
+            ($abanonded_carts_total) ? (($page - 1) * $limit) + 1 : 0,
+            // Limit.
+            ((($page - 1) * $limit) > ($abanonded_carts_total - $limit))
+                ? $abanonded_carts_total
+                : ((($page - 1) * $limit) + $limit),
+            // Total.
+            $abanonded_carts_total,
+            // Number of pages.
+            ceil($abanonded_carts_total / $limit)
+        );
 
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');

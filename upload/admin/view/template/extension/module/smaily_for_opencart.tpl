@@ -392,6 +392,50 @@
                 </div>
               </div>
             </div>
+            <div id="section5" class="tab-pane fade in">
+              <div class="form-group">
+                <table class="table table-bordered table-hover SmailyAbandonedCartsTable">
+                  <thead>
+                    <tr>
+                      <th scope="col"><?php echo $cart_status_table_header_id; ?></th>
+                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_name_link; ?>" class="<?php echo $sort === 'lastname' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_name; ?></a></th>
+                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_email_link; ?>" class="<?php echo $sort === 'email' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_email; ?></a></th>
+                      <th class="text-left"><?php echo $cart_status_table_header_cart; ?></th>
+                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_date_link; ?>" class="<?php echo $sort === 'sent_time' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_date; ?></a></th>
+                      <th class="text-left"><a href="<?php echo $cart_status_table_sort_status_link; ?>" class="<?php echo $sort === 'is_sent' ? 'strtolower($order)' : '' ?>"><?php echo $cart_status_table_header_status; ?></a></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php foreach($abandoned_cart_list as $abandoned_cart): ?>
+                    <tr>
+                      <td scope="row"><?php echo $abandoned_cart['customer_id']; ?></td>
+                      <td><?php echo $abandoned_cart['firstname'] . " " . $abandoned_cart['lastname']; ?></td>
+                      <td><?php echo $abandoned_cart['email']; ?></td>
+                      <td>
+                        <table class="table table-bordered" >
+                          <tbody >
+                            <?php foreach($abandoned_cart['products'] as $product) : ?>
+                            <tr>
+                              <td width="70%"><a href="<?php echo $product_url_without_id . $product['data']['product_id']; ?>"><?php echo $product['data']['name']; ?></a></td>
+                              <td width="15%"><?php echo "x " . $product['quantity']; ?></td>
+                              <td width="15%"><?php echo "$" . $product['data']['price']; ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                          </tbody>
+                        </table>
+                      </td>
+                      <td><?php echo $abandoned_cart['sent_time'] ?: ''; ?><br></td>
+                      <td><b><?php echo $abandoned_cart['is_sent'] == '1' ? 'SENT' : 'PENDING'; ?></b></td>
+                    </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
+                <div class="row">
+                  <div class="col-sm-6 text-left"><?php echo $pagination; ?></div>
+                  <div class="col-sm-6 text-right"><?php echo $results; ?></div>
+                </div>
+              </div>
+            </div>
             </div> <!-- .tab-content -->
             </div> <!-- .tab-pane -->
           </form>
@@ -399,13 +443,18 @@
       </div>
     </div>
   </div>
+  <link rel="stylesheet" type="text/css" href="view/stylesheet/smaily_oc.css" />
 <?php echo $footer; ?>
 </div>
 <script type="text/javascript">
 (function($) {
   $(window).on("load", function() {
-    // Open first tab.
-    $('#sections a:first').tab('show');
+    // Open first tab or abandoned cart status tab;
+    if (isCustomerInAbandonedCartStatusTab() == true) {
+      $("#sections a:last").tab("show");
+    } else {
+      $("#sections a:first").tab("show");
+    }
     // Hide validate display messages.
     $('#validate-alert button').on('click', function() {
       $('#validate-alert').hide();
@@ -587,7 +636,7 @@
       }
 
       var rss_sort_order = $('#rss-sort-order').val();
-      if (rss_sort_order != "" ) {
+      if (rss_sort_order != "") {
         parameters.sort_order = rss_sort_order;
       }
 
@@ -597,6 +646,18 @@
       }
       $('#smaily-rss-feed-url').html(rss_url_base + $.param(parameters));
     });
+    function isCustomerInAbandonedCartStatusTab() {
+      var search_params = ['sort', 'order', 'page'];
+      var query_parameters = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+      var i;
+      for (i = 0; i < query_parameters.length; i++) {
+        parameter = query_parameters[i].split('=')[0];
+        if ($.inArray(parameter, search_params) !== -1) {
+          return true;
+        }
+      }
+      return false;
+    }
   });
 })(jQuery);
 </script>
