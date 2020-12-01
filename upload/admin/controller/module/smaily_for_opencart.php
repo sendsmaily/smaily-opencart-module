@@ -31,6 +31,7 @@
  */
 class ControllerModuleSmailyForOpencart extends Controller {
     private $error = array();
+    private $version = '1.2.0';
 
     public function index() {
         // Add language file.
@@ -54,7 +55,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
         }
 
         // Text fields.
-        $this->data['heading_title'] = $this->language->get('heading_title');
+        $this->data['heading_title'] = $this->language->get('heading_title') . " v" . $this->version;
         $this->data['text_edit'] = $this->language->get('text_edit');
         // Section tab titles.
         $this->data['tab_general'] = $this->language->get('tab_general');
