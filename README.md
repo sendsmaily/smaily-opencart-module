@@ -33,8 +33,7 @@ Automatically synchronize subscribed customers to Smaily, generate RSS-feed base
 
 ## Requirements
 
-- PHP 5.6 (PHP 7.2+ is recommended)
-- OpenCart 3.0.0.0 to 3.0.3.1
+- OpenCart 3.0.0.0 to 3.0.3.6
 
 ## Documentation & Support
 
