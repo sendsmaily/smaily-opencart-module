@@ -31,12 +31,12 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
     }
 
     /**
-     * Makes cUrl call to smaily api endpoint. Returns body or empty if error.
+     * Makes cUrl call to smaily api endpoint. Returns body if cURL successful, empty if not.
      *
      * @param string $endpoint Smaily api endpoint without .php
      * @param array $data      Data to send to smaily.
      * @param string $method   POST or GET
-     * @return array $response Response body for success, empty if error.
+     * @return array $response Response body on successful cURL request, empty otherwise.
      */
     public function apiCall($endpoint, array $data = [], $method = 'GET') {
         // Response.
@@ -83,15 +83,7 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
         }
         // Return response if success.
         if ($http_code === 200) {
-            // POST.
-            if ($method === 'POST') {
-                if (array_key_exists('code', $api_call) && (int) $api_call['code'] === 101) {
-                    $response = $api_call;
-                }
-            // GET.
-            } else {
-                $response = $api_call;
-            }
+            $response = $api_call;
         } else {
             // Log error.
             $this->log->write('Error in smaily api call with code: ' . $http_code);
