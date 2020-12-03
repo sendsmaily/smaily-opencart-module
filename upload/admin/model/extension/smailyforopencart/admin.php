@@ -75,10 +75,7 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             // Validate response
             if (!array_key_exists('code', $api_call)) {
-                $this->log->write('Something went wrong with Smaily request!');
-            }
-            if (isset($api_call['code']) && (int) $api_call['code'] !== 101) {
-                $this->log->write($api_call['message']);
+                throw new SmailyAPIError($response['message'], $response['code']);
             }
         }
         // Return response if success.

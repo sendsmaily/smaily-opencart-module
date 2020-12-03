@@ -2,6 +2,7 @@ admin/controller/extension/module/smaily_for_opencart.php                     ad
 admin/controller/extension/smailyforopencart/upgrade.php                      admin/controller/extension/smailyforopencart/upgrade.php
 admin/language/en-gb/extension/module/smaily_for_opencart.php                 admin/language/en-gb/extension/module/smaily_for_opencart.php
 admin/model/extension/smailyforopencart/admin.php                             admin/model/extension/smailyforopencart/admin.php
+admin/model/extension/smailyforopencart/request.php                           admin/model/extension/smailyforopencart/request.php
 admin/view/javascript/smailyforopencart/smaily_admin.js                       admin/view/javascript/smailyforopencart/smaily_admin.js
 admin/view/template/extension/module/smaily_for_opencart.twig                 admin/view/template/extension/module/smaily_for_opencart.twig
 catalog/controller/extension/module/smaily_for_opencart.php                   catalog/controller/extension/module/smaily_for_opencart.php

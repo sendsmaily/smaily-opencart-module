@@ -39,6 +39,9 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $this->load->model('setting/setting');
         // Smaily admin page model.
         $this->load->model('extension/smailyforopencart/admin');
+        // Dev
+        $this->load->model('extension/smailyforopencart/request');
+
         // Add js.
         $this->document->addScript('view/javascript/smailyforopencart/smaily_admin.js');
         // Add heading title.
@@ -95,6 +98,19 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 )
             );
         }
+        $get_api_call = $this->model_extension_smailyforopencart_request->apiCall(
+            'workflows',
+            ['trigger_type' => 'form_submitted'],
+            'GET'
+        );
+        $query = array(
+            'autoresponder' => 28,
+            'addresses' => array(array('email' => "admin@smaily.sandbox")),
+        );
+        $post_api_call = json_decode(false);
+        echo "<pre>";
+        var_dump($post_api_call);
+        echo "</pre>";
 
         // Form sections.
         $data['sections'] = array(
