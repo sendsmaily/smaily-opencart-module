@@ -1,5 +1,5 @@
 <?php
-
+include_once(DIR_SYSTEM . 'library/smailyforopencart/request.php');
 /**
  * Samaly subscribers synchronization.
  */
@@ -27,11 +27,20 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
             (int) $settings['module_smaily_for_opencart_enable_subscribe'] === 1) {
             $offset_unsub = 0;
             while (true) {
-                $unsubscribers = $this->model_extension_smailyforopencart_helper->apiCall('contact', [
-                    'list' => 2,
-                    'offset' => $offset_unsub,
-                    'limit' => 2500,
-                ]);
+                try {
+                    $unsubscribers = $this->model_extension_smailyforopencart_helper->getUnsubscribers($offset_unsub);
+                } catch (Smaily\HTTPError $error) {
+                    $msg = $error->getMessage();
+                    $this->log->write($msg);
+                    echo($msg);
+                    die(1);
+                } catch (Smaily\APIError $error) {
+                    $msg = $error->getMessage();
+                    $this->log->write($msg);
+                    echo($msg);
+                    die(1);
+                }
+
                 // Exit while loop if api returns no unsubscribers.
                 if (empty($unsubscribers)) {
                     break;
@@ -74,10 +83,22 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
                     array_push($list, $customer);
                 }
                 // Send subscribers to smaily.
-                $response = $this->model_extension_smailyforopencart_helper->apiCall('contact', $list, 'POST');
-                // Error handling for apiCall POST.
-                if (isset($response['code']) && $response['code'] != "101") {
-                    die('Error with request to Smaily API, try again later.');
+                try {
+                    $response = $this->model_extension_smailyforopencart_helper->syncSubscribers($list);
+                } catch (Smaily\HTTPError $error) {
+                    $msg = $error->getMessage();
+                    $this->log->write($msg);
+                    echo($msg);
+                    die(1);
+                } catch (Smaily\APIError $error) {
+                    $msg = $error->getMessage();
+                    $this->log->write($msg);
+                    // Stop code execution and display error unless an invalid email was in query.
+                    // Smaily subscribes all valid emails and discards the rest.
+                    if ($error->getCode() !== Smaily\Request::API_ERR_INVALID_DATA) {
+                        echo($msg);
+                        die(1);
+                    }
                 }
             }
             $this->model_extension_smailyforopencart_helper->editSettingValue(
