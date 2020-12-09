@@ -598,31 +598,27 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
      * @return void
      */
     public function ajaxGetAutoresponders() {
-        if ($this->request->server['REQUEST_METHOD'] == 'POST') {
-            $list = [];
-            // Load models.
-            $this->load->model('setting/setting');
-            $this->load->model('extension/smailyforopencart/admin');
-            // Language for resonse.
-            $this->load->language('extension/module/smaily_for_opencart');
-            // Check if credentials are validated.
-            if ((int) $this->model_setting_setting->getSettingValue('module_smaily_for_opencart_validated') === 1) {
-                $autoresponders = $this->model_extension_smailyforopencart_admin->apiCall(
-                    'workflows',
-                    ['trigger_type' => 'form_submitted'],
-                    'GET'
-                );
-                // Return autoresponders
-                if (!empty($autoresponders)) {
-                    foreach ($autoresponders as $autoresponder) {
-                        if (!empty($autoresponder['id']) && !empty($autoresponder['title'])) {
-                            $list[$autoresponder['id']] = trim($autoresponder['title']);
-                        }
-                    }
-                }
-            }
-            echo json_encode($list);
+        $response = [];
+        $this->load->language('extension/module/smaily_for_opencart');
+
+        if (!$this->request->server['REQUEST_METHOD'] === 'POST') {
+            $response['error'] = $this->language->get('error_post_method');
+            echo json_encode($response);
+            return;
         }
+
+        $this->load->model('setting/setting');
+        $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
+        $username = $settings['module_smaily_for_opencart_username'];
+        $password = $settings['module_smaily_for_opencart_password'];
+        $subdomain = $settings['module_smaily_for_opencart_subdomain'];
+
+        if ((int)$this->model_setting_setting->getSettingValue('module_smaily_for_opencart_validated') !== 1) {
+            return;
+        }
+        $this->load->model('extension/smailyforopencart/admin');
+        $autoresponders = $this->model_extension_smailyforopencart_admin->getAutoresponders();
+        echo json_encode($autoresponders);
     }
 
     /**
