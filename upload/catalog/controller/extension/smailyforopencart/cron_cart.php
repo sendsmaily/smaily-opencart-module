@@ -117,28 +117,29 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
                 $j++;
             }
 
-            // Get autoresponder from settings.
-            $autoresponder = html_entity_decode($settings['module_smaily_for_opencart_abandoned_autoresponder']);
-            $autoresponder = json_decode($autoresponder, true);
-            $autoresponder_id = $autoresponder['id'];
-
-            // Api call query.
-            $query = array(
-                'autoresponder' => $autoresponder_id,
-                'addresses' => [$address],
-            );
             // Make api call.
-            $response = $this->model_extension_smailyforopencart_helper->apiCall('autoresponder', $query, 'POST');
-            // If no response from apiCall, most likely connection issue. Retry sending later.
-            if (!array_key_exists('code', $response)) {
-                continue;
+            try {
+                $this->model_extension_smailyforopencart_helper->sendAbandonedCart($address);
+            // cURL failed.
+            } catch (Smaily\HTTPError $error) {
+                $msg = $error->getMessage();
+                $this->log->write($msg);
+                echo($msg);
+                break;
+            // cURL successful but response code from Smaily hints to error.
+            } catch (Smaily\APIError $error) {
+                $msg = $error->getMessage();
+                $this->log->write($msg);
+                if ($error->getCode() !== Smaily\Request::API_ERR_INVALID_DATA) {
+                    echo($msg);
+                    return;
+                }
             }
             // If successful response or email invalid: add customer to table and don't retry sending.
-            if ((int) $response['code'] === 101 || (int) $response['code'] === 203) {
-                $this->model_extension_smailyforopencart_helper->addSentCart($cart['customer_id']);
-            }
-            echo 'Abandoned carts sent!';
+            $this->model_extension_smailyforopencart_helper->addSentCart($cart['customer_id']);
         }
+        // End of iterating over getAbandonedCarts() results.
+        echo 'Abandoned carts sent!';
     }
 
     /**
