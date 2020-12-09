@@ -85,7 +85,7 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
      * @return string
      *   'demo' from demo.sendsmaily.net
      */
-    private static function normalizeSubdomain($subdomain) {
+    private function normalizeSubdomain($subdomain) {
         // First, try to parse as full URL.
         // If that fails, try to parse as subdomain.sendsmaily.net.
         // Last resort clean up subdomain and pass as is.
