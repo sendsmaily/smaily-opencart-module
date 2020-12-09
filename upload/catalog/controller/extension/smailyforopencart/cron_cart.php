@@ -130,6 +130,7 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
             } catch (Smaily\APIError $error) {
                 $msg = $error->getMessage();
                 $this->log->write($msg);
+                // Save invalid email to database as sent because we do not want to repeatedly retry sending.
                 if ($error->getCode() !== Smaily\Request::API_ERR_INVALID_DATA) {
                     echo($msg);
                     die(1);
