@@ -576,7 +576,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $response = [];
         $this->load->language('extension/module/smaily_for_opencart');
 
-        if (!$this->request->server['REQUEST_METHOD'] === 'POST') {
+        if ($this->request->server['REQUEST_METHOD'] !== 'POST') {
             $response['error'] = $this->language->get('error_post_method');
             echo json_encode($response);
             return;
