@@ -125,14 +125,14 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
                 $msg = $error->getMessage();
                 $this->log->write($msg);
                 echo($msg);
-                break;
+                die(1);
             // cURL successful but response code from Smaily hints to error.
             } catch (Smaily\APIError $error) {
                 $msg = $error->getMessage();
                 $this->log->write($msg);
                 if ($error->getCode() !== Smaily\Request::API_ERR_INVALID_DATA) {
                     echo($msg);
-                    return;
+                    die(1);
                 }
             }
             // If successful response or email invalid: add customer to table and don't retry sending.
