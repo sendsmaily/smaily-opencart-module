@@ -39,8 +39,6 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $this->load->model('setting/setting');
         // Smaily admin page model.
         $this->load->model('extension/smailyforopencart/admin');
-        // Dev
-        $this->load->model('extension/smailyforopencart/request');
 
         // Add js.
         $this->document->addScript('view/javascript/smailyforopencart/smaily_admin.js');
