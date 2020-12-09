@@ -62,18 +62,36 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
     }
 
     public function validateCredentials($subdomain, $username, $password) {
+        $this->load->language('extension/module/smaily_for_opencart');
         // In case subdomain was entered as http://demo.sendsmaily.net.
         $subdomain = $this->normalizeSubdomain($subdomain);
         $username = html_entity_decode($username);
         $password = html_entity_decode($password);
 
+        $response = array();
         // Validate credentials with a call to Smaily.
-        (new \Smaily\Request)
-            ->auth($subdomain, $username, $password)
-            ->setUrlViaEndpoint('workflows')
-            ->setData(array('trigger_type' => 'form_submitted'))
-            ->get();
-        return;
+        try {
+            $response = (new \Smaily\Request)
+                ->auth($subdomain, $username, $password)
+                ->setUrlViaEndpoint('workflows')
+                ->setData(array('trigger_type' => 'form_submitted'))
+                ->get();
+            $this->saveValidatedCredentials($subdomain, $username, $password);
+        } catch(Smaily\HTTPError $error) {
+            switch($error->getCode()) {
+                case self::HTTP_ERR_UNAUTHORIZED:
+                    $response['error'] = $this->language->get('validated_unauthorized');
+                    break;
+
+                case self::HTTP_ERR_INVALID_SUBDOMAIN:
+                    $response['error'] = $this->language->get('validated_subdomain_error');
+                    break;
+
+                default:
+                    $response['error'] = $this->language->get('validated_error');
+            }
+        }
+        return $response;
     }
 
     /**
@@ -102,7 +120,7 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
         return $subdomain;
     }
 
-    public function saveValidatedCredentials($subdomain, $username, $password) {
+    private function saveValidatedCredentials($subdomain, $username, $password) {
         $this->load->model('setting/setting');
         $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
         // Activate module.
