@@ -129,6 +129,14 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
         return $subdomain;
     }
 
+    /**
+     * Save credentials provided in arguments to database and set extension to validated state.
+     *
+     * @param string $subdomain Smaily API subdomain.
+     * @param string $username Smaily API username.
+     * @param string $password Smaily API password.
+     * @return void
+     */
     private function saveValidatedCredentials($subdomain, $username, $password) {
         $this->load->model('setting/setting');
         $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
