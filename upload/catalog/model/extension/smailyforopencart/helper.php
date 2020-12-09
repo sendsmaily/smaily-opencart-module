@@ -1,5 +1,6 @@
 <?php
 
+require_once DIR_SYSTEM . 'library/smailyforopencart/request.php';
 class ModelExtensionSmailyForOpencartHelper extends Model {
 
     /**
@@ -16,6 +17,91 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
             " LIMIT 2500"
         );
         return $query->rows;
+    }
+
+    /**
+     * Get list of unsubscribed emails from Smaily.
+     *
+     * @param int $offset Skip OFFSET * LIMIT customers, loading them in batches.
+     * @return array $unsubscribers Unsubscribers in array format.
+     */
+    public function getUnsubscribers($offset) {
+        $unsubscribers = array();
+        // Fetch credentials from DB.
+        $this->load->model('setting/setting');
+        $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
+        $subdomain = $settings['module_smaily_for_opencart_subdomain'];
+        $username = $settings['module_smaily_for_opencart_username'];
+        $password = $settings['module_smaily_for_opencart_password'];
+
+        $query = array(
+            'list' => 2,
+            'offset' => $offset,
+            'limit' => 2500,
+        );
+        $unsubscribers = (new \Smaily\Request)
+            ->auth($subdomain, $username, $password)
+            ->setUrlViaEndpoint('contact')
+            ->setData($query)
+            ->get();
+        return $unsubscribers;
+    }
+
+    /**
+     * Send list of subscribers to Smaily.
+     *
+     * @param array $subscribers Subscribers in array format.
+     * @return array $response Response from Smaily.
+     */
+    public function syncSubscribers($subscribers) {
+        $response = array();
+        // Fetch credentials from DB.
+        $this->load->model('setting/setting');
+        $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
+        $subdomain = $settings['module_smaily_for_opencart_subdomain'];
+        $username = $settings['module_smaily_for_opencart_username'];
+        $password = $settings['module_smaily_for_opencart_password'];
+
+        $response = (new \Smaily\Request)
+            ->auth($subdomain, $username, $password)
+            ->setUrlViaEndpoint('contact')
+            ->setData($subscribers)
+            ->post();
+        return $response;
+    }
+
+    /**
+     * Make an abandoned cart API call to Smaily.
+     *
+     * @param string $email Email address of abandoned cart owner.
+     * @return array $response Response from Smaily.
+     */
+    public function sendAbandonedCart($email) {
+        $response = array();
+        // Fetch credentials from DB.
+        $this->load->model('setting/setting');
+        $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
+        $subdomain = $settings['module_smaily_for_opencart_subdomain'];
+        $username = $settings['module_smaily_for_opencart_username'];
+        $password = $settings['module_smaily_for_opencart_password'];
+
+        // Get autoresponder from settings.
+        $autoresponder = html_entity_decode($settings['module_smaily_for_opencart_abandoned_autoresponder']);
+        $autoresponder = json_decode($autoresponder, true);
+        $autoresponder_id = $autoresponder['id'];
+
+        // API call query.
+        $query = array(
+            'autoresponder' => $autoresponder_id,
+            'addresses' => [$email],
+        );
+
+        $response = (new \Smaily\Request)
+            ->auth($subdomain, $username, $password)
+            ->setUrlViaEndpoint('autoresponder')
+            ->setData($query)
+            ->post();
+        return $response;
     }
 
     /**
