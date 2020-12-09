@@ -61,6 +61,14 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
         return $list;
     }
 
+    /**
+     * Helper function to validate credentials provided in argument.
+     *
+     * @param string $subdomain Smaily API subdomain.
+     * @param string $username Smaily API username.
+     * @param string $password Smaily API password.
+     * @return array $response Status message.
+     */
     public function validateCredentials($subdomain, $username, $password) {
         $this->load->language('extension/module/smaily_for_opencart');
         // In case subdomain was entered as http://demo.sendsmaily.net.
