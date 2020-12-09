@@ -85,13 +85,14 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
                 ->setData(array('trigger_type' => 'form_submitted'))
                 ->get();
             $this->saveValidatedCredentials($subdomain, $username, $password);
+            $response['success'] = $this->language->get('validated_success');
         } catch(Smaily\HTTPError $error) {
             switch($error->getCode()) {
-                case self::HTTP_ERR_UNAUTHORIZED:
+                case Smaily\Request::HTTP_ERR_UNAUTHORIZED:
                     $response['error'] = $this->language->get('validated_unauthorized');
                     break;
 
-                case self::HTTP_ERR_INVALID_SUBDOMAIN:
+                case Smaily\Request::HTTP_ERR_INVALID_SUBDOMAIN:
                     $response['error'] = $this->language->get('validated_subdomain_error');
                     break;
 
