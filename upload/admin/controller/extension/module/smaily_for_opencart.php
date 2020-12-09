@@ -96,19 +96,6 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 )
             );
         }
-        $get_api_call = $this->model_extension_smailyforopencart_request->apiCall(
-            'workflows',
-            ['trigger_type' => 'form_submitted'],
-            'GET'
-        );
-        $query = array(
-            'autoresponder' => 28,
-            'addresses' => array(array('email' => "admin@smaily.sandbox")),
-        );
-        $post_api_call = json_decode(false);
-        echo "<pre>";
-        var_dump($post_api_call);
-        echo "</pre>";
 
         // Form sections.
         $data['sections'] = array(
