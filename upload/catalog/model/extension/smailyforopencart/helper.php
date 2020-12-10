@@ -1,6 +1,4 @@
 <?php
-
-require_once DIR_SYSTEM . 'library/smailyforopencart/request.php';
 class ModelExtensionSmailyForOpencartHelper extends Model {
 
     /**

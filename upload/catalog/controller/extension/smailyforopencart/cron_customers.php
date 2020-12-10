@@ -1,5 +1,4 @@
 <?php
-include_once(DIR_SYSTEM . 'library/smailyforopencart/request.php');
 /**
  * Samaly subscribers synchronization.
  */
