@@ -566,7 +566,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 ->setData(array('trigger_type' => 'form_submitted'))
                 ->get();
 
-            $this->model_extension_smailyforopencart_admin->saveValidatedCredentials($subdomain, $username, $password);
+            $this->model_extension_smailyforopencart_admin->saveAPICredentials($subdomain, $username, $password);
             $response['success'] = $this->language->get('validated_success');
         } catch(Smaily\HTTPError $error) {
             switch($error->getCode()) {
