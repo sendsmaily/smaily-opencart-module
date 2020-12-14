@@ -527,7 +527,6 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
      * @return void
      */
     public function ajaxValidateCredentials() {
-        $response = [];
         $this->load->language('extension/module/smaily_for_opencart');
 
         // Wrong method.
