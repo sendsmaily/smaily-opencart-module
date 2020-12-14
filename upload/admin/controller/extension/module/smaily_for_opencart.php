@@ -553,11 +553,35 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $password = $this->request->post['password'];
 
         $this->load->model('extension/smailyforopencart/admin');
-        $response = $this->model_extension_smailyforopencart_admin->validateCredentials(
-                $subdomain,
-                $username,
-                $password
-        );
+        $subdomain = $this->model_extension_smailyforopencart_admin->normalizeSubdomain($subdomain);
+        $username = html_entity_decode($username);
+        $password = html_entity_decode($password);
+
+        $response = array();
+        // Validate credentials with a call to Smaily.
+        try {
+            (new Smaily\Request)
+                ->auth($subdomain, $username, $password)
+                ->setUrlViaEndpoint('workflows')
+                ->setData(array('trigger_type' => 'form_submitted'))
+                ->get();
+
+            $this->model_extension_smailyforopencart_admin->saveValidatedCredentials($subdomain, $username, $password);
+            $response['success'] = $this->language->get('validated_success');
+        } catch(Smaily\HTTPError $error) {
+            switch($error->getCode()) {
+                case Smaily\Request::HTTP_ERR_UNAUTHORIZED:
+                    $response['error'] = $this->language->get('validated_unauthorized');
+                    break;
+
+                case Smaily\Request::HTTP_ERR_INVALID_SUBDOMAIN:
+                    $response['error'] = $this->language->get('validated_subdomain_error');
+                    break;
+
+                default:
+                    $response['error'] = $this->language->get('validated_error');
+            }
+        }
 
         echo json_encode($response);
         return;

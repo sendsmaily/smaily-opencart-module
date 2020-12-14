@@ -62,48 +62,6 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
     }
 
     /**
-     * Helper function to validate credentials provided in argument.
-     *
-     * @param string $subdomain Smaily API subdomain.
-     * @param string $username Smaily API username.
-     * @param string $password Smaily API password.
-     * @return array $response Status message.
-     */
-    public function validateCredentials($subdomain, $username, $password) {
-        $this->load->language('extension/module/smaily_for_opencart');
-        // In case subdomain was entered as http://demo.sendsmaily.net.
-        $subdomain = $this->normalizeSubdomain($subdomain);
-        $username = html_entity_decode($username);
-        $password = html_entity_decode($password);
-
-        $response = array();
-        // Validate credentials with a call to Smaily.
-        try {
-            $response = (new \Smaily\Request)
-                ->auth($subdomain, $username, $password)
-                ->setUrlViaEndpoint('workflows')
-                ->setData(array('trigger_type' => 'form_submitted'))
-                ->get();
-            $this->saveValidatedCredentials($subdomain, $username, $password);
-            $response['success'] = $this->language->get('validated_success');
-        } catch(Smaily\HTTPError $error) {
-            switch($error->getCode()) {
-                case Smaily\Request::HTTP_ERR_UNAUTHORIZED:
-                    $response['error'] = $this->language->get('validated_unauthorized');
-                    break;
-
-                case Smaily\Request::HTTP_ERR_INVALID_SUBDOMAIN:
-                    $response['error'] = $this->language->get('validated_subdomain_error');
-                    break;
-
-                default:
-                    $response['error'] = $this->language->get('validated_error');
-            }
-        }
-        return $response;
-    }
-
-    /**
      * Normalize subdomain into the bare necessity.
      *
      * @param string $subdomain
@@ -112,7 +70,7 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
      * @return string
      *   'demo' from demo.sendsmaily.net
      */
-    private function normalizeSubdomain($subdomain) {
+    public function normalizeSubdomain($subdomain) {
         // First, try to parse as full URL.
         // If that fails, try to parse as subdomain.sendsmaily.net.
         // Last resort clean up subdomain and pass as is.
@@ -137,7 +95,7 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
      * @param string $password Smaily API password.
      * @return void
      */
-    private function saveValidatedCredentials($subdomain, $username, $password) {
+    public function saveValidatedCredentials($subdomain, $username, $password) {
         $this->load->model('setting/setting');
         $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
         // Activate module.
