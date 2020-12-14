@@ -68,13 +68,14 @@ class Request {
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
 
-        $api_call = json_decode(curl_exec($ch), true);
+        $api_call = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if ($http_code !== 200) {
             throw new HTTPError(curl_error($ch), $http_code);
         }
 
+        $api_call = json_decode($api_call, true);
         // Validate Smaily gave us a response consisting of a code and message.
         if (!array_key_exists('code', $api_call)) {
             throw new HTTPError(curl_error($ch), $http_code);
