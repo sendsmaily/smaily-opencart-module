@@ -41,7 +41,7 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
         $unsubscribers = (new \SmailyForOpenCart\Request)
             ->setSubdomain($subdomain)
             ->setCredentials($username, $password)
-            ->get('workflows', $query);
+            ->get('contact', $query);
         return $unsubscribers;
     }
 
