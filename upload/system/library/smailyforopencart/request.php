@@ -50,7 +50,7 @@ class Request {
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if ($http_code !== 200) {
-            throw new HTTPError(curl_errno($ch), $http_code);
+            throw new HTTPError('GET request to Smaily API failed', $http_code);
         }
 
         curl_close($ch);
@@ -74,13 +74,13 @@ class Request {
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if ($http_code !== 200) {
-            throw new HTTPError(curl_error($ch), $http_code);
+            throw new HTTPError('POST request to Smaily API failed', $http_code);
         }
 
         $api_call = json_decode($api_call, true);
         // Validate Smaily gave us a response consisting of a code and message.
         if (!array_key_exists('code', $api_call)) {
-            throw new HTTPError(curl_error($ch), $http_code);
+            throw new HTTPError('POST request to Smaily API failed', $http_code);
         }
         if (isset($api_call['code']) && (int)$api_call['code'] !== 101) {
             throw new APIError($api_call['message'], $api_call['code']);
@@ -102,7 +102,7 @@ class APIError extends \Exception {
     }
 
     public function __toString() {
-        return "[SMAILY]: Error in POST method API call with code {$this->code}: {$this->message}\n";
+        return "Smaily HTTP Error: {$this->message}. HTTP code: {$this->code}";
     }
 }
 
@@ -115,6 +115,6 @@ class HTTPError extends \Exception {
     }
 
     public function __toString() {
-        return "[SMAILY]: Error in HTTP call with code {$this->code}: {$this->message}\n";
+        return "Smaily API Error: {$this->message}. API code: {$this->code}";
     }
 }
