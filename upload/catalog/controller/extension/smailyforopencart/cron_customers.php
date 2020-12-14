@@ -28,12 +28,12 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
             while (true) {
                 try {
                     $unsubscribers = $this->model_extension_smailyforopencart_helper->getUnsubscribers($offset_unsub);
-                } catch (Smaily\HTTPError $error) {
+                } catch (SmailyForOpenCart\HTTPError $error) {
                     $msg = $error->getMessage();
                     $this->log->write($msg);
                     echo($msg);
                     die(1);
-                } catch (Smaily\APIError $error) {
+                } catch (SmailyForOpenCart\APIError $error) {
                     $msg = $error->getMessage();
                     $this->log->write($msg);
                     echo($msg);
@@ -84,17 +84,17 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
                 // Send subscribers to smaily.
                 try {
                     $response = $this->model_extension_smailyforopencart_helper->syncSubscribers($list);
-                } catch (Smaily\HTTPError $error) {
+                } catch (SmailyForOpenCart\HTTPError $error) {
                     $msg = $error->getMessage();
                     $this->log->write($msg);
                     echo($msg);
                     die(1);
-                } catch (Smaily\APIError $error) {
+                } catch (SmailyForOpenCart\APIError $error) {
                     $msg = $error->getMessage();
                     $this->log->write($msg);
                     // Stop code execution and display error unless an invalid email was in query.
                     // Smaily subscribes all valid emails and discards the rest.
-                    if ($error->getCode() !== Smaily\Request::API_ERR_INVALID_DATA) {
+                    if ($error->getCode() !== SmailyForOpenCart\Request::API_ERR_INVALID_DATA) {
                         echo($msg);
                         die(1);
                     }

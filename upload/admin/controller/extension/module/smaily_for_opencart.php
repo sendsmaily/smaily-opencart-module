@@ -560,7 +560,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $response = array();
         // Validate credentials with a call to Smaily.
         try {
-            (new Smaily\Request)
+            (new SmailyForOpenCart\Request)
                 ->auth($subdomain, $username, $password)
                 ->setUrlViaEndpoint('workflows')
                 ->setData(array('trigger_type' => 'form_submitted'))
@@ -568,13 +568,13 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 
             $this->model_extension_smailyforopencart_admin->saveAPICredentials($subdomain, $username, $password);
             $response['success'] = $this->language->get('validated_success');
-        } catch(Smaily\HTTPError $error) {
+        } catch(SmailyForOpenCart\HTTPError $error) {
             switch($error->getCode()) {
-                case Smaily\Request::HTTP_ERR_UNAUTHORIZED:
+                case SmailyForOpenCart\Request::HTTP_ERR_UNAUTHORIZED:
                     $response['error'] = $this->language->get('validated_unauthorized');
                     break;
 
-                case Smaily\Request::HTTP_ERR_INVALID_SUBDOMAIN:
+                case SmailyForOpenCart\Request::HTTP_ERR_INVALID_SUBDOMAIN:
                     $response['error'] = $this->language->get('validated_subdomain_error');
                     break;
 
@@ -607,12 +607,12 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $password = $settings['module_smaily_for_opencart_password'];
 
         try {
-            $autoresponders = (new Smaily\Request)
+            $autoresponders = (new SmailyForOpenCart\Request)
                 ->auth($subdomain, $username, $password)
                 ->setUrlViaEndpoint('workflows')
                 ->setData(array('trigger_type' => 'form_submitted'))
                 ->get();
-        } catch (Smaily\HTTPError $error) {
+        } catch (SmailyForOpenCart\HTTPError $error) {
             $this->log->write($error->getMessage());
         }
 

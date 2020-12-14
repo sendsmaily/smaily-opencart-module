@@ -121,17 +121,17 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
             try {
                 $this->model_extension_smailyforopencart_helper->sendAbandonedCart($address);
             // cURL failed.
-            } catch (Smaily\HTTPError $error) {
+            } catch (SmailyForOpenCart\HTTPError $error) {
                 $msg = $error->getMessage();
                 $this->log->write($msg);
                 echo($msg);
                 die(1);
             // cURL successful but response code from Smaily hints to error.
-            } catch (Smaily\APIError $error) {
+            } catch (SmailyForOpenCart\APIError $error) {
                 $msg = $error->getMessage();
                 $this->log->write($msg);
                 // Save invalid email to database as sent because we do not want to repeatedly retry sending.
-                if ($error->getCode() !== Smaily\Request::API_ERR_INVALID_DATA) {
+                if ($error->getCode() !== SmailyForOpenCart\Request::API_ERR_INVALID_DATA) {
                     echo($msg);
                     die(1);
                 }
