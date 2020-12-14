@@ -20,27 +20,27 @@ class Request {
 
     private $_password = null;
 
-    public function auth($subdomain, $username, $password) {
-        $this->subdomain = $subdomain;
-        $this->_username = $username;
-        $this->_password = $password;
+    public function setSubdomain($subdomain) {
+        $this->subdomain = trim($subdomain);
+        $this->url = 'https://' . $this->subdomain . '.sendsmaily.net/api/';
         return $this;
     }
 
-    public function setUrlViaEndpoint($endpoint) {
-        $url = 'https://' . $this->subdomain . '.sendsmaily.net/api/' . $endpoint . '.php';
-        $this->url = $url;
+    public function setCredentials($username, $password) {
+        $this->_username = trim($username);
+        $this->_password = trim($password);
         return $this;
     }
 
-    public function setData($data) {
-        $this->data = $data;
-        return $this;
+    protected function compileUrl($endpoint) {
+        return $this->url . trim($endpoint, '/') . '.php';
     }
 
-    public function get() {
+    public function get($endpoint, $data = array()) {
+        $url = $this->compileUrl($endpoint);
+
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->url . '?' . http_build_query($this->data));
+        curl_setopt($ch, CURLOPT_URL, $url . '?' . http_build_query($data));
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
@@ -56,15 +56,17 @@ class Request {
         return json_decode($api_call, true);
     }
 
-    public function post() {
+    public function post($endpoint, $data = array()) {
+        $url = $this->compileUrl($endpoint);
+
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->url);
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($ch, CURLOPT_USERPWD, "{$this->_username}:{$this->_password}");
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->data));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
 
         $api_call = json_decode(curl_exec($ch), true);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);

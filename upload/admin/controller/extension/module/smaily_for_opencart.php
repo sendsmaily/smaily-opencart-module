@@ -561,10 +561,9 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         // Validate credentials with a call to Smaily.
         try {
             (new SmailyForOpenCart\Request)
-                ->auth($subdomain, $username, $password)
-                ->setUrlViaEndpoint('workflows')
-                ->setData(array('trigger_type' => 'form_submitted'))
-                ->get();
+                ->setSubdomain($subdomain)
+                ->setCredentials($username, $password)
+                ->get('workflows', array('trigger_type' => 'form_submitted'));
 
             $this->model_extension_smailyforopencart_admin->saveAPICredentials($subdomain, $username, $password);
             $response['success'] = $this->language->get('validated_success');
@@ -608,10 +607,9 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 
         try {
             $autoresponders = (new SmailyForOpenCart\Request)
-                ->auth($subdomain, $username, $password)
-                ->setUrlViaEndpoint('workflows')
-                ->setData(array('trigger_type' => 'form_submitted'))
-                ->get();
+                ->setSubdomain($subdomain)
+                ->setCredentials($username, $password)
+                ->get('workflows', array('trigger_type' => 'form_submitted'));
         } catch (SmailyForOpenCart\HTTPError $error) {
             $this->log->write($error->getMessage());
         }
