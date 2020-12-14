@@ -566,24 +566,21 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
                 ->get('workflows', array('trigger_type' => 'form_submitted'));
 
             $this->model_extension_smailyforopencart_admin->saveAPICredentials($subdomain, $username, $password);
-            $response['success'] = $this->language->get('validated_success');
+            echo json_encode(['success' => $this->language->get('validated_success')]);
         } catch(SmailyForOpenCart\HTTPError $error) {
             switch($error->getCode()) {
                 case SmailyForOpenCart\Request::HTTP_ERR_UNAUTHORIZED:
-                    $response['error'] = $this->language->get('validated_unauthorized');
-                    break;
+                    echo json_encode(['error' => $this->language->get('validated_unauthorized')]);
+                    return;
 
                 case SmailyForOpenCart\Request::HTTP_ERR_INVALID_SUBDOMAIN:
-                    $response['error'] = $this->language->get('validated_subdomain_error');
-                    break;
+                    echo json_encode(['error' => $this->language->get('validated_subdomain_error')]);
+                    return;
 
                 default:
-                    $response['error'] = $this->language->get('validated_error');
+                    echo json_encode(['error' => $this->language->get('validated_error')]);
             }
         }
-
-        echo json_encode($response);
-        return;
     }
 
     /**
