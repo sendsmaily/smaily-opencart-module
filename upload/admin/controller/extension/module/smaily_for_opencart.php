@@ -595,11 +595,6 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
     public function ajaxGetAutoresponders() {
         $this->load->language('extension/module/smaily_for_opencart');
 
-        if ($this->request->server['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode(['error' => $this->language->get('error_post_method')]);
-            return;
-        }
-
         $this->load->model('setting/setting');
         $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
 
