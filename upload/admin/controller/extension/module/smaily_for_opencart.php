@@ -532,15 +532,13 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 
         // Wrong method.
         if ($this->request->server['REQUEST_METHOD'] !== 'POST') {
-            $response['error'] = $this->language->get('error_post_method');
-            echo json_encode($response);
+            echo json_encode(['error' => $this->language->get('error_post_method')]);
             return;
         }
 
         // Wrong permissions.
         if (!$this->user->hasPermission('modify', 'extension/module/smaily_for_opencart')) {
-            $response['error'] = $this->language->get('error_permission');
-            echo json_encode($response);
+            echo json_encode(['error' => $this->language->get('error_permission')]);
             return;
         }
 
@@ -548,8 +546,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         if (empty($this->request->post['subdomain']) ||
             empty($this->request->post['username']) ||
             empty($this->request->post['password'])) {
-                $response['error'] = $this->language->get('error_validate_empty');
-                echo json_encode($response);
+                echo json_encode(['error' => $this->language->get('error_validate_empty')]);
                 return;
         }
         $subdomain = $this->request->post['subdomain'];
