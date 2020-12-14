@@ -606,9 +606,32 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         if ((int)$this->model_setting_setting->getSettingValue('module_smaily_for_opencart_validated') !== 1) {
             return;
         }
-        $this->load->model('extension/smailyforopencart/admin');
-        $autoresponders = $this->model_extension_smailyforopencart_admin->getAutoresponders();
-        echo json_encode($autoresponders);
+
+        $subdomain = $settings['module_smaily_for_opencart_subdomain'];
+        $username = $settings['module_smaily_for_opencart_username'];
+        $password = $settings['module_smaily_for_opencart_password'];
+
+        try {
+            $autoresponders = (new Smaily\Request)
+                ->auth($subdomain, $username, $password)
+                ->setUrlViaEndpoint('workflows')
+                ->setData(array('trigger_type' => 'form_submitted'))
+                ->get();
+        } catch (Smaily\HTTPError $error) {
+            $this->log->write($error->getMessage());
+        }
+
+        if (empty($autoresponders)) {
+            return;
+        }
+
+        $list = [];
+        foreach ($autoresponders as $autoresponder) {
+            if (!empty($autoresponder['id']) && !empty($autoresponder['title'])) {
+                $list[$autoresponder['id']] = trim($autoresponder['title']);
+            }
+        }
+        echo json_encode($list);
     }
 
     /**

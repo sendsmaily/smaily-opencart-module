@@ -30,37 +30,6 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
         $this->model_setting_setting->deleteSetting('smaily_for_opencart');
     }
 
-    public function getAutoresponders() {
-        // Smaily settings from database.
-        $this->load->model('setting/setting');
-        $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
-        // Credentials
-        $subdomain = $settings['module_smaily_for_opencart_subdomain'];
-        $username = $settings['module_smaily_for_opencart_username'];
-        $password = $settings['module_smaily_for_opencart_password'];
-        try {
-            $autoresponders = (new \Smaily\Request)
-                ->auth($subdomain, $username, $password)
-                ->setUrlViaEndpoint('workflows')
-                ->setData(array('trigger_type' => 'form_submitted'))
-                ->get();
-        } catch (\Smaily\APIError $error) {
-            $this->log->write($error->getMessage());
-        }
-
-        if (empty($autoresponders)) {
-            return array();
-        }
-
-        $list = [];
-        foreach ($autoresponders as $autoresponder) {
-            if (!empty($autoresponder['id']) && !empty($autoresponder['title'])) {
-                $list[$autoresponder['id']] = trim($autoresponder['title']);
-            }
-        }
-        return $list;
-    }
-
     /**
      * Normalize subdomain into the bare necessity.
      *
