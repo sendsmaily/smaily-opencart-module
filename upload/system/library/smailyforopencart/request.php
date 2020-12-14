@@ -1,6 +1,6 @@
 <?php
 
-namespace Smaily;
+namespace SmailyForOpenCart;
 
 class Request {
     const HTTP_ERR_INVALID_SUBDOMAIN = 404;

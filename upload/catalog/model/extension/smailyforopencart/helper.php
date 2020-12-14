@@ -38,7 +38,7 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
             'offset' => $offset,
             'limit' => 2500,
         );
-        $unsubscribers = (new \Smaily\Request)
+        $unsubscribers = (new \SmailyForOpenCart\Request)
             ->auth($subdomain, $username, $password)
             ->setUrlViaEndpoint('contact')
             ->setData($query)
@@ -61,7 +61,7 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
         $username = $settings['module_smaily_for_opencart_username'];
         $password = $settings['module_smaily_for_opencart_password'];
 
-        $response = (new \Smaily\Request)
+        $response = (new \SmailyForOpenCart\Request)
             ->auth($subdomain, $username, $password)
             ->setUrlViaEndpoint('contact')
             ->setData($subscribers)
@@ -95,7 +95,7 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
             'addresses' => [$email],
         );
 
-        $response = (new \Smaily\Request)
+        $response = (new \SmailyForOpenCart\Request)
             ->auth($subdomain, $username, $password)
             ->setUrlViaEndpoint('autoresponder')
             ->setData($query)
