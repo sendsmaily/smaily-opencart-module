@@ -52,6 +52,8 @@ class Request {
         if ($http_code !== 200) {
             throw new HTTPError(curl_errno($ch), $http_code);
         }
+
+        curl_close($ch);
         // Response from API call, e.g autoresponders.
         return json_decode($api_call, true);
     }
@@ -83,6 +85,8 @@ class Request {
         if (isset($api_call['code']) && (int)$api_call['code'] !== 101) {
             throw new APIError($api_call['message'], $api_call['code']);
         }
+
+        curl_close($ch);
         // Return Smaily API code and message.
         return $api_call;
     }
