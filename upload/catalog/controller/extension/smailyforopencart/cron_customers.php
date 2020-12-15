@@ -99,7 +99,10 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
             }
             // Send subscribers to smaily.
             try {
-                $response = $this->model_extension_smailyforopencart_helper->syncSubscribers($list);
+                (new \SmailyForOpenCart\Request)
+                    ->setSubdomain($subdomain)
+                    ->setCredentials($username, $password)
+                    ->post('contact', $subscribers);
             } catch (SmailyForOpenCart\HTTPError $error) {
                 $msg = $error->getMessage();
                 $this->log->write($msg);

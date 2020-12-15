@@ -19,28 +19,6 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
     }
 
     /**
-     * Send list of subscribers to Smaily.
-     *
-     * @param array $subscribers Subscribers in array format.
-     * @return array $response Response from Smaily.
-     */
-    public function syncSubscribers($subscribers) {
-        $response = array();
-        // Fetch credentials from DB.
-        $this->load->model('setting/setting');
-        $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
-        $subdomain = $settings['module_smaily_for_opencart_subdomain'];
-        $username = $settings['module_smaily_for_opencart_username'];
-        $password = $settings['module_smaily_for_opencart_password'];
-
-        $response = (new \SmailyForOpenCart\Request)
-            ->setSubdomain($subdomain)
-            ->setCredentials($username, $password)
-            ->post('contact', $subscribers);
-        return $response;
-    }
-
-    /**
      * Sets newsletter status to 0 in customer table.
      *
      * @param array $emails Emails to unsubscribe.
