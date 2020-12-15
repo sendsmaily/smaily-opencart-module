@@ -19,33 +19,6 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
     }
 
     /**
-     * Get list of unsubscribed emails from Smaily.
-     *
-     * @param int $offset Skip OFFSET * LIMIT customers, loading them in batches.
-     * @return array $unsubscribers Unsubscribers in array format.
-     */
-    public function getUnsubscribers($offset) {
-        $unsubscribers = array();
-        // Fetch credentials from DB.
-        $this->load->model('setting/setting');
-        $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
-        $subdomain = $settings['module_smaily_for_opencart_subdomain'];
-        $username = $settings['module_smaily_for_opencart_username'];
-        $password = $settings['module_smaily_for_opencart_password'];
-
-        $query = array(
-            'list' => 2,
-            'offset' => $offset,
-            'limit' => 2500,
-        );
-        $unsubscribers = (new \SmailyForOpenCart\Request)
-            ->setSubdomain($subdomain)
-            ->setCredentials($username, $password)
-            ->get('contact', $query);
-        return $unsubscribers;
-    }
-
-    /**
      * Send list of subscribers to Smaily.
      *
      * @param array $subscribers Subscribers in array format.

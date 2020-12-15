@@ -25,9 +25,23 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
         if (array_key_exists('module_smaily_for_opencart_enable_subscribe', $settings) &&
             (int) $settings['module_smaily_for_opencart_enable_subscribe'] === 1) {
             $offset_unsub = 0;
+            $unsubscribers = array();
+            // Fetch credentials from DB.
+            $subdomain = $settings['module_smaily_for_opencart_subdomain'];
+            $username = $settings['module_smaily_for_opencart_username'];
+            $password = $settings['module_smaily_for_opencart_password'];
             while (true) {
+                $query = array(
+                    'list' => 2,
+                    'offset' => $offset_unsub,
+                    'limit' => 2500,
+                );
+
                 try {
-                    $unsubscribers = $this->model_extension_smailyforopencart_helper->getUnsubscribers($offset_unsub);
+                    $unsubscribers = (new \SmailyForOpenCart\Request)
+                        ->setSubdomain($subdomain)
+                        ->setCredentials($username, $password)
+                        ->get('contact', $query);
                 } catch (SmailyForOpenCart\HTTPError $error) {
                     $msg = $error->getMessage();
                     $this->log->write($msg);
@@ -49,8 +63,7 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
                 foreach ($unsubscribers as $unsubscriber) {
                     array_push($unsubscribers_emails, $unsubscriber['email']);
                 }
-                // unsubscribeCustomers method would compile a single update query.
-                $this->model_extension_smailyforopencart_helper->unsubscribeCustomers($unsubscribers_emails);
+
                 $offset_unsub += 1;
             }
 
