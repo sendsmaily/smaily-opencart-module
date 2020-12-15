@@ -117,9 +117,25 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
                 $j++;
             }
 
-            // Make api call.
+            // Fetch credentials from DB.
+            $subdomain = $settings['module_smaily_for_opencart_subdomain'];
+            $username = $settings['module_smaily_for_opencart_username'];
+            $password = $settings['module_smaily_for_opencart_password'];
+            // Get autoresponder from settings.
+            $autoresponder = html_entity_decode($settings['module_smaily_for_opencart_abandoned_autoresponder']);
+            $autoresponder = json_decode($autoresponder, true);
+            // API call query.
+            $query = array(
+                'autoresponder' => $autoresponder['id'],
+                'addresses' => [$address],
+            );
+
+            // Make an abandoned cart API call to Smaily.
             try {
-                $this->model_extension_smailyforopencart_helper->sendAbandonedCart($address);
+                (new \SmailyForOpenCart\Request)
+                    ->setSubdomain($subdomain)
+                    ->setCredentials($username, $password)
+                    ->post('autoresponder', $query);
             // cURL failed.
             } catch (SmailyForOpenCart\HTTPError $error) {
                 $msg = $error->getMessage();
