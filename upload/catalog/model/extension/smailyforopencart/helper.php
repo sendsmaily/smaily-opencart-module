@@ -68,39 +68,6 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
     }
 
     /**
-     * Make an abandoned cart API call to Smaily.
-     *
-     * @param string $email Email address of abandoned cart owner.
-     * @return array $response Response from Smaily.
-     */
-    public function sendAbandonedCart($email) {
-        $response = array();
-        // Fetch credentials from DB.
-        $this->load->model('setting/setting');
-        $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
-        $subdomain = $settings['module_smaily_for_opencart_subdomain'];
-        $username = $settings['module_smaily_for_opencart_username'];
-        $password = $settings['module_smaily_for_opencart_password'];
-
-        // Get autoresponder from settings.
-        $autoresponder = html_entity_decode($settings['module_smaily_for_opencart_abandoned_autoresponder']);
-        $autoresponder = json_decode($autoresponder, true);
-        $autoresponder_id = $autoresponder['id'];
-
-        // API call query.
-        $query = array(
-            'autoresponder' => $autoresponder_id,
-            'addresses' => [$email],
-        );
-
-        $response = (new \SmailyForOpenCart\Request)
-            ->setSubdomain($subdomain)
-            ->setCredentials($username, $password)
-            ->post('autoresponder', $query);
-        return $response;
-    }
-
-    /**
      * Sets newsletter status to 0 in customer table.
      *
      * @param array $emails Emails to unsubscribe.
