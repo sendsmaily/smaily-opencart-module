@@ -504,7 +504,6 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         if ($this->request->server['REQUEST_METHOD'] != 'POST') {
             return;
         }
-        $response = [];
 
         $this->load->language('extension/module/smaily_for_opencart');
         $this->load->model('setting/setting');
@@ -518,8 +517,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $settings['module_smaily_for_opencart_enable_abandoned'] = 0;
         $settings['module_smaily_for_opencart_enable_subscribe'] = 0;
         $this->model_setting_setting->editSetting('module_smaily_for_opencart', $settings);
-        $response['success'] = $this->language->get('credentials_reset');
-        echo json_encode($response);
+        echo json_encode(['success' => $this->language->get('credentials_reset')]);
     }
 
     /**
