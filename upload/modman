@@ -14,3 +14,4 @@ catalog/language/en-gb/extension/module/smaily_for_opencart.php               ca
 catalog/model/extension/smailyforopencart/helper.php                          catalog/model/extension/smailyforopencart/helper.php
 catalog/view/theme/default/template/extension/module/smaily_for_opencart.twig catalog/view/theme/default/template/extension/module/smaily_for_opencart.twig
 catalog/view/theme/default/template/extension/smailyforopencart/rss.twig      catalog/view/theme/default/template/extension/smailyforopencart/rss.twig
+system/library/smailyforopencart/request.php                                  system/library/smailyforopencart/request.php
