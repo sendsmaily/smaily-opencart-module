@@ -557,7 +557,6 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $username = html_entity_decode($username);
         $password = html_entity_decode($password);
 
-        $response = array();
         // Validate credentials with a call to Smaily.
         try {
             (new SmailyForOpenCart\Request)
