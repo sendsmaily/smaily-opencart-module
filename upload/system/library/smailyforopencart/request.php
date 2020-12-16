@@ -93,28 +93,22 @@ class Request {
 
 }
 
-/**
- *
- */
-class APIError extends \Exception {
+class BaseError extends \Exception {
+    protected $messageFormat = 'Message: %s; Code: %d';
+
     public function __construct($message, $code, Exception $previous = null) {
         parent::__construct($message, $code, $previous);
     }
 
     public function __toString() {
-        return "Smaily HTTP Error: {$this->message}. HTTP code: {$this->code}";
+        return sprintf($this->messageFormat, $this->message, $this->code);
     }
 }
 
-/**
- *
- */
-class HTTPError extends \Exception {
-    public function __construct($message, $code, Exception $previous = null) {
-        parent::__construct($message, $code, $previous);
-    }
+class APIError extends BaseError {
+    protected $messageFormat = 'Smaily API Error: %s. API code: %d';
+}
 
-    public function __toString() {
-        return "Smaily API Error: {$this->message}. API code: {$this->code}";
-    }
+class HTTPError extends BaseError {
+    protected $messageFormat = 'Smaily HTTP Error: %s. HTTP code: %d';
 }
