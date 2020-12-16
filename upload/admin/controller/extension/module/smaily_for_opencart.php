@@ -29,6 +29,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Smaily for OpenCart. If not, see <http://www.gnu.org/licenses/>.
  */
+require_once(DIR_SYSTEM . 'library/smailyforopencart/request.php');
 class ControllerExtensionModuleSmailyForOpencart extends Controller {
     private $error = array();
 

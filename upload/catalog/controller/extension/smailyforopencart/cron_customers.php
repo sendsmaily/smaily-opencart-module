@@ -2,6 +2,7 @@
 /**
  * Smaily subscribers synchronization.
  */
+require_once(DIR_SYSTEM . 'library/smailyforopencart/request.php');
 class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
 
     public function index() {

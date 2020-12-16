@@ -3,6 +3,7 @@
 /**
  * Smaily abandoned carts.
  */
+require_once(DIR_SYSTEM . 'library/smailyforopencart/request.php');
 class ControllerExtensionSmailyForOpencartCronCart extends Controller {
 
     public function index() {
