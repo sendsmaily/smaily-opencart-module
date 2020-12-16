@@ -1,6 +1,6 @@
 <?php
 /**
- * Samaly subscribers synchronization.
+ * Smaily subscribers synchronization.
  */
 class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
 
