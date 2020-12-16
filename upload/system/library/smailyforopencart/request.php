@@ -48,12 +48,12 @@ class Request {
 
         $api_call = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
 
         if ($http_code !== 200) {
             throw new HTTPError('GET request to Smaily API failed', $http_code);
         }
 
-        curl_close($ch);
         // Response from API call, e.g autoresponders.
         return json_decode($api_call, true);
     }
@@ -72,6 +72,7 @@ class Request {
 
         $api_call = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
 
         if ($http_code !== 200) {
             throw new HTTPError('POST request to Smaily API failed', $http_code);
@@ -86,7 +87,6 @@ class Request {
             throw new APIError($api_call['message'], $api_call['code']);
         }
 
-        curl_close($ch);
         // Return Smaily API code and message.
         return $api_call;
     }
