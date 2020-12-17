@@ -67,7 +67,8 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
             foreach ($unsubscribers as $unsubscriber) {
                 array_push($unsubscribers_emails, $unsubscriber['email']);
             }
-
+            // unsubscribeCustomers method would compile a single update query.
+            $this->model_extension_smailyforopencart_helper->unsubscribeCustomers($unsubscribers_emails);
             $offset_unsub += 1;
         }
 
