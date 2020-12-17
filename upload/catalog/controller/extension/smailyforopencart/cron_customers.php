@@ -104,7 +104,7 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
                 (new \SmailyForOpenCart\Request)
                     ->setSubdomain($subdomain)
                     ->setCredentials($username, $password)
-                    ->post('contact', $subscribers);
+                    ->post('contact', $list);
             } catch (SmailyForOpenCart\HTTPError $error) {
                 $msg = $error->getMessage();
                 $this->log->write($msg);
