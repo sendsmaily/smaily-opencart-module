@@ -1,5 +1,5 @@
 <?php
-
+require_once(DIR_SYSTEM . 'library/smailyforopencart/request.php');
 class ModelExtensionSmailyForOpencartAdmin extends Model {
 
     /**
@@ -31,73 +31,50 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
     }
 
     /**
-     * Makes cUrl call to smaily api endpoint. Returns body or empty if error.
+     * Normalize subdomain into the bare necessity.
      *
-     * @param string $endpoint Smaily api endpoint without .php
-     * @param array $data      Data to send to smaily.
-     * @param string $method   POST or GET
-     * @return array $response Response body for success, empty if error.
+     * @param string $subdomain
+     *   Messy subdomain, http://demo.sendsmaily.net for example.
+     * @return string
+     *   'demo' from demo.sendsmaily.net
      */
-    public function apiCall($endpoint, array $data = [], $method = 'GET') {
-        // Response.
-        $response = [];
-        // Smaily settings from database.
-        $this->load->model('setting/setting');
-        $settings = $this->model_setting_setting->getSetting('smaily_for_opencart');
-        // Credentials
-        $username = $settings['smaily_for_opencart_username'];
-        $password = $settings['smaily_for_opencart_password'];
-        $subdomain = $settings['smaily_for_opencart_subdomain'];
-        // Url.
-        $apiUrl = 'https://' . $subdomain . '.sendsmaily.net/api/' . $endpoint . '.php';
-        // Curl call.
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+    public function normalizeSubdomain($subdomain) {
+        // First, try to parse as full URL.
+        // If that fails, try to parse as subdomain.sendsmaily.net.
+        // Last resort clean up subdomain and pass as is.
+        if (filter_var($subdomain, FILTER_VALIDATE_URL)) {
+        $url = parse_url($subdomain);
+        $parts = explode('.', $url['host']);
+        $subdomain = (count($parts) >= 3) ? $parts[0] : '';
+        }
+        elseif (preg_match('/^[^\.]+\.sendsmaily\.net$/', $subdomain)) {
+        $parts = explode('.', $subdomain);
+        $subdomain = $parts[0];
+        }
+        $subdomain = preg_replace('/[^a-zA-Z0-9]+/', '', $subdomain);
+        return $subdomain;
+    }
 
-        // API call with GET request.
-        if ($method === 'GET') {
-            if (!empty($data)) {
-                curl_setopt($ch, CURLOPT_URL, $apiUrl . '?' . http_build_query($data));
-            }
-            $api_call = json_decode(curl_exec($ch), true);
-            // Response code from Smaily API.
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        // If Method POST.
-        } elseif ($method === 'POST') {
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            $api_call = json_decode(curl_exec($ch), true);
-            // Response code from Smaily API.
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            // Validate response
-            if (!array_key_exists('code', $api_call)) {
-                $this->log->write('Something went wrong with Smaily request!');
-            }
-            if (isset($api_call['code']) && (int) $api_call['code'] !== 101) {
-                $this->log->write($api_call['message']);
-            }
-        }
-        // Return response if success.
-        if ($http_code === 200) {
-            // POST.
-            if ($method === 'POST') {
-                if (array_key_exists('code', $api_call) && (int) $api_call['code'] === 101) {
-                    $response = $api_call;
-                }
-            // GET.
-            } else {
-                $response = $api_call;
-            }
-        } else {
-            // Log error.
-            $this->log->write('Error in smaily api call with code: ' . $http_code);
-        }
-        // Response from API call.
-        return $response;
+    /**
+     * Save credentials provided in arguments to database and set extension to validated state.
+     *
+     * @param string $subdomain Smaily API subdomain.
+     * @param string $username Smaily API username.
+     * @param string $password Smaily API password.
+     * @return void
+     */
+    public function saveAPICredentials($subdomain, $username, $password) {
+        $this->load->model('setting/setting');
+        $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
+        // Activate module.
+        $settings['module_smaily_for_opencart_status'] = 1;
+        // Used because save button saves whole form.
+        $settings['module_smaily_for_opencart_validated'] = 1;
+        $settings['module_smaily_for_opencart_subdomain'] = $this->db->escape($subdomain);
+        $settings['module_smaily_for_opencart_username'] = $this->db->escape($username);
+        $settings['module_smaily_for_opencart_password'] = $this->db->escape($password);
+        // Save credentials to db.
+        $this->model_setting_setting->editSetting('module_smaily_for_opencart', $settings);
     }
 
     public function getAbandonedCartsForTemplate($data = array()) {
