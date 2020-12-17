@@ -68,6 +68,8 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
                 array_push($unsubscribers_emails, $unsubscriber['email']);
             }
 
+            // unsubscribeCustomers method would compile a single update query.
+            $this->model_extension_smailyforopencart_helper->unsubscribeCustomers($unsubscribers_emails);
             $offset_unsub += 1;
         }
 
@@ -100,10 +102,10 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
             }
             // Send subscribers to smaily.
             try {
-                (new \SmailyForOpenCart\Request)
+                $response = (new \SmailyForOpenCart\Request)
                     ->setSubdomain($subdomain)
                     ->setCredentials($username, $password)
-                    ->post('contact', $subscribers);
+                    ->post('contact', $list);
             } catch (SmailyForOpenCart\HTTPError $error) {
                 $msg = $error->getMessage();
                 $this->log->write($msg);
