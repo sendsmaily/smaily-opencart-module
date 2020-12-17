@@ -132,7 +132,7 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
                 'addresses' => [$address],
             );
             // Make an abandoned cart API call to Smaily.
-             try {
+            try {
                 (new \SmailyForOpenCart\Request)
                     ->setSubdomain($subdomain)
                     ->setCredentials($username, $password)
