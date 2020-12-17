@@ -101,7 +101,7 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
             }
             // Send subscribers to smaily.
             try {
-                (new \SmailyForOpenCart\Request)
+                $response = (new \SmailyForOpenCart\Request)
                     ->setSubdomain($subdomain)
                     ->setCredentials($username, $password)
                     ->post('contact', $list);
