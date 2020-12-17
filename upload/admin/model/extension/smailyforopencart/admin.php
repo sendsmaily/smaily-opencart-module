@@ -65,25 +65,25 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
      */
     public function saveAPICredentials($subdomain, $username, $password) {
         $this->load->model('setting/setting');
-        $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
+        $settings = $this->model_setting_setting->getSetting('smaily_for_opencart');
         // Activate module.
-        $settings['module_smaily_for_opencart_status'] = 1;
+        $settings['smaily_for_opencart_status'] = 1;
         // Used because save button saves whole form.
-        $settings['module_smaily_for_opencart_validated'] = 1;
-        $settings['module_smaily_for_opencart_subdomain'] = $this->db->escape($subdomain);
-        $settings['module_smaily_for_opencart_username'] = $this->db->escape($username);
-        $settings['module_smaily_for_opencart_password'] = $this->db->escape($password);
+        $settings['smaily_for_opencart_validated'] = 1;
+        $settings['smaily_for_opencart_subdomain'] = $this->db->escape($subdomain);
+        $settings['smaily_for_opencart_username'] = $this->db->escape($username);
+        $settings['smaily_for_opencart_password'] = $this->db->escape($password);
         // Save credentials to db.
-        $this->model_setting_setting->editSetting('module_smaily_for_opencart', $settings);
+        $this->model_setting_setting->editSetting('smaily_for_opencart', $settings);
     }
 
     public function getAbandonedCartsForTemplate($data = array()) {
         $this->load->model('setting/setting');
         $this->load->model('catalog/product');
         // Get delay time.
-        $delay_time = $this->config->get('module_smaily_for_opencart_cart_delay');
+        $delay_time = $this->config->get('smaily_for_opencart_cart_delay');
         // Get abandoned cart activation time.
-        $start_time = $this->config->get('module_smaily_for_opencart_abandoned_cart_time');
+        $start_time = $this->config->get('smaily_for_opencart_abandoned_cart_time');
         $abandoned_carts = [];
         // Select all customers with abandoned carts. Last cart item addition time - delay time.
         // Add customers who have record in smaily_abandoned_carts table.

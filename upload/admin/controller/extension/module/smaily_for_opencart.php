@@ -685,15 +685,15 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
         $this->load->language('extension/module/smaily_for_opencart');
 
         $this->load->model('setting/setting');
-        $settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
+        $settings = $this->model_setting_setting->getSetting('smaily_for_opencart');
 
-        if ((int)$this->model_setting_setting->getSettingValue('module_smaily_for_opencart_validated') !== 1) {
+        if ((int)$this->model_setting_setting->getSettingValue('smaily_for_opencart_validated') !== 1) {
             return;
         }
 
-        $subdomain = $settings['module_smaily_for_opencart_subdomain'];
-        $username = $settings['module_smaily_for_opencart_username'];
-        $password = $settings['module_smaily_for_opencart_password'];
+        $subdomain = $settings['smaily_for_opencart_subdomain'];
+        $username = $settings['smaily_for_opencart_username'];
+        $password = $settings['smaily_for_opencart_password'];
 
         try {
             $autoresponders = (new SmailyForOpenCart\Request)

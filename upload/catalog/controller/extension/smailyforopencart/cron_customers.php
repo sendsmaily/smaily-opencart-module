@@ -32,9 +32,9 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
         $offset_unsub = 0;
         $unsubscribers = array();
         // Fetch credentials from DB.
-        $subdomain = $settings['module_smaily_for_opencart_subdomain'];
-        $username = $settings['module_smaily_for_opencart_username'];
-        $password = $settings['module_smaily_for_opencart_password'];
+        $subdomain = $settings['smaily_for_opencart_subdomain'];
+        $username = $settings['smaily_for_opencart_username'];
+        $password = $settings['smaily_for_opencart_password'];
         while (true) {
             $query = array(
                 'list' => 2,
@@ -69,6 +69,7 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
             foreach ($unsubscribers as $unsubscriber) {
                 array_push($unsubscribers_emails, $unsubscriber['email']);
             }
+
             // unsubscribeCustomers method would compile a single update query.
             $this->model_extension_smailyforopencart_helper->unsubscribeCustomers($unsubscribers_emails);
             $offset_unsub += 1;
@@ -106,7 +107,7 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
             }
             // Send subscribers to smaily.
             try {
-                (new \SmailyForOpenCart\Request)
+                $response = (new \SmailyForOpenCart\Request)
                     ->setSubdomain($subdomain)
                     ->setCredentials($username, $password)
                     ->post('contact', $list);
@@ -127,8 +128,8 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
             }
         }
         $this->model_extension_smailyforopencart_helper->editSettingValue(
-            'module_smaily_for_opencart',
-            'module_smaily_for_opencart_sync_time',
+            'smaily_for_opencart',
+            'smaily_for_opencart_sync_time',
             $sync_time
         );
 

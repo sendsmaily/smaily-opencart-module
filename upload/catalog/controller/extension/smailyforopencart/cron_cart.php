@@ -118,9 +118,9 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
                 $j++;
             }
             // Fetch credentials from DB.
-            $subdomain = $settings['module_smaily_for_opencart_subdomain'];
-            $username = $settings['module_smaily_for_opencart_username'];
-            $password = $settings['module_smaily_for_opencart_password'];
+            $subdomain = $settings['smaily_for_opencart_subdomain'];
+            $username = $settings['smaily_for_opencart_username'];
+            $password = $settings['smaily_for_opencart_password'];
 
             // Get autoresponder from settings.
             $autoresponder = html_entity_decode($settings['smaily_for_opencart_abandoned_autoresponder']);
