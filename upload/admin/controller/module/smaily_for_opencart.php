@@ -29,6 +29,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Smaily for OpenCart. If not, see <http://www.gnu.org/licenses/>.
  */
+require_once(DIR_SYSTEM . 'library/smaily_for_opencart_request.php');
 class ControllerModuleSmailyForOpencart extends Controller {
     private $error = array();
 
@@ -390,7 +391,6 @@ class ControllerModuleSmailyForOpencart extends Controller {
         if (!$isRequestMethodPost || !$hasPermissionsToModify) {
             return;
         }
-        $response = [];
         // Language for response.
         $this->load->language('module/smaily_for_opencart');
         // Check if all fields are set.
@@ -398,87 +398,40 @@ class ControllerModuleSmailyForOpencart extends Controller {
             empty($this->request->post['username']) ||
             empty($this->request->post['password'])) {
                 // Show empty field error message.
-                $response['error'] = $this->language->get('error_validate_empty');
-                echo json_encode($response);
+                echo json_encode(['error' => $this->language->get('error_validate_empty')]);
                 return;
         }
 
         $subdomain = $this->request->post['subdomain'];
-        // Normalize subdomain.
-        // First, try to parse as full URL. If that fails, try to parse as subdomain.sendsmaily.net, and
-        // if all else fails, then clean up subdomain and pass as is.
-        if (filter_var($subdomain, FILTER_VALIDATE_URL)) {
-            $url = parse_url($subdomain);
-            $parts = explode('.', $url['host']);
-            $subdomain = count($parts) >= 3 ? $parts[0] : '';
-        } elseif (preg_match('/^[^\.]+\.sendsmaily\.net$/', $subdomain)) {
-            $parts = explode('.', $subdomain);
-            $subdomain = $parts[0];
-        }
-        $subdomain = preg_replace('/[^a-zA-Z0-9]+/', '', $subdomain);
-        $username = html_entity_decode($this->request->post['username']);
-        $password = html_entity_decode($this->request->post['password']);
+        $username = $this->request->post['username'];
+        $password = $this->request->post['password'];
 
+        $this->load->model('smailyforopencart/admin');
+        $subdomain = $this->model_smailyforopencart_admin->normalizeSubdomain($subdomain);
+        $username = html_entity_decode($username);
+        $password = html_entity_decode($password);
         // Validate credentials with a call to Smaily.
-        $validate = $this->validateSmailyCredentials($subdomain, $username, $password);
+        try {
+            (new SmailyForOpenCart\Request)
+                ->setSubdomain($subdomain)
+                ->setCredentials($username, $password)
+                ->get('workflows', array('trigger_type' => 'form_submitted'));
 
-        // If validated, save validated status to db.
-        if (array_key_exists('success', $validate)) {
-            // Load Smaily admin model.
-            $this->load->model('smailyforopencart/admin');
-            // Used because save button saves whole form.
-            $settings = [
-              'password' => $this->db->escape($password),
-              'subdomain' => $this->db->escape($subdomain),
-              'username' => $this->db->escape($username),
-            ];
-            // Save credentials to db.
-            $this->model_smailyforopencart_admin->editSettingValue('smaily', 'smaily_api_credentials', $settings);
-            $response['success'] = $validate['success'];
-        } elseif (array_key_exists('error', $validate)) {
-            $response['error'] = $validate['error'];
-        } else {
-            $response['error'] = $this->language->get('validated_error');
-        }
-        // Return to ajax call.
-        echo json_encode($response);
-    }
+            $this->model_smailyforopencart_admin->saveAPICredentials($subdomain, $username, $password);
+            echo json_encode(['success' => $this->language->get('validated_success')]);
+        } catch(SmailyForOpenCart\HTTPError $error) {
+            switch($error->getCode()) {
+                case SmailyForOpenCart\Request::HTTP_ERR_UNAUTHORIZED:
+                    echo json_encode(['error' => $this->language->get('validated_unauthorized')]);
+                    return;
 
-    /**
-     * Runs when validate button is pressed.
-     *
-     * @param string $subdomain
-     * @param string $username
-     * @param string $password
-     * @return void
-     */
-    public function validateSmailyCredentials($subdomain, $username, $password) {
-        // Response.
-        $response = [];
-        // cUrl
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://' . $subdomain . '.sendsmaily.net/api/workflows.php?trigger_type=form_submitted');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
-        $output = curl_exec($ch);
-        if (!curl_errno($ch)) {
-            switch ($http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
-                case 200:  # OK
-                    $response['success'] = $this->language->get('validated_success');
-                    break;
-                case 401:
-                    $response['error'] = $this->language->get('validated_unauthorized');
-                    break;
-                case 404:
-                    $response['error'] = $this->language->get('validated_subdomain_error');
-                    break;
+                case SmailyForOpenCart\Request::HTTP_ERR_INVALID_SUBDOMAIN:
+                    echo json_encode(['error' => $this->language->get('validated_subdomain_error')]);
+                    return;
+
                 default:
-                    $response['error'] = $this->language->get('validated_error');
+                    echo json_encode(['error' => $this->language->get('validated_error')]);
             }
         }
-        curl_close($ch);
-        // Response from API call.
-        return $response;
     }
 }
