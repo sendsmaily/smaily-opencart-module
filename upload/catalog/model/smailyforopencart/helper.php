@@ -75,7 +75,7 @@ class ModelSmailyForOpencartHelper extends Model {
         $this->load->model('setting/setting');
         $this->load->model('catalog/product');
         // Get delay time.
-        $delay_time = '0';
+        $delay_time = $this->config->get('smaily_for_opencart_cart_delay');
         // Get abandoned cart activation time.
         $start_time = $this->config->get('smaily_for_opencart_abandoned_cart_time');
         $abandoned_carts = [];
