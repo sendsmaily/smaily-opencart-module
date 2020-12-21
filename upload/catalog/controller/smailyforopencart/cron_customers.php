@@ -52,12 +52,10 @@ class ControllerSmailyForOpencartCronCustomers extends Controller {
                     ->get('contact', $query);
             } catch (SmailyForOpenCart\HTTPError $error) {
                 $this->log->write($error);
-                echo($error);
-                die(1);
+                die($error);
             } catch (SmailyForOpenCart\APIError $error) {
                 $this->log->write($error);
-                echo($error);
-                die(1);
+                die($error);
             }
 
             // Exit while loop if api returns no unsubscribers.
@@ -101,15 +99,13 @@ class ControllerSmailyForOpencartCronCustomers extends Controller {
                     ->post('contact', $list);
             } catch (SmailyForOpenCart\HTTPError $error) {
                 $this->log->write($error);
-                echo($error);
-                die(1);
+                die($error);
             } catch (SmailyForOpenCart\APIError $error) {
                 $this->log->write($error);
                 // Stop code execution and display error unless an invalid email was in query.
                 // Smaily subscribes all valid emails and discards the rest.
                 if ($error->getCode() !== SmailyForOpenCart\Request::API_ERR_INVALID_DATA) {
-                    echo($error);
-                    die(1);
+                    die($error);
                 }
             }
         }
