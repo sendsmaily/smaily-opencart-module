@@ -32,7 +32,7 @@
 require_once(DIR_SYSTEM . 'library/smailyforopencart/request.php');
 class ControllerExtensionModuleSmailyForOpencart extends Controller {
     private $error = array();
-    private $version = '1.4.0';
+    private $version = '1.5.0';
 
     public function index() {
         // Add language file.
