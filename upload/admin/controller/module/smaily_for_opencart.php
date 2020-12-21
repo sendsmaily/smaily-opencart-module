@@ -424,10 +424,12 @@ class ControllerModuleSmailyForOpencart extends Controller {
             $data['rss_sort_order'] = $this->config->get('smaily_for_opencart_rss_sort_order');
         }
         // RSS product limit.
-        if (isset($this->request->post['smaily_for_opencart_rss_limit'])) {
+        if (! empty($this->request->post['smaily_for_opencart_rss_limit'])) {
             $data['rss_limit'] = $this->request->post['smaily_for_opencart_rss_limit'];
-        } else {
+        } elseif(! empty($this->config->get('smaily_for_opencart_rss_limit'))) {
             $data['rss_limit'] = $this->config->get('smaily_for_opencart_rss_limit');
+        } else {
+            $data['rss_limit'] = 50;
         }
         // Abandoned Cart status table.
         $this->load->model('smailyforopencart/admin');
@@ -544,11 +546,13 @@ class ControllerModuleSmailyForOpencart extends Controller {
             // Error message.
             $this->error['validate'] = $this->language->get('error_validate');
         }
-        $rss_limit = $this->request->post['smaily_for_opencart_rss_limit'];
-        if ($rss_limit < 1 || $rss_limit > 250) {
+        // Validate RSS product limit value
+        if (isset($this->request->post['smaily_for_opencart_rss_limit'])
+        && (int) $this->request->post['smaily_for_opencart_rss_limit'] < 1
+        || (int) $this->request->post['smaily_for_opencart_rss_limit'] > 250
+        ) {
             $this->error['rss_limit'] = $this->language->get('rss_limit_error');
         }
-
         return !$this->error;
     }
 
