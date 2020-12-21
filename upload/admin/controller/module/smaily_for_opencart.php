@@ -586,7 +586,7 @@ class ControllerModuleSmailyForOpencart extends Controller {
                 ->setCredentials($username, $password)
                 ->get('workflows', array('trigger_type' => 'form_submitted'));
         } catch (SmailyForOpenCart\HTTPError $error) {
-            $this->log->write($error->getMessage());
+            $this->log->write($error);
         }
 
         if (empty($autoresponders)) {
