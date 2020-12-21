@@ -581,11 +581,13 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             // Error message.
             $this->error['validate'] = $this->language->get('error_validate');
         }
-        $rss_limit = $this->request->post['smaily_for_opencart_rss_limit'];
-        if ($rss_limit < 1 || $rss_limit > 250) {
+        // Validate RSS product limit value
+        if (isset($this->request->post['smaily_for_opencart_rss_limit'])
+            && (int) $this->request->post['smaily_for_opencart_rss_limit'] < 1
+            || (int) $this->request->post['smaily_for_opencart_rss_limit'] > 250
+            ) {
             $this->error['rss_limit'] = $this->language->get('rss_limit_error');
         }
-
         return !$this->error;
     }
 
