@@ -44,13 +44,13 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
         // If that fails, try to parse as subdomain.sendsmaily.net.
         // Last resort clean up subdomain and pass as is.
         if (filter_var($subdomain, FILTER_VALIDATE_URL)) {
-        $url = parse_url($subdomain);
-        $parts = explode('.', $url['host']);
-        $subdomain = (count($parts) >= 3) ? $parts[0] : '';
+            $url = parse_url($subdomain);
+            $parts = explode('.', $url['host']);
+            $subdomain = (count($parts) >= 3) ? $parts[0] : '';
         }
         elseif (preg_match('/^[^\.]+\.sendsmaily\.net$/', $subdomain)) {
-        $parts = explode('.', $subdomain);
-        $subdomain = $parts[0];
+            $parts = explode('.', $subdomain);
+            $subdomain = $parts[0];
         }
         $subdomain = preg_replace('/[^a-zA-Z0-9]+/', '', $subdomain);
         return $subdomain;
