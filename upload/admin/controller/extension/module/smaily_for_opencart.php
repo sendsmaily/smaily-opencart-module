@@ -450,10 +450,14 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
             $data['rss_sort_order'] = $this->config->get('module_smaily_for_opencart_rss_sort_order');
         }
         // RSS product limit.
-        if (isset($this->request->post['module_smaily_for_opencart_rss_limit'])) {
+        if (! empty($this->request->post['module_smaily_for_opencart_rss_limit'])) {
             $data['rss_limit'] = $this->request->post['module_smaily_for_opencart_rss_limit'];
         } else {
-            $data['rss_limit'] = $this->config->get('module_smaily_for_opencart_rss_limit');
+            if (! empty($this->config->get('smaily_for_opencart_rss_limit'))) {
+                $data['rss_limit'] = $this->config->get('smaily_for_opencart_rss_limit');
+            } else {
+                $data['rss_limit'] = 50;
+            }
         }
         // Abandoned Cart status table.
         $this->load->model('extension/smailyforopencart/admin');
