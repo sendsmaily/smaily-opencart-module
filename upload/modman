@@ -9,4 +9,4 @@ catalog/language/english/module/smaily_for_opencart.php            catalog/langu
 catalog/model/smailyforopencart/helper.php                         catalog/model/smailyforopencart/helper.php
 catalog/view/theme/default/template/module/smaily_for_opencart.tpl catalog/view/theme/default/template/module/smaily_for_opencart.tpl
 catalog/view/theme/default/template/smailyforopencart/rss.tpl      catalog/view/theme/default/template/smailyforopencart/rss.tpl
-
+system/library/smaily_for_opencart_request.php                     system/library/smaily_for_opencart_request.php
