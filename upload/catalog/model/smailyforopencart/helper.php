@@ -28,7 +28,7 @@ class ModelSmailyForOpencartHelper extends Model {
         $chunks = array_chunk($emails, 500);
         foreach ($chunks as $chunk) {
             $binds = array();
-            foreach ($emails as $email) {
+            foreach ($chunk as $email) {
                 $binds[] = $this->db->escape($email);
             }
             // Add all emails to long string seperated by commas.
