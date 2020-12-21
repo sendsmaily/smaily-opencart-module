@@ -1,26 +1,6 @@
 <?php
 
 class ModelSmailyForOpencartHelper extends Model {
-    private $_credentials = NULL;
-
-    /**
-     * Gets Smaily API credentials from settings.
-     *
-     * @return array Smaily API credentials.
-     */
-    private function getApiCredentials() {
-        if (is_null($this->_credentials)) {
-            $this->load->model('setting/setting');
-            $credentials = $this->model_setting_setting->getSetting('smaily')['smaily_api_credentials'];
-            $this->_credentials = is_array($credentials) ? $credentials : [
-                'password' => NULL,
-                'subdomain' => NULL,
-                'username' => NULL,
-            ];
-        }
-
-        return $this->_credentials;
-    }
 
     /**
      * Get all subscribed customers.
