@@ -88,6 +88,7 @@ $_['cart_token_placeholder'] = 'Please enter token for abandoned cart sync';
 
 // Error
 $_['error_permission']              = 'Warning: You do not have permission to modify Smaily for OpenCart!';
+$_['error_post_method']             = 'Warning: Request method not POST!';
 $_['error_subdomain']               = 'Subdomain can\'t be empty';
 $_['error_username']                = 'Username can\'t be empty';
 $_['error_password']                = 'Password can\'t be empty';

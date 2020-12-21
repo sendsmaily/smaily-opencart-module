@@ -117,24 +117,42 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
                 }
                 $j++;
             }
+            // Fetch credentials from DB.
+            $subdomain = $settings['smaily_for_opencart_subdomain'];
+            $username = $settings['smaily_for_opencart_username'];
+            $password = $settings['smaily_for_opencart_password'];
 
             // Get autoresponder from settings.
             $autoresponder = html_entity_decode($settings['smaily_for_opencart_abandoned_autoresponder']);
             $autoresponder = json_decode($autoresponder, true);
-            $autoresponder_id = $autoresponder['id'];
 
             // Api call query.
             $query = array(
-                'autoresponder' => $autoresponder_id,
+                'autoresponder' => $autoresponder['id'],
                 'addresses' => [$address],
             );
-            // Make api call.
-            $response = $this->model_extension_smailyforopencart_helper->apiCall('autoresponder', $query, 'POST');
-            // If successful add customer to smaily_abandoned_carts table
-            if (array_key_exists('code', $response) && (int) $response['code'] === 101) {
-                $this->model_extension_smailyforopencart_helper->addSentCart($cart['customer_id']);
+            // Make an abandoned cart API call to Smaily.
+            try {
+                (new \SmailyForOpenCart\Request)
+                    ->setSubdomain($subdomain)
+                    ->setCredentials($username, $password)
+                    ->post('autoresponder', $query);
+            // cURL failed.
+            } catch (SmailyForOpenCart\HTTPError $error) {
+                $this->log->write($error);
+                die($error);
+            // cURL successful but response code from Smaily hints to error.
+            } catch (SmailyForOpenCart\APIError $error) {
+                $this->log->write($error);
+                // Save invalid email to database as sent because we do not want to repeatedly retry sending.
+                if ($error->getCode() !== SmailyForOpenCart\Request::API_ERR_INVALID_DATA) {
+                    die($error);
+                }
             }
+            // If successful response or email invalid: add customer to table and don't retry sending.
+            $this->model_extension_smailyforopencart_helper->addSentCart($cart['customer_id']);
         }
+        // End of iterating over getAbandonedCarts() results.
         echo 'Abandoned carts sent!';
     }
 
@@ -151,7 +169,7 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
             $tax_class_id,
             $this->config->get('config_tax')
         );
-        
+
         return $this->currency->format(
             $price_with_tax,
             $this->config->get('config_currency')
