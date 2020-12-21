@@ -72,7 +72,5 @@ class ModelSmailyForOpencartAdmin extends Model {
             'username' => $this->db->escape($username),
         ];
         $this->editSettingValue('smaily', 'smaily_api_credentials', $settings);
-
     }
-
 }
