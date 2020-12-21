@@ -112,18 +112,14 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
                     ->setCredentials($username, $password)
                     ->post('contact', $list);
             } catch (SmailyForOpenCart\HTTPError $error) {
-                $msg = $error->getMessage();
-                $this->log->write($msg);
-                echo($msg);
-                die(1);
+                $this->log->write($error);
+                die($error);
             } catch (SmailyForOpenCart\APIError $error) {
-                $msg = $error->getMessage();
-                $this->log->write($msg);
+                $this->log->write($error);
                 // Stop code execution and display error unless an invalid email was in query.
                 // Smaily subscribes all valid emails and discards the rest.
                 if ($error->getCode() !== SmailyForOpenCart\Request::API_ERR_INVALID_DATA) {
-                    echo($msg);
-                    die(1);
+                    die($error);
                 }
             }
         }
