@@ -2,6 +2,7 @@
 
 ### 1.5.0
 
+- Add admin page for managing abandoned carts - [[#65](https://github.com/sendsmaily/smaily-opencart-module/issues/65)
 - Fix abandoned cart CRON getting stuck - [[#124](https://github.com/sendsmaily/smaily-opencart-module/issues/124)]
 - Display module version in admin area - [[#125](https://github.com/sendsmaily/smaily-opencart-module/issues/125)]
 - Fix RSS product limit value error popping up when saving for first time - [[#138](https://github.com/sendsmaily/smaily-opencart-module/issues/138)
