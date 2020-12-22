@@ -7,7 +7,6 @@
 - Fix RSS product limit value error popping up when saving for first time - [[#138](https://github.com/sendsmaily/smaily-opencart-module/issues/138)
 - Fix unsubscribing customers not working by using small chunks of 500 - [[#151](https://github.com/sendsmaily/smaily-opencart-module/pull/151)
 
-
 ### 1.4.0
 
 - More user-friendly RSS URL generation with extra parameters [[#95](https://github.com/sendsmaily/smaily-opencart-module/pull/95)]
