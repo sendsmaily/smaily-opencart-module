@@ -3,6 +3,7 @@ admin/controller/extension/smailyforopencart/upgrade.php                     adm
 admin/language/en-gb/extension/module/smaily_for_opencart.php                admin/language/en-gb/extension/module/smaily_for_opencart.php
 admin/model/extension/smailyforopencart/admin.php                            admin/model/extension/smailyforopencart/admin.php
 admin/view/template/extension/module/smaily_for_opencart.tpl                 admin/view/template/extension/module/smaily_for_opencart.tpl
+admin/view/stylesheet/smaily_oc.css                                          admin/view/stylesheet/smaily_oc.css
 catalog/controller/extension/module/smaily_for_opencart.php                  catalog/controller/extension/module/smaily_for_opencart.php
 catalog/controller/extension/smailyforopencart/cron_cart.php                 catalog/controller/extension/smailyforopencart/cron_cart.php
 catalog/controller/extension/smailyforopencart/cron_customers.php            catalog/controller/extension/smailyforopencart/cron_customers.php
@@ -12,3 +13,4 @@ catalog/language/en-gb/extension/module/smaily_for_opencart.php              cat
 catalog/model/extension/smailyforopencart/helper.php                         catalog/model/extension/smailyforopencart/helper.php
 catalog/view/theme/default/template/extension/module/smaily_for_opencart.tpl catalog/view/theme/default/template/extension/module/smaily_for_opencart.tpl
 catalog/view/theme/default/template/extension/smailyforopencart/rss.tpl      catalog/view/theme/default/template/extension/smailyforopencart/rss.tpl
+system/library/smailyforopencart/request.php                                 system/library/smailyforopencart/request.php

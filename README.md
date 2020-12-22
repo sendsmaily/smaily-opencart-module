@@ -89,7 +89,18 @@ You need to provide a **token** as a parameter for security reasons so that only
 
 We recommend to run Customer Synchronization daily and Abandoned Carts not more often than every hour.
 
+## Using Module to View Status of Abandoned Carts
+
+To view the status of sent and pending abandoned carts you must open up the **Abandoned Cart Status** tab under module settings.
+
+The section will be populated by unsent abandoned carts, this happens automatically when a registered customer adds items to their shopping cart. The cart will be considered abandoned when items have been sitting in the shopping cart longer than the configured **Abandoned cart delay time** and during which the customer has not finalized their order. If you have enabled Abandoned Cart in module settings and when the cart has been considered abandoned, an automated abandoned cart email will be sent to the customer. If an abandoned cart email has been successfully sent, the cart will be marked as SENT and the Date & Time of email will be saved to the table. The shopping cart contents of sent abandoned cart emails will not be saved to the table.
+
 ## Frequently Asked Questions
+
+### How do I sort abandoned carts in the Abandoned Cart Status table?
+
+Abandoned carts in the table can be sorted by: customer name, customer e-mail, email date & time and status under **Abandoned Cart Status** tab.
+Sorting can be accomplished by clicking on the table headers of the same name (i.e status) marked blue. Clicking twice on them will change the order of sorting, to ascending or descending.
 
 ### How can I filter RSS-feed output by category and limit results?
 
