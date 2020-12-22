@@ -1,5 +1,11 @@
 # Changelog
 
+### 1.3.0
+
+- Fix abandoned cart CRON getting stuck - [#124](https://github.com/sendsmaily/smaily-opencart-module/issues/124)
+- Display module version in admin area - [#125](https://github.com/sendsmaily/smaily-opencart-module/issues/125)
+- Fix unsubscribing customers not working by using small chunks of 500 - [#144](https://github.com/sendsmaily/smaily-opencart-module/pull/144)
+
 ### 1.2.0
 
 - More user-friendly RSS URL generation with extra parameters - [#94](https://github.com/sendsmaily/smaily-opencart-module/pull/94)
