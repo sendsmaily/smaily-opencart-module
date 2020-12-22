@@ -7,6 +7,7 @@ $_['section_general']   = 'General';
 $_['section_customer']  = 'Subscriber Synchronization';
 $_['section_abandoned'] = 'Abandoned Cart';
 $_['section_rss']       = 'RSS Feed';
+$_['section_status']    = 'Abandoned Cart Status';
 $_['section_newsletter'] = 'Newsletter Widget';
 
 // Text
@@ -69,6 +70,13 @@ $_['model']                            = 'Model';
 $_['price']                            = 'Price';
 $_['status']                           = 'Status';
 $_['sort_order']                       = 'Sort Order';
+// Abandoned cart status table
+$_['cart_status_table_header_id']      = 'Customer ID';
+$_['cart_status_table_header_name']    = 'Customer Name';
+$_['cart_status_table_header_email']   = 'Customer E-Mail';
+$_['cart_status_table_header_cart']    = 'Shopping Cart';
+$_['cart_status_table_header_date']    = 'Email Date & Time';
+$_['cart_status_table_header_status']  = 'Status';
 
 
 //Placeholders
@@ -80,6 +88,7 @@ $_['cart_token_placeholder'] = 'Please enter token for abandoned cart sync';
 
 // Error
 $_['error_permission']              = 'Warning: You do not have permission to modify Smaily for OpenCart!';
+$_['error_post_method']             = 'Warning: Request method not POST!';
 $_['error_subdomain']               = 'Subdomain can\'t be empty';
 $_['error_username']                = 'Username can\'t be empty';
 $_['error_password']                = 'Password can\'t be empty';
