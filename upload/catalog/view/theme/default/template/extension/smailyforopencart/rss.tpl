@@ -11,7 +11,7 @@
     <guid isPermalink="True"><?php echo $item['link']; ?></guid>
     <pubDate><?php echo $item['pubDate']; ?></pubDate>
     <description><![CDATA[ <?php echo html_entity_decode($item['description']); ?> ]]></description>
-    <enclosure><?php echo $item['enclosure']; ?></enclosure>
+    <enclosure url="<?php echo $item['enclosure']; ?>"/>
     <smly:price><?php echo $item['price']; echo $currency; ?></smly:price>
     <?php if (isset($item['discount'])) : ?>
         <smly:old_price><?php echo $item['old_price']; echo $currency; ?></smly:old_price>
