@@ -438,6 +438,7 @@
   </div>
 <?php echo $footer; ?>
 </div>
+<link rel="stylesheet" type="text/css" href="view/stylesheet/smaily_oc.css" />
 <script type="text/javascript">
 (function($) {
    $(window).on("load", function() {
