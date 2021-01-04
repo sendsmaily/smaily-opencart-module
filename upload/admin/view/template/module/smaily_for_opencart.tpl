@@ -438,6 +438,7 @@
   </div>
 <?php echo $footer; ?>
 </div>
+<link rel="stylesheet" type="text/css" href="view/stylesheet/smailyforopencart/abandoned_carts_table.css " />
 <script type="text/javascript">
 (function($) {
    $(window).on("load", function() {
