@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.3.1
+
+- Fix RSS feed not displaying product title and description correctly - [[#167](https://github.com/sendsmaily/smaily-opencart-module/issues/167)]
+- Fix RSS feed not displaying product pictures - [[#168](https://github.com/sendsmaily/smaily-opencart-module/issues/168)]
+
 ### 1.3.0
 
 - Fix abandoned cart CRON getting stuck - [#124](https://github.com/sendsmaily/smaily-opencart-module/issues/124)
