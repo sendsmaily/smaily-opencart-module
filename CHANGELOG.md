@@ -2,8 +2,8 @@
 
 ### 1.5.1
 
+- Fix RSS feed not displaying product title and description correctly - [[#167](https://github.com/sendsmaily/smaily-opencart-module/issues/167)]
 - Fix RSS feed not displaying product pictures - [[#168](https://github.com/sendsmaily/smaily-opencart-module/issues/168)]
-- Fix stylesheet directory layout, which caused error when installing module using extension uploader - [[#169](https://github.com/sendsmaily/smaily-opencart-module/issues/169)]
 
 ### 1.5.0
 
