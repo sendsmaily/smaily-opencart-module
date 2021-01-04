@@ -3,7 +3,7 @@ admin/controller/smailyforopencart/upgrade.php                     admin/control
 admin/language/en-gb/module/smaily_for_opencart.php                admin/language/en-gb/module/smaily_for_opencart.php
 admin/model/smailyforopencart/admin.php                            admin/model/smailyforopencart/admin.php
 admin/view/template/module/smaily_for_opencart.tpl                 admin/view/template/module/smaily_for_opencart.tpl
-admin/view/stylesheet/smaily_oc.css                                admin/view/stylesheet/smaily_oc.css
+admin/view/stylesheet/smailyforopencart/abandoned_carts_table.css  admin/view/stylesheet/smailyforopencart/abandoned_carts_table.css
 catalog/controller/module/smaily_for_opencart.php                  catalog/controller/module/smaily_for_opencart.php
 catalog/controller/smailyforopencart/cron_cart.php                 catalog/controller/smailyforopencart/cron_cart.php
 catalog/controller/smailyforopencart/cron_customers.php            catalog/controller/smailyforopencart/cron_customers.php
