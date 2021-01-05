@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.5.1
+
+- Fix RSS feed not displaying product pictures - [[#168](https://github.com/sendsmaily/smaily-opencart-module/issues/168)]
+
 ### 1.5.0
 
 - Add admin page for managing abandoned carts - [[#65](https://github.com/sendsmaily/smaily-opencart-module/issues/65)]
