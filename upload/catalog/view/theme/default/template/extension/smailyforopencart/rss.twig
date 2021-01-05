@@ -10,7 +10,7 @@
     <link>{{ item.link }}</link>
     <guid isPermalink="True">{{ item.link }}</guid>
     <pubDate>{{ item.pubDate }}</pubDate>
-    <description><![CDATA[ {{ item.description }} ]]></description>
+    <description><![CDATA[ {{ item.description|raw }} ]]></description>
     <enclosure url="{{ item.enclosure }}"/>
     <smly:price>{{ item.price }}{{ currency }}</smly:price>
     {% if item.discount %}
