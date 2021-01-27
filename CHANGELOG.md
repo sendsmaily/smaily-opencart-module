@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.5.2
+
+- Fix validation error not showing if RSS product limit higher than 250 - [[#194](https://github.com/sendsmaily/smaily-opencart-module/pull/194)]
+
 ### 1.5.1
 
 - Fix RSS feed not displaying product pictures - [[#168](https://github.com/sendsmaily/smaily-opencart-module/issues/168)]
