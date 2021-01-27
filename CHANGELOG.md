@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.5.2
+
+- Fix undefined index error for RSS product limit - [[#190](https://github.com/sendsmaily/smaily-opencart-module/issues/190)]
+- Fix validation error not showing if RSS product limit higher than 250 - [[#193](https://github.com/sendsmaily/smaily-opencart-module/pull/193)]
+
 ### 1.5.1
 
 - Fix RSS feed not displaying product title and description correctly - [[#167](https://github.com/sendsmaily/smaily-opencart-module/issues/167)]
