@@ -1,3 +1,8 @@
-.SmailyAbandonedCartsTable > tbody > tr > td {
+.form-control + div.text-danger,
+.form-control + div.text-danger {
+    margin-top: 5px;
+}
+
+.smaily-abandoned-carts-table > tbody > tr > td {
     vertical-align: top;
 }
