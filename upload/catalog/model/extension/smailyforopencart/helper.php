@@ -3,54 +3,60 @@
 class ModelExtensionSmailyForOpencartHelper extends Model {
 
 	/**
-	 * Get all subscribed customers.
+	 * Get all customers subscribed to newsletter.
 	 *
-	 * @param int $offset Id counter
-	 * @return array $customers All subscribed customers in array.
+	 * @param string $since_at
+	 * @param int $since_customer_id
+	 * @return array $customers
 	 */
-	public function getSubscribedCustomers($offset, $sync_time) {
-		$query = $this->db->query(
-			"SELECT * FROM " . DB_PREFIX . "customer
-			WHERE (`customer_id` > " . (int)$offset . " AND `newsletter` = '1'
-			AND `date_added` > " . "'" . $this->db->escape($sync_time) . "')" .
-			" LIMIT 2500"
-		);
-		return $query->rows;
+	public function listNewsletterSubscribers($since_at, $since_customer_id) {
+		$db_prefix = DB_PREFIX;
+		$since_customer_id = (int)$since_customer_id;
+
+		$escaped_since_at = new DateTime($since_at);
+		$escaped_since_at = $this->db->escape($escaped_since_at->format('Y-m-d H:i:s'));
+
+		$sql = <<<EOT
+		SELECT
+			customer_id,
+			email,
+			firstname,
+			lastname,
+			telephone,
+			date_added
+		FROM ${db_prefix}customer
+		WHERE
+			customer_id > ${since_customer_id} AND
+			newsletter = 1 AND
+			date_added > "${escaped_since_at}"
+		LIMIT 2500
+		EOT;
+
+		return $this->db->query($sql)->rows;
 	}
 
 	/**
-	 * Sets newsletter status to 0 in customer table.
+	 * Change newsletter status to 0 in OpenCart.
 	 *
-	 * @param array $emails Emails to unsubscribe.
+	 * @param array $emails
 	 * @return void
 	 */
-	public function unsubscribeCustomers($emails) {
-		// Split email array to chunks of 500, in case query is too long.
-		$chunks = array_chunk($emails, 500);
-		foreach ($chunks as $chunk) {
-			$binds = array();
-			foreach ($chunk as $email) {
-				$binds[] = $this->db->escape($email);
-			}
-			// Add all emails to long string seperated by commas.
-			$this->db->query(
-				"UPDATE " . DB_PREFIX . "customer SET newsletter = '0' WHERE `email` IN ('" . implode("','", $binds) . "')");
-		}
+	public function optOutCustomers($emails) {
+		$db_prefix = DB_PREFIX;
+
+		$escaped_emails = array_map(array($this->db, 'escape'), $emails);
+		$escaped_emails = implode("','", $escaped_emails);
+
+		$sql = "UPDATE " . DB_PREFIX . "customer SET newsletter = 0 WHERE email IN ('" . $escaped_emails . "')";
+		$this->db->query($sql);
 	}
 
 	/**
-	 * Get additional sync fields from settings table.
+	 * Mark Abandoned Cart sent.
 	 *
-	 * @return array $sync_additional Fields to sync.
+	 * @param int $cart_id
+	 * @return void
 	 */
-	public function getSyncFields() {
-		$this->load->model('setting/setting');
-		// Null if no additional fields provided.
-		$sync_additional = $this->config->get('module_smaily_for_opencart_syncronize_additional');
-		$sync_additional[] = 'email';
-		return $sync_additional;
-	}
-
 	public function markAbandonedCartSent($cart_id) {
 		$cart_id = (int)$cart_id;
 		$db_prefix = DB_PREFIX;
@@ -65,6 +71,13 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
 		$this->db->query($sql);
 	}
 
+	/**
+	 * List pending Abandoned Carts.
+	 *
+	 * @param int $delay
+	 * @param string $started_at
+	 * @return array
+	 */
 	public function listPendingAbandonedCarts($delay, $started_at) {
 		$db_prefix = DB_PREFIX;
 		$escaped_started_at = $this->db->escape($started_at);
@@ -104,6 +117,12 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
 		return $abandoned_carts;
 	}
 
+	/**
+	 * Fetch products of a cart.
+	 *
+	 * @param int $cart
+	 * @return array
+	 */
 	protected function fetchCartProducts($cart_id) {
 		$customer_group_id = (int)$this->config->get('config_customer_group_id');
 		$db_prefix = DB_PREFIX;
@@ -143,26 +162,26 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
 	}
 
 	/**
-	 * Get UTC sync time from settings.
+	 * Update Customer Synchronization last run time.
 	 *
-	 * @return string $sync_time Time of last sync
+	 * @param string $dt
+	 * @return void
 	 */
-	public function getSyncTime() {
-		$this->load->model('setting/setting');
-		$sync_time = $this->model_setting_setting->getSettingValue('module_smaily_for_opencart_sync_time');
-		if (!isset($sync_time)) {
-			return date('c', 0); #Failsafe for first sync.
-		}
+	public function editCustomerSyncLastRunAt($dt) {
+		$db_prefix = DB_PREFIX;
+		$escaped_dt = $this->db->escape($dt);
 
-		return $sync_time;
-	}
+		$sql = <<<EOT
+		UPDATE ${db_prefix}setting
+		SET
+			`value` = "${escaped_dt}"
+		WHERE
+			`code` = "module_smaily_for_opencart" AND
+			`key` = "module_smaily_for_opencart_sync_time" AND
+			`store_id` = 0
+		EOT;
 
-	public function editSettingValue($code = '', $key = '', $value = '', $store_id = 0) {
-		if (!is_array($value)) {
-			$this->db->query("UPDATE " . DB_PREFIX . "setting SET `value` = '" . $this->db->escape($value) . "', serialized = '0'  WHERE `code` = '" . $this->db->escape($code) . "' AND `key` = '" . $this->db->escape($key) . "' AND store_id = '" . (int)$store_id . "'");
-		} else {
-			$this->db->query("UPDATE " . DB_PREFIX . "setting SET `value` = '" . $this->db->escape(json_encode($value)) . "', serialized = '1' WHERE `code` = '" . $this->db->escape($code) . "' AND `key` = '" . $this->db->escape($key) . "' AND store_id = '" . (int)$store_id . "'");
-		}
+		$this->db->query($sql);
 	}
 
 	/**
