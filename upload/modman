@@ -13,6 +13,7 @@ catalog/controller/extension/smailyforopencart/cron_customers.php             ca
 catalog/controller/extension/smailyforopencart/order.php                      catalog/controller/extension/smailyforopencart/order.php
 catalog/controller/extension/smailyforopencart/rss.php                        catalog/controller/extension/smailyforopencart/rss.php
 catalog/language/en-gb/extension/module/smaily_for_opencart.php               catalog/language/en-gb/extension/module/smaily_for_opencart.php
+catalog/model/extension/smailyforopencart/config.php                          catalog/model/extension/smailyforopencart/config.php
 catalog/model/extension/smailyforopencart/helper.php                          catalog/model/extension/smailyforopencart/helper.php
 catalog/view/theme/default/template/extension/module/smaily_for_opencart.twig catalog/view/theme/default/template/extension/module/smaily_for_opencart.twig
 catalog/view/theme/default/template/extension/smailyforopencart/rss.twig      catalog/view/theme/default/template/extension/smailyforopencart/rss.twig

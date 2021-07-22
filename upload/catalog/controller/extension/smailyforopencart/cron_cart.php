@@ -3,155 +3,135 @@
 require_once DIR_SYSTEM . 'library/smailyforopencart/request.php';
 
 class ControllerExtensionSmailyForOpencartCronCart extends Controller {
-
 	public function index() {
-		// Customer model.
-		$this->load->model('account/customer');
-		// Load Smaily settings.
-		$this->load->model('setting/setting');
-		// Load Smaily helper.
-		$this->load->model('extension/smailyforopencart/helper');
+		$this->load->model('extension/smailyforopencart/config');
+		$config_model = $this->model_extension_smailyforopencart_config->initialize();
 
-		$settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
-		// Validate cron token.
-		if (! array_key_exists('module_smaily_for_opencart_cart_token', $settings)) {
-			echo('Invalid abandoned cart settings!');
-			die(1);
-		}
-		if (empty($this->request->get['token']) ||
-			$settings['module_smaily_for_opencart_cart_token'] !== $this->request->get['token']
+		// Ensure user has access to run the CRON job.
+		if (
+			!isset($this->request->get['token']) ||
+			$config_model->get('abandoned_cart_token') !== $this->request->get['token']
 		) {
-			echo('Unauthorized');
+			echo "Unauthorized";
 			die(1);
 		}
 
-		if (! array_key_exists('module_smaily_for_opencart_enable_abandoned', $settings) ||
-			(int)$settings['module_smaily_for_opencart_enable_abandoned'] !== 1
-		) {
-			echo('Abandoned cart disabled!');
+		// Ensure Abandoned Cart feature is enabled.
+		if ($config_model->get('abandoned_cart_enabled') === false) {
+			echo "Abandoned Cart disabled!";
 			die(1);
 		}
 
-		// Get abandoned carts.
-		$abandoned_carts = $this->model_extension_smailyforopencart_helper->getAbandonedCarts();
-		if (empty($abandoned_carts)) {
-			echo('No abandoned carts');
-			die();
-		}
+		$benchmark_start = microtime(true);
+		$metric_sent_abandoned_carts = 0;
 
-		// Sync values selected from admin panel.
-		$cart_sync_values = $this->model_extension_smailyforopencart_helper->getAbandonedSyncFields();
-		$fields_available = [
-			'name',
+		$delay = $config_model->get('abandoned_cart_delay');
+		$fields = $config_model->get('abandoned_cart_fields');
+		$product_fields = array(
+			'base_price',
 			'description',
-			'sku',
-			'quantity',
+			'name',
 			'price',
-			'base_price'
-		];
-		$selected_fields = array_intersect($fields_available, $cart_sync_values);
+			'quantity',
+			'sku',
+		);
+		$started_at = $config_model->get('abandoned_cart_started_at');
 
-		foreach ($abandoned_carts as $cart) {
-			// Address array for smaily api call.
-			$address = array(
-				'email' => $cart['email'],
+		// Initialize Smaily API client.
+		$http_client = (new \SmailyForOpenCart\Request)
+			->setSubdomain($config_model->get('api_subdomain'))
+			->setCredentials($config_model->get('api_username'), $config_model->get('api_password'));
+
+		// Initialize helper model.
+		$this->load->model('extension/smailyforopencart/helper');
+		$helper_model = $this->model_extension_smailyforopencart_helper;
+
+		// Fetch Abandoned Carts.
+		$pending_abandoned_carts = $helper_model->listPendingAbandonedCarts($delay, $started_at);
+		foreach ($pending_abandoned_carts as $abandoned_cart) {
+			$payload = array(
+				'email' => $abandoned_cart['email'],
+				'over_10_products' => 'false',
 			);
 
 			// Add customer fields.
-			if (in_array('first_name', $cart_sync_values)) {
-				$address['first_name'] = isset($cart['firstname']) ? $cart['firstname'] : '';
+			if (in_array('first_name', $fields)) {
+				$payload['first_name'] = isset($abandoned_cart['firstname']) ? $abandoned_cart['firstname'] : '';
 			}
-			if (in_array('last_name', $cart_sync_values)) {
-				$address['last_name'] = isset($cart['lastname']) ? $cart['lastname'] : '';
+			if (in_array('last_name', $fields)) {
+				$payload['last_name'] = isset($abandoned_cart['lastname']) ? $abandoned_cart['lastname'] : '';
 			}
 
-
-			// Populate products list with empty values for legacy api.
-			foreach ($selected_fields as $sync_value) {
-				for ($i=1; $i < 11; $i++) {
-					$address['product_' . $sync_value . '_' . $i] = '';
+			// Populate product empty values.
+			foreach ($product_fields as $field) {
+				for ($i = 1; $i < 11; $i++) {
+					$payload['product_' . $field . '_' . $i] = '';
 				}
 			}
 
 			// Populate address fields with up to 10 products.
 			$j = 1;
-			foreach ($cart['products'] as $product) {
+			foreach ($abandoned_cart['products'] as $product) {
 				if ($j > 10) {
-					$address['over_10_products'] = 'true';
+					$payload['over_10_products'] = 'true';
 					break;
 				}
-				foreach ($selected_fields as $sync_value) {
-					switch ($sync_value) {
-						case 'description':
-							$address['product_description_' . $j] = htmlspecialchars(
-								$product['data'][$sync_value]
-							);
-							break;
-						case 'quantity':
-							$address['product_quantity_' . $j] = $product[$sync_value];
-							break;
-						case 'price':
-							// Use special price if available.
-							if (isset($product['data']['special'])) {
-								$price = $product['data']['special'];
-							} else {
-								$price = $product['data']['price'];
-							}
-							$address['product_price_' . $j] = $this->getProductDisplayPrice(
-								$price,
-								$product['data']['tax_class_id']
-							);
-							break;
-						case 'base_price':
-							$address['product_base_price_' . $j] = $this->getProductDisplayPrice(
-								$product['data']['price'],
-								$product['data']['tax_class_id']
-							);
-							break;
-						default:
-							$address['product_' . $sync_value . '_' . $j] = $product['data'][$sync_value];
-							break;
-					}
+
+				if (in_array('name', $fields, true)) {
+					$payload['product_name_' . $j] = trim($product['name']);
 				}
+				if (in_array('description', $fields, true)) {
+					$payload['product_description_' . $j] = htmlspecialchars(trim($product['description']));
+				}
+				if (in_array('sku', $fields, true)) {
+					$payload['product_sku_' . $j] = $product['sku'];
+				}
+				if (in_array('quantity', $fields, true)) {
+					$payload['product_quantity_' . $j] = $product['quantity'];
+				}
+				if (in_array('price', $fields, true)) {
+					$price = !empty($product['special']) ? $product['special'] : $product['price'];
+					$payload['product_price_' . $j] = $this->getProductDisplayPrice($price, $product['tax_class_id']);
+				}
+				if (in_array('base_price', $fields, true)) {
+					$payload['product_base_price_' . $j] = $this->getProductDisplayPrice(
+						$product['price'],
+						$product['tax_class_id']
+					);
+				}
+
 				$j++;
 			}
 
-			// Fetch credentials from DB.
-			$subdomain = $settings['module_smaily_for_opencart_subdomain'];
-			$username = $settings['module_smaily_for_opencart_username'];
-			$password = $settings['module_smaily_for_opencart_password'];
-			// Get autoresponder from settings.
-			$autoresponder = html_entity_decode($settings['module_smaily_for_opencart_abandoned_autoresponder']);
-			$autoresponder = json_decode($autoresponder, true);
-			// API call query.
-			$query = array(
-				'autoresponder' => $autoresponder['id'],
-				'addresses' => [$address],
-			);
-
-			// Make an abandoned cart API call to Smaily.
 			try {
-				(new \SmailyForOpenCart\Request)
-					->setSubdomain($subdomain)
-					->setCredentials($username, $password)
-					->post('autoresponder', $query);
-			// cURL failed.
+				$http_client->post('autoresponder', array(
+					'autoresponder' => $config_model->get('abandoned_cart_autoresponder'),
+					'addresses' => [$payload],
+				));
+
+				$metric_sent_abandoned_carts += 1;
 			} catch (SmailyForOpenCart\HTTPError $error) {
 				$this->log->write($error);
 				die($error);
-			// cURL successful but response code from Smaily hints to error.
 			} catch (SmailyForOpenCart\APIError $error) {
 				$this->log->write($error);
-				// Save invalid email to database as sent because we do not want to repeatedly retry sending.
+
+				// Ignore invalid email address errors, because we do not want to repeatedly retry sending.
 				if ($error->getCode() !== SmailyForOpenCart\Request::API_ERR_INVALID_DATA) {
 					die($error);
 				}
 			}
-			// If successful response or email invalid: add customer to table and don't retry sending.
-			$this->model_extension_smailyforopencart_helper->addSentCart($cart['customer_id']);
+
+			// Mark Abandoned Cart as sent.
+			$helper_model->markAbandonedCartSent($abandoned_cart['customer_id']);
 		}
-		// End of iterating over getAbandonedCarts() results.
-		echo 'Abandoned carts sent!';
+
+		printf(
+			"Finished in %f seconds. Sent %d abandoned carts out of %d.",
+			microtime(true) - $benchmark_start,
+			$metric_sent_abandoned_carts,
+			count($pending_abandoned_carts)
+		);
 	}
 
 	/**
@@ -161,16 +141,8 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
 	 * @param string $tax_class_id  Product tax class number.
 	 * @return void
 	 */
-	public function getProductDisplayPrice($price, $tax_class_id) {
-		$price_with_tax = $this->tax->calculate(
-			$price,
-			$tax_class_id,
-			$this->config->get('config_tax')
-		);
-
-		return $this->currency->format(
-			$price_with_tax,
-			$this->config->get('config_currency')
-		);
+	protected function getProductDisplayPrice($price, $tax_class_id) {
+		$price_with_tax = $this->tax->calculate($price, $tax_class_id, $this->config->get('config_tax'));
+		return $this->currency->format($price_with_tax, $this->config->get('config_currency'));
 	}
 }

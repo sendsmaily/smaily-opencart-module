@@ -10,7 +10,6 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
 			cart.customer_id,
 			customer.email,
 			customer.firstname,
-			customer.telephone,
 			customer.lastname,
 			MAX(cart.date_added) AS last_date_added,
 			smaily.sent_time,
