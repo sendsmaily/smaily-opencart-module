@@ -48,7 +48,7 @@ class ModelExtensionSmailyForOpencartForm extends Model {
 		$sanitized = array();
 
 		// Sanitize module settings.
-		$sanitized['enabled'] = isset($input['enabled']) ? (bool)(int)$input['enabled'] : null;
+		$sanitized['status'] = isset($input['status']) ? (bool)(int)$input['status'] : null;
 
 		// Sanitize API credentials.
 		$sanitized['api_subdomain'] = isset($input['api_subdomain']) ? trim($input['api_subdomain']) : null;
