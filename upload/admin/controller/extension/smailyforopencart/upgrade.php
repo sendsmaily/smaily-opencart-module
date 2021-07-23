@@ -26,53 +26,9 @@ class ControllerExtensionSmailyForOpencartUpgrade extends Controller {
 			return;
 		}
 
-		if (version_compare($version, '1.2.0', '=')) {
-			$this->migrate_1_2_0();
-		}
-
 		if (version_compare($version, '1.3.2', '>=')) {
 			$this->migrate_1_3_2();
 		}
-	}
-
-	/**
-	 * Run version 1.2.0 migrations:
-	 *
-	 * - Standardize abandoned cart fields.
-	 *
-	 * @return void
-	 */
-	private function migrate_1_2_0() {
-		$this->load->model('setting/setting');
-		$settings_model = $this->model_setting_setting;
-
-		$settings = $settings_model->getSetting('module_smaily_for_opencart');
-
-		// Only run migrations if Abandoned Cart feature is enabled.
-		if (
-			!array_key_exists('module_smaily_for_opencart_enable_abandoned', $settings) ||
-			(int)$settings['module_smaily_for_opencart_enable_abandoned'] === 0
-		) {
-			return;
-		}
-
-		$cart_additional = [];
-		if (array_key_exists('module_smaily_for_opencart_abandoned_additional', $settings)) {
-			$cart_additional = $settings['module_smaily_for_opencart_abandoned_additional'];
-		}
-
-		// Add new fields to the list.
-		if (!in_array('first_name', $cart_additional)) {
-			array_push($cart_additional, 'first_name');
-		}
-
-		if (!in_array('last_name', $cart_additional)) {
-			array_push($cart_additional, 'last_name');
-		}
-
-		$settings['module_smaily_for_opencart_abandoned_additional'] = $cart_additional;
-
-		$settings_model->editSetting('module_smaily_for_opencart', $settings);
 	}
 
 	/**
@@ -98,10 +54,13 @@ class ControllerExtensionSmailyForOpencartUpgrade extends Controller {
 			);
 		}
 
-		// Register Abandoned Cart start time.
+		// Register Abandoned Cart start time, if feature is enabled.
 		$settings = $settings_model->getSetting('module_smaily_for_opencart');
-		if (!array_key_exists('module_smaily_for_opencart_abandoned_cart_time', $settings)) {
-			$settings['module_smaily_for_opencart_abandoned_cart_time'] = date('Y-m-d H:i:s');
+		if (
+			!array_key_exists('module_smaily_for_opencart_cart_time', $settings) &&
+			(int)$settings['module_smaily_for_opencart_enable_abandoned'] === 1
+		) {
+			$settings['module_smaily_for_opencart_cart_time'] = date('Y-m-d H:i:s');
 			$settings_model->editSetting('module_smaily_for_opencart', $settings);
 		}
 	}
