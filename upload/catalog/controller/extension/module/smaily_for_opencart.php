@@ -1,38 +1,36 @@
 <?php
 
 class ControllerExtensionModuleSmailyForOpencart extends Controller {
-
 	public function index() {
-		// Load Smaily settings.
-		$this->load->model('setting/setting');
-		$settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
-		if (array_key_exists('module_smaily_for_opencart_status', $settings) &&
-			(int)$settings['module_smaily_for_opencart_status'] === 1) {
-			// Get language template.
-			$this->load->language('extension/module/smaily_for_opencart');
-			// Form element translations.
-			$data['newsletter_title'] = $this->language->get('newsletter_title');
-			$data['subscribe_button'] = $this->language->get('subscribe_button');
-			$data['email_placeholder'] = $this->language->get('email_placeholder');
-			$data['name_placeholder'] = $this->language->get('name_placeholder');
+		$this->load->model('extension/smailyforopencart/config');
+		$config_model = $this->model_extension_smailyforopencart_config->initialize();
 
-			// Form settings.
-			$data['subdomain'] = $settings['module_smaily_for_opencart_subdomain'];
-			// Get current url.
-			$request_scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
-			$url = $request_scheme .'://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ;
-			$data['current_url'] =  $url;
-			$data['langauge'] =  $this->session->data['language'];
-			// Get smaily response from url.
-			$response_code = isset($this->request->get['code']) ? (int)$this->request->get['code'] : null;
-			if ($response_code && $response_code === 101) {
-				$data['success_message'] = $this->language->get('newsletter_success_response');
-			}
-			if ($response_code && $response_code !== 101) {
-				$data['error_message'] = $this->language->get('newsletter_error_response');
-			}
-			// Add template
-			return $this->load->view('extension/module/smaily_for_opencart', $data);
+		// Output nothing if module is disabled.
+		if ($config_model->get('enabled') === false) {
+			return;
 		}
+
+		$this->load->language('extension/module/smaily_for_opencart');
+
+		// Compile current URL.
+		$scheme = isset($this->request->server['HTTPS']) && $this->request->server['HTTPS'] === 'on' ? "https" : "http";
+		$current_url = $scheme . '://' . $this->request->server['HTTP_HOST'] . $this->request->server['REQUEST_URI'];
+
+		// Collect template variables.
+		$data = array(
+			'current_url' => $current_url,
+			'language' => $this->session->data['language'],
+			'subdomain' => $config_model->get('api_subdomain'),
+		);
+
+		// Get smaily response from url.
+		$response_code = isset($this->request->get['code']) ? (int)$this->request->get['code'] : null;
+		if ($response_code && $response_code === 101) {
+			$data['success_message'] = $this->language->get('newsletter_success_response');
+		} elseif ($response_code && $response_code !== 101) {
+			$data['error_message'] = $this->language->get('newsletter_error_response');
+		}
+
+		return $this->load->view('extension/module/smaily_for_opencart', $data);
 	}
 }
