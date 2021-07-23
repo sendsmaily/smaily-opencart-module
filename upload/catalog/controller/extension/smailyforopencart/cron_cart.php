@@ -35,7 +35,7 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
 			'quantity',
 			'sku',
 		);
-		$started_at = $config_model->get('abandoned_cart_started_at');
+		$enabled_at = $config_model->get('abandoned_cart_enabled_at');
 
 		// Initialize Smaily API client.
 		$http_client = (new \SmailyForOpenCart\Request)
@@ -47,7 +47,7 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
 		$helper_model = $this->model_extension_smailyforopencart_helper;
 
 		// Fetch Abandoned Carts.
-		$pending_abandoned_carts = $helper_model->listPendingAbandonedCarts($delay, $started_at);
+		$pending_abandoned_carts = $helper_model->listPendingAbandonedCarts($delay, $enabled_at);
 		foreach ($pending_abandoned_carts as $abandoned_cart) {
 			$payload = array(
 				'email' => $abandoned_cart['email'],

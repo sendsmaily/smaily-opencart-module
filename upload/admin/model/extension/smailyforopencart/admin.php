@@ -1,9 +1,9 @@
 <?php
 
 class ModelExtensionSmailyForOpencartAdmin extends Model {
-	public function listAbandonedCarts($sort_by, $sort_order, $offset, $limit, $delay, $started_at) {
+	public function listAbandonedCarts($sort_by, $sort_order, $offset, $limit, $delay, $enabled_at) {
 		$db_prefix = DB_PREFIX;
-		$escaped_started_at = $this->db->escape($started_at);
+		$escaped_enabled_at = $this->db->escape($enabled_at);
 
 		$sql = <<<EOT
 		SELECT
@@ -22,7 +22,7 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
 		GROUP BY cart.customer_id
 		HAVING
 			last_date_added <= DATE_SUB(NOW(), INTERVAL ${delay} MINUTE) AND
-			last_date_added >= "${escaped_started_at}"
+			last_date_added >= "${escaped_enabled_at}"
 		ORDER BY ${sort_by} ${sort_order}
 		LIMIT ${offset}, ${limit}
 		EOT;
@@ -45,9 +45,9 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
 		return $abandoned_carts;
 	}
 
-	public function countAbandonedCarts($delay, $started_at) {
+	public function countAbandonedCarts($delay, $enabled_at) {
 		$db_prefix = DB_PREFIX;
-		$escaped_started_at = $this->db->escape($started_at);
+		$escaped_enabled_at = $this->db->escape($enabled_at);
 
 		$sql = <<<EOT
 		SELECT
@@ -60,7 +60,7 @@ class ModelExtensionSmailyForOpencartAdmin extends Model {
 		GROUP BY cart.customer_id
 		HAVING
 			last_date_added <= DATE_SUB(NOW(), INTERVAL ${delay} MINUTE) AND
-			last_date_added >= "${escaped_started_at}"
+			last_date_added >= "${escaped_enabled_at}"
 		EOT;
 
 		return $this->db->query($sql)->num_rows;

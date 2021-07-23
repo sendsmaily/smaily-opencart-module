@@ -79,7 +79,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 					$old_settings['abandoned_cart_enabled'] === false &&
 					$settings['abandoned_cart_enabled'] === true
 				) {
-					$config_model->set('abandoned_cart_started_at', date('Y-m-d H:i:s'));
+					$config_model->set('abandoned_cart_enabled_at', date('Y-m-d H:i:s'));
 				}
 
 				// Register customer synchronization start time.
@@ -547,13 +547,13 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 			($current_page - 1) * $limit,
 			$limit,
 			$config_model->get('abandoned_cart_delay'),
-			$config_model->get('abandoned_cart_started_at')
+			$config_model->get('abandoned_cart_enabled_at')
 		);
 
 		// Compile Abandoned Cart status table pagination.
 		$total_count = $admin_model->countAbandonedCarts(
 			$config_model->get('abandoned_cart_delay'),
-			$config_model->get('abandoned_cart_started_at')
+			$config_model->get('abandoned_cart_enabled_at')
 		);
 
 		$pagination = new Pagination();

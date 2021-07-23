@@ -75,12 +75,12 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
 	 * List pending Abandoned Carts.
 	 *
 	 * @param int $delay
-	 * @param string $started_at
+	 * @param string $enabled_at
 	 * @return array
 	 */
-	public function listPendingAbandonedCarts($delay, $started_at) {
+	public function listPendingAbandonedCarts($delay, $enabled_at) {
 		$db_prefix = DB_PREFIX;
-		$escaped_started_at = $this->db->escape($started_at);
+		$escaped_enabled_at = $this->db->escape($enabled_at);
 
 		$sql = <<<EOT
 		SELECT
@@ -98,7 +98,7 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
 		GROUP BY cart.customer_id
 		HAVING
 			last_date_added <= DATE_SUB(NOW(), INTERVAL ${delay} MINUTE) AND
-			last_date_added >= "${escaped_started_at}"
+			last_date_added >= "${escaped_enabled_at}"
 		EOT;
 
 		$abandoned_carts = array();
