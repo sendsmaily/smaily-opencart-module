@@ -76,8 +76,8 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 			if ($this->validate($config_model->get()) === true) {
 				// Register current time as the starting point of abandoned cart reminders.
 				if (
-					$old_settings['abandoned_cart_status'] === false &&
-					$settings['abandoned_cart_status'] === true
+					$old_settings['abandoned_cart_enabled'] === false &&
+					$settings['abandoned_cart_enabled'] === true
 				) {
 					$config_model->set('abandoned_cart_enabled_at', date('Y-m-d H:i:s'));
 				}
