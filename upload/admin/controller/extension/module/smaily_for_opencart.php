@@ -261,9 +261,6 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 	 * @return void
 	 */
 	public function install() {
-		$this->load->model('setting/event');
-		$this->load->model('setting/setting');
-
 		$db_prefix = DB_PREFIX;
 
 		// Create Abandoned Cart table.
@@ -276,6 +273,8 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 		EOT);
 
 		// Register event listeners.
+		$this->load->model('setting/event');
+
 		$this->model_setting_event->addEvent(
 			'smaily_order',
 			'catalog/controller/checkout/confirm/after',
@@ -292,11 +291,32 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 			'extension/smailyforopencart/order/removeWhenCartEmpty'
 		);
 
-		// Generate CRON tokens.
-		$this->model_setting_setting->editSetting('module_smaily_for_opencart', array(
-			'module_smaily_for_opencart_cart_token' => uniqid(),
-			'module_smaily_for_opencart_sync_token' => uniqid(),
-		));
+		// Generate default config.
+		$this->load->model('extension/smailyforopencart/config');
+		$this->model_extension_smailyforopencart_config
+			->update(array(
+				'abandoned_cart_autoresponder' => 0,
+				'abandoned_cart_delay' => 60,
+				'abandoned_cart_enabled_at' => '',
+				'abandoned_cart_enabled' => 0,
+				'abandoned_cart_fields' => array(),
+				'abandoned_cart_token' => uniqid(),
+				'api_password' => '',
+				'api_subdomain' => '',
+				'api_username' => '',
+				'customer_sync_enabled' => 0,
+				'customer_sync_fields' => array(),
+				'customer_sync_last_run_at' => '',
+				'customer_sync_token' => uniqid(),
+				'db_version' => $this->version,
+				'rss_category' => 0,
+				'rss_limit' => 50,
+				'rss_sort_by' => 'pd.name',
+				'rss_sort_order' => 'ASC',
+				'status' => 0,
+				'validated' => 0,
+			))
+			->save();
 	}
 
 	/**
@@ -308,7 +328,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 		$this->load->model('setting/event');
 		$this->load->model('setting/setting');
 
-		// Drop Abandoned Cart table.
+		// Remove tables.
 		$this->db->query("DROP TABLE IF EXISTS " . DB_PREFIX . "smaily_abandoned_carts");
 
 		// Remove event handlers.
