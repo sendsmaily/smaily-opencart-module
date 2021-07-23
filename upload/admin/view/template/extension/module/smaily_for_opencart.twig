@@ -137,8 +137,8 @@
             <label class="col-sm-2 control-label" for="input-status">{{ label_enabled }}</label>
             <div class="col-sm-10">
               <select name="enabled" id="input-status" class="form-control">
-                <option value="1"{% if settings.enabled == true %} selected{% endif %}>{{ text_yes }}</option>
-                <option value="0"{% if settings.enabled == false %} selected{% endif %}>{{ text_no }}</option>
+                <option value="1"{% if settings.status == true %} selected{% endif %}>{{ text_yes }}</option>
+                <option value="0"{% if settings.status == false %} selected{% endif %}>{{ text_no }}</option>
               </select>
             </div>
           </div>
