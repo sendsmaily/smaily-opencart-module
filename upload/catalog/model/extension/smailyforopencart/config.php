@@ -18,7 +18,7 @@ class ModelExtensionSmailyForOpencartConfig extends Model {
 		'customer_sync_last_run_at' => '',
 		'customer_sync_token' => '',
 		'enabled' => false,
-		'rss_category' => '',
+		'rss_category' => 0,
 		'rss_limit' => 50,
 		'rss_sort_by' => 'pd.name',
 		'rss_sort_order' => 'ASC',
