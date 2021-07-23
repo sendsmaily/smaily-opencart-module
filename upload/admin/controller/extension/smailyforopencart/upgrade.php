@@ -12,6 +12,7 @@ class ControllerExtensionSmailyForOpencartUpgrade extends Controller {
 	 */
 	public function upgrade($route, $args) {
 		$args = $args[0];
+		$db_prefix = DB_PREFIX;
 
 		// Ensure Smaily for OpenCart was upgraded.
 		if (!isset($args['code']) || $args['code'] !== self::MODULE_ID) {
@@ -26,42 +27,33 @@ class ControllerExtensionSmailyForOpencartUpgrade extends Controller {
 			return;
 		}
 
-		if (version_compare($version, '1.3.2', '>=')) {
-			$this->migrate_1_3_2();
-		}
-	}
+		$this->load->model('extension/smailyforopencart/config');
+		$config_model = $this->model_extension_smailyforopencart_config->initialize();
 
-	/**
-	 * Run version 1.3.2 migrations:
-	 *
-	 * - Introduces event to remove Abandoned Cart on cart empty.
-	 * - Register Abandoned Cart start time to ignore older carts.
-	 *
-	 * @return void
-	 */
-	private function migrate_1_3_2() {
-		$this->load->model('setting/setting');
-		$settings_model = $this->model_setting_setting;
+		$module_version = $module['version'];
+		$db_version = $config_model->get('db_version');
 
-		// Install Abandoned Cart remove event handler, if missing.
-		$event = $this->db->query("SELECT * FROM " . DB_PREFIX . "event WHERE code = 'smaily_reset_empty_cart'")->row;
-		if (empty($event)) {
-			$this->load->model('extension/event');
-			$this->model_extension_event->addEvent(
-				'smaily_reset_empty_cart',
-				'catalog/controller/checkout/cart/remove/after',
-				'extension/smailyforopencart/order/removeWhenCartEmpty'
-			);
+		// No need to run migrations if module and database version matches.
+		if ($module_version === $db_version) {
+			return;
 		}
 
-		// Register Abandoned Cart start time, if feature is enabled.
-		$settings = $settings_model->getSetting('module_smaily_for_opencart');
-		if (
-			!array_key_exists('module_smaily_for_opencart_cart_time', $settings) &&
-			(int)$settings['module_smaily_for_opencart_enable_abandoned'] === 1
-		) {
-			$settings['module_smaily_for_opencart_cart_time'] = date('Y-m-d H:i:s');
-			$settings_model->editSetting('module_smaily_for_opencart', $settings);
+		$migrations = array(
+			// Example: '1.0.0' => array($this, 'migrate_1_0_0'),
+		);
+
+		foreach ($migrations as $migration_version => $migration_callback) {
+			if (version_compare($db_version, $migration_version, '>=')) {
+				continue;
+			}
+
+			if (is_callable($migration_callback)) {
+				$migration_callback();
+			}
 		}
+
+		$config_model
+			->set('db_version', $module_version)
+			->save();
 	}
 }
