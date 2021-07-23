@@ -80,7 +80,7 @@ class ControllerExtensionSmailyForOpencartUpgrade extends Controller {
 	 *
 	 * - Introduces event to remove Abandoned Cart on cart empty.
 	 * - Register Abandoned Cart start time to ignore older carts.
-     *
+	 *
 	 * @return void
 	 */
 	private function migrate_1_3_2() {

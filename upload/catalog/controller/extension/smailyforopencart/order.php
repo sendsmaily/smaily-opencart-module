@@ -28,7 +28,7 @@ class ControllerExtensionSmailyForOpencartOrder extends Controller {
 	 * @return void
 	 */
 	public function removeWhenCartEmpty() {
-		$customer_id = (int) $this->customer->getId();
+		$customer_id = (int)$this->customer->getId();
 
 		if (empty($customer_id)) {
 			return;
