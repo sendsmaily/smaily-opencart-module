@@ -164,7 +164,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label" for="customer-sync-fields">{{ label_customer_sync_fields }}</label>
             <div class="col-sm-10">
-              <select class="form-control" name="customer_sync_fields[]" id="customer-sync-fields" multiple="multiple">
+              <select class="form-control" name="customer_sync_fields[]" id="customer-sync-fields" multiple="multiple" size="4">
                 {% for option in customer_sync.field_options %}
                   <option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>
                 {% endfor %}
@@ -220,7 +220,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label" for="abandoned-cart-fields">{{ label_abandoned_cart_fields }}</label>
             <div class="col-sm-10">
-              <select class="form-control" name="abandoned_cart_fields[]" id="abandoned-cart-fields" multiple="multiple">
+              <select class="form-control" name="abandoned_cart_fields[]" id="abandoned-cart-fields" multiple="multiple" size="8">
                 {% for option in abandoned_cart.field_options %}
                   <option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>
                 {% endfor %}
