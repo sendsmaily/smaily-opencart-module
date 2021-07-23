@@ -43,11 +43,6 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 	 * @return void
 	 */
 	public function index() {
-		$data = array(
-			'version' => $this->version,
-		);
-
-		// Load language file.
 		$this->load->language('extension/module/smaily_for_opencart');
 
 		// Setup module settings page.
@@ -102,6 +97,8 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 				);
 			}
 		}
+
+		$data = array();
 
 		$data['settings'] = $config_model->get();
 		$data['success'] = isset($this->request->get['success']) ? $this->language->get('error_success') : '';
