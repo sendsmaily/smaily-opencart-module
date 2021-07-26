@@ -18,6 +18,8 @@ First off, thanks for taking the time to contribute!
 The development environment requires [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) to run.
 Please refer to the official documentation for step-by-step installation guide.
 
+In order to fully utilize the development environment we recommend you use [Visual Studio Code](https://code.visualstudio.com/), and have [PHP Sniffer](https://marketplace.visualstudio.com/items?itemName=wongjn.php-sniffer) extension installed.
+
 Clone the repository:
 
     $ git clone git@github.com:sendsmaily/smaily-opencart-module.git
@@ -26,6 +28,10 @@ Next, change your working directory to the local repository, and checkout `2.2.x
 
     $ cd smaily-opencart-module
     $ git checkout 2.2.x
+
+Install packages required by the development environment:
+
+    $ composer install
 
 And run the environment:
 
@@ -41,12 +47,13 @@ CORS errors and the site might not function properly.
 The repository is split into multiple parts:
 
 - `assets` - screenshots for plugin page;
-- `upload` - module files;
+- `upload` - module files.
 
 In addition there are system directories:
 
 - `.github` - GitHub issue and pull request templates;
 - `.sandbox` - files needed for running the development environment;
+- `.vscode` - Visual Studio Code settings.
 
 ## Modman
 
