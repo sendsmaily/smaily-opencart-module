@@ -12,7 +12,6 @@ class ControllerExtensionSmailyForOpencartUpgrade extends Controller {
 	 */
 	public function upgrade($route, $args) {
 		$args = $args[0];
-		$db_prefix = DB_PREFIX;
 
 		// Ensure Smaily for OpenCart was upgraded.
 		if (!isset($args['code']) || $args['code'] !== self::MODULE_ID) {
