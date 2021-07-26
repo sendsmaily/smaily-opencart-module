@@ -15,7 +15,7 @@
 					<i class="fa fa-reply"></i>
 				</a>
 			</div>
-			<h1>{{ heading_title }}</h1>
+			<h1>{{ t.heading_title }}</h1>
 			<ul class="breadcrumb">
 				{% for breadcrumb in breadcrumbs %}
 					<li>
@@ -50,14 +50,14 @@
         <div class="panel-heading">
           <h3 class="panel-title">
             <i class="fa fa-plug"></i>
-            {{ heading_connection_status }}</h3>
+            {{ t.heading_connection_status }}</h3>
         </div>
         <div class="panel-body">
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-status">&nbsp;</label>
             <div class="col-sm-7">
-              <strong class="text-success text-uppercase">{{ text_connected }}</strong><br/>
-              {{ help_connected|replace({ '%subdomain%': settings.api_subdomain, '%username%': settings.api_username})}}
+              <strong class="text-success text-uppercase">{{ t.text_connected }}</strong><br/>
+              {{ t.help_connected|replace({ '%subdomain%': settings.api_subdomain, '%username%': settings.api_username})}}
             </div>
             <div class="col-sm-3">
               <a href="{{ reset_credentials_url }}" title="{{ button_reset_credentials }}" class="btn btn-danger pull-right">
@@ -72,26 +72,26 @@
         <div class="panel-heading">
           <h3 class="panel-title">
             <i class="fa fa-pencil"></i>
-            {{ heading_connection_status }}</h3>
+            {{ t.heading_connection_status }}</h3>
         </div>
         <div class="panel-body">
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-status">&nbsp;</label>
             <div class="col-sm-10">
               <p>
-                <strong class="text-danger text-uppercase">{{ text_disconnected }}</strong><br/>
-                {{ help_disconnected }}
-                <a href="https://smaily.com/help/api/general/create-api-user/" target="_blank">{{ help_api_password }}</a>
+                <strong class="text-danger text-uppercase">{{ t.text_disconnected }}</strong><br/>
+                {{ t.help_disconnected }}
+                <a href="https://smaily.com/help/api/general/create-api-user/" target="_blank">{{ t.help_api_password }}</a>
               </p>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-2 control-label" for="api-subdomain">
-              {{ label_api_subdomain }}
+              {{ t.label_api_subdomain }}
             </label>
             <div class="col-sm-10">
-              <input class="form-control" id="api-subdomain" name="api_subdomain" placeholder="{{ placeholder_api_subdomain }}" type="text" value="{{ settings.api_subdomain }}"/>
+              <input class="form-control" id="api-subdomain" name="api_subdomain" placeholder="{{ t.placeholder_api_subdomain }}" type="text" value="{{ settings.api_subdomain }}"/>
 
               {% if errors.api_subdomain %}
               <div class="text-danger">{{ errors.api_subdomain }}</div>
@@ -100,10 +100,10 @@
           </div>
           <div class="form-group">
             <label class="col-sm-2 control-label" for="api-username">
-              {{ label_api_username }}
+              {{ t.label_api_username }}
             </label>
             <div class="col-sm-10">
-              <input class="form-control" id="api-username" name="api_username" placeholder="{{ placeholder_api_username }}" type="text" value="{{ settings.api_username }}"/>
+              <input class="form-control" id="api-username" name="api_username" placeholder="{{ t.placeholder_api_username }}" type="text" value="{{ settings.api_username }}"/>
 
               {% if errors.api_username %}
               <div class="text-danger">{{ errors.api_username }}</div>
@@ -112,10 +112,10 @@
           </div>
           <div class="form-group">
             <label class="col-sm-2 control-label" for="api-password">
-              {{ label_api_password }}
+              {{ t.label_api_password }}
             </label>
             <div class="col-sm-10">
-              <input class="form-control" id="api-password" name="api_password" placeholder="{{ placeholder_api_password }}" type="password" value="{{ settings.api_password }}"/>
+              <input class="form-control" id="api-password" name="api_password" placeholder="{{ t.placeholder_api_password }}" type="password" value="{{ settings.api_password }}"/>
 
               {% if errors.api_password %}
               <div class="text-danger">{{ errors.api_password }}</div>
@@ -130,15 +130,15 @@
 				<div class="panel-heading">
 					<h3 class="panel-title">
 						<i class="fa fa-pencil"></i>
-						{{ heading_edit }}</h3>
+						{{ t.heading_edit }}</h3>
 				</div>
 				<div class="panel-body">
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="input-status">{{ label_enabled }}</label>
+            <label class="col-sm-2 control-label" for="input-status">{{ t.label_enabled }}</label>
             <div class="col-sm-10">
               <select name="status" id="input-status" class="form-control">
-                <option value="1"{% if settings.status == true %} selected{% endif %}>{{ text_yes }}</option>
-                <option value="0"{% if settings.status == false %} selected{% endif %}>{{ text_no }}</option>
+                <option value="1"{% if settings.status == true %} selected{% endif %}>{{ t.text_yes }}</option>
+                <option value="0"{% if settings.status == false %} selected{% endif %}>{{ t.text_no }}</option>
               </select>
             </div>
           </div>
@@ -149,37 +149,38 @@
 				<div class="panel-heading">
 					<h3 class="panel-title">
 						<i class="fa fa-pencil"></i>
-						{{ heading_customer_sync }}</h3>
+						{{ t.heading_customer_sync }}</h3>
 				</div>
 				<div class="panel-body">
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="customer-sync-enabled">{{ label_enabled }}</label>
+            <label class="col-sm-2 control-label" for="customer-sync-enabled">{{ t.label_enabled }}</label>
             <div class="col-sm-10">
               <select name="customer_sync_enabled" id="customer-sync-enabled" class="form-control">
-                <option value="1"{% if settings.customer_sync_enabled == true %} selected{% endif %}>{{ text_yes }}</option>
-                <option value="0"{% if settings.customer_sync_enabled == false %} selected{% endif %}>{{ text_no }}</option>
+                <option value="1"{% if settings.customer_sync_enabled == true %} selected{% endif %}>{{ t.text_yes }}</option>
+                <option value="0"{% if settings.customer_sync_enabled == false %} selected{% endif %}>{{ t.text_no }}</option>
               </select>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="customer-sync-fields">{{ label_customer_sync_fields }}</label>
+            <label class="col-sm-2 control-label" for="customer-sync-fields">{{ t.label_customer_sync_fields }}</label>
             <div class="col-sm-10">
               <select class="form-control" name="customer_sync_fields[]" id="customer-sync-fields" multiple="multiple" size="4">
                 {% for option in customer_sync.field_options %}
                   <option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>
                 {% endfor %}
               </select>
-              <small>{{ small_sync_additional }}</small>
+
+              <div class="help-block">{{ t.help_customer_sync_fields }}</div>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-2 control-label">{{ label_customer_sync_cron_url }}</label>
+            <label class="col-sm-2 control-label">{{ t.label_customer_sync_cron_url }}</label>
             <div class="col-sm-8">
               <strong>{{ customer_sync.cron_url }}</strong><br>
-              <span class="text-muted">{{ help_customer_sync_cron_url }}</span>
+              <span class="text-muted">{{ t.help_customer_sync_cron_url }}</span>
             </div>
             <div class="col-sm-2">
-              <a class="btn btn-danger pull-right" href="{{ customer_sync.reset_token_url }} ">{{ text_reset_customer_sync_cron_token }}</a>
+              <a class="btn btn-danger pull-right" href="{{ customer_sync.reset_token_url }}">{{ t.text_reset_customer_sync_cron_token }}</a>
             </div>
           </div>
         </div>
@@ -189,20 +190,20 @@
 				<div class="panel-heading">
 					<h3 class="panel-title">
 						<i class="fa fa-pencil"></i>
-						{{ heading_abandoned_cart }}</h3>
+						{{ t.heading_abandoned_cart }}</h3>
 				</div>
 				<div class="panel-body">
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="abandoned-cart-enabled">{{ label_enabled }}</label>
+            <label class="col-sm-2 control-label" for="abandoned-cart-enabled">{{ t.label_enabled }}</label>
             <div class="col-sm-10">
               <select name="abandoned_cart_enabled" id="abandoned-cart-enabled" class="form-control">
-                <option value="1"{% if settings.abandoned_cart_enabled == true %} selected{% endif %}>{{ text_yes }}</option>
-                <option value="0"{% if settings.abandoned_cart_enabled == false %} selected{% endif %}>{{ text_no }}</option>
+                <option value="1"{% if settings.abandoned_cart_enabled == true %} selected{% endif %}>{{ t.text_yes }}</option>
+                <option value="0"{% if settings.abandoned_cart_enabled == false %} selected{% endif %}>{{ t.text_no }}</option>
               </select>
             </div>
           </div>
           <div class="form-group{% if errors.abandoned_cart_autoresponder %} has-error{% endif %}">
-            <label class="col-sm-2 control-label" for="abandoned-cart-autoresponder">{{ label_abandoned_cart_autoresponder }}</label>
+            <label class="col-sm-2 control-label" for="abandoned-cart-autoresponder">{{ t.label_abandoned_cart_autoresponder }}</label>
             <div class="col-sm-10">
               <select name="abandoned_cart_autoresponder" id="abandoned-cart-autoresponder" class="form-control">
                 {% if abandoned_cart.automation_options %}
@@ -210,43 +211,43 @@
                   <option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>
                   {% endfor %}
                 {% else %}
-                  <option value="">{{ text_missing_automation_workflows }}</option>
+                  <option value="">{{ t.text_missing_automation_workflows }}</option>
                 {% endif %}
               </select>
 
-              <div class="help-block">{{ help_abandoned_cart_autoresponder }}</div>
+              <div class="help-block">{{ t.help_abandoned_cart_autoresponder }}</div>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="abandoned-cart-fields">{{ label_abandoned_cart_fields }}</label>
+            <label class="col-sm-2 control-label" for="abandoned-cart-fields">{{ t.label_abandoned_cart_fields }}</label>
             <div class="col-sm-10">
               <select class="form-control" name="abandoned_cart_fields[]" id="abandoned-cart-fields" multiple="multiple" size="8">
                 {% for option in abandoned_cart.field_options %}
                   <option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>
                 {% endfor %}
               </select>
-              <div class="help-block">{{ help_abandoned_cart_fields }}</div>
+              <div class="help-block">{{ t.help_abandoned_cart_fields }}</div>
             </div>
           </div>
           <div class="form-group{% if errors.abandoned_cart_delay %} has-error{% endif %}">
-            <label class="col-sm-2 control-label" for="abandoned-cart-delay">{{ label_abandoned_cart_delay }}</label>
+            <label class="col-sm-2 control-label" for="abandoned-cart-delay">{{ t.label_abandoned_cart_delay }}</label>
             <div class="col-sm-10">
               <div class="input-group">
                 <input class="form-control" id="abandoned-cart-delay" min="15" name="abandoned_cart_delay" type="number" value="{{ settings.abandoned_cart_delay }}"/>
-                <span class="input-group-addon">{{ text_minutes }}</span>
+                <span class="input-group-addon">{{ t.text_minutes }}</span>
               </div>
 
-              <div class="help-block">{{ help_abandoned_cart_delay }}</div>
+              <div class="help-block">{{ t.help_abandoned_cart_delay }}</div>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-2 control-label">{{ label_abandoned_cart_cron_url }}</label>
+            <label class="col-sm-2 control-label">{{ t.label_abandoned_cart_cron_url }}</label>
             <div class="col-sm-8">
               <strong>{{ abandoned_cart.cron_url }}</strong><br/>
-              <span class="text-muted">{{ help_abandoned_cart_cron_url }}</span>
+              <span class="text-muted">{{ t.help_abandoned_cart_cron_url }}</span>
             </div>
             <div class="col-sm-2">
-              <a class="btn btn-danger pull-right" href="{{ abandoned_cart.reset_token_url }} ">{{ text_reset_abandoned_cart_cron_token }}</a>
+              <a class="btn btn-danger pull-right" href="{{ abandoned_cart.reset_token_url }}">{{ t.text_reset_abandoned_cart_cron_token }}</a>
             </div>
           </div>
         </div>
@@ -256,14 +257,14 @@
 				<div class="panel-heading">
 					<h3 class="panel-title">
 						<i class="fa fa-pencil"></i>
-						{{ heading_rss }}</h3>
+						{{ t.heading_rss }}</h3>
 				</div>
 				<div class="panel-body">
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="rss-category">{{ label_rss_category }}</label>
+            <label class="col-sm-2 control-label" for="rss-category">{{ t.label_rss_category }}</label>
             <div class="col-sm-10">
               <select name="rss_category" id="rss-category" class="form-control smaily-rss-options">
-                <option value="">{{ text_all_products }}</option>
+                <option value="">{{ t.text_all_products }}</option>
                 {% for category in rss.categories %}
                   <option value="{{ category.value }}"{% if category.selected %} selected{% endif %}>{{ category.label }}</option>
                 {% endfor %}
@@ -271,7 +272,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="rss-sort-by">{{ label_rss_sort_by }}</label>
+            <label class="col-sm-2 control-label" for="rss-sort-by">{{ t.label_rss_sort_by }}</label>
             <div class="col-sm-10">
               <select name="rss_sort_by" id="rss-sort-by" class="form-control smaily-rss-options">
                 {% for option in rss.sort_by_options %}
@@ -281,7 +282,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="rss-sort-order">{{ label_rss_sort_order }}</label>
+            <label class="col-sm-2 control-label" for="rss-sort-order">{{ t.label_rss_sort_order }}</label>
             <div class="col-sm-10">
               <select name="rss_sort_order" id="rss-sort-order" class="form-control smaily-rss-options">
                 {% for option in rss.sort_order_options %}
@@ -291,21 +292,21 @@
             </div>
           </div>
           <div class="form-group{% if errors.rss_limit %} has-error{% endif %}">
-            <label class="col-sm-2 control-label" for="rss-limit">{{ label_rss_limit }}</label>
+            <label class="col-sm-2 control-label" for="rss-limit">{{ t.label_rss_limit }}</label>
             <div class="col-sm-10">
               <div class="input-group">
                 <input class="form-control smaily-rss-options" id="rss-limit" max="250" min="1" name="rss_limit" type="number" value="{{ settings.rss_limit }}"/>
-                <span class="input-group-addon">{{ text_products }}</span>
+                <span class="input-group-addon">{{ t.text_products }}</span>
               </div>
 
-              <div class="help-block">{{ help_rss_limit }}</div>
+              <div class="help-block">{{ t.help_rss_limit }}</div>
             </div>
           </div>
           <div class="form-group">
-            <label for="rss-url" class="col-sm-2 control-label">{{ label_rss_feed_url }}</label>
+            <label for="rss-url" class="col-sm-2 control-label">{{ t.label_rss_feed_url }}</label>
             <div class="col-sm-10">
               <strong id="rss-url">{{ rss.feed_url }}</strong><br/>
-              <span class="text-muted">{{ help_rss_feed_url }}</span>
+              <span class="text-muted">{{ t.help_rss_feed_url }}</span>
             </div>
           </div>
         </div>
@@ -316,25 +317,25 @@
       <div class="panel-heading">
         <h3 id="abandoned-carts" class="panel-title">
           <i class="fa fa-list"></i>
-          {{ heading_abandoned_carts }}</h3>
+          {{ t.heading_abandoned_carts }}</h3>
       </div>
       <div class="panel-body">
         <table class="table table-bordered table-hover smaily-abandoned-carts-table">
           <thead>
             <tr>
-              <th scope="col">{{ label_abandoned_cart_table_id }}</th>
+              <th scope="col">{{ t.label_abandoned_cart_table_id }}</th>
               <th class="text-left">
-                <a href="{{ abandoned_carts_table.sort_name_url }}"{% if abandoned_carts_table.current_sort_by == 'lastname' %} class="{{ abandoned_carts_table.current_sort_order }}"{% endif %}>{{ label_abandoned_cart_table_name }}</a>
+                <a href="{{ abandoned_carts_table.sort_name_url }}"{% if abandoned_carts_table.current_sort_by == 'lastname' %} class="{{ abandoned_carts_table.current_sort_order }}"{% endif %}>{{ t.label_abandoned_cart_table_name }}</a>
               </th>
               <th class="text-left">
-                <a href="{{ abandoned_carts_table.sort_email_url }}"{% if abandoned_carts_table.current_sort_by == 'email' %} class="{{ abandoned_carts_table.current_sort_order }}"{% endif %}>{{ label_abandoned_cart_table_email }}</a>
+                <a href="{{ abandoned_carts_table.sort_email_url }}"{% if abandoned_carts_table.current_sort_by == 'email' %} class="{{ abandoned_carts_table.current_sort_order }}"{% endif %}>{{ t.label_abandoned_cart_table_email }}</a>
               </th>
-              <th class="text-left">{{ label_abandoned_cart_table_cart }}</th>
+              <th class="text-left">{{ t.label_abandoned_cart_table_cart }}</th>
               <th class="text-left">
-                <a href="{{ abandoned_carts_table.sort_date_url }}"{% if abandoned_carts_table.current_sort_by == 'sent_time' %} class="{{ abandoned_carts_table.current_sort_order }}"{% endif %}>{{ label_abandoned_cart_table_date }}</a>
+                <a href="{{ abandoned_carts_table.sort_date_url }}"{% if abandoned_carts_table.current_sort_by == 'sent_time' %} class="{{ abandoned_carts_table.current_sort_order }}"{% endif %}>{{ t.label_abandoned_cart_table_date }}</a>
               </th>
               <th class="text-left">
-                <a href="{{ abandoned_carts_table.sort_status_url }}"{% if abandoned_carts_table.current_sort_by == 'is_sent' %} class="{{ abandoned_carts_table.current_sort_order }}"{% endif %}>{{ label_abandoned_cart_table_status }}</a>
+                <a href="{{ abandoned_carts_table.sort_status_url }}"{% if abandoned_carts_table.current_sort_by == 'is_sent' %} class="{{ abandoned_carts_table.current_sort_order }}"{% endif %}>{{ t.label_abandoned_cart_table_status }}</a>
               </th>
             </tr>
           </thead>
@@ -357,7 +358,7 @@
                     </tbody>
                   </table>
                   <td>{{ abandoned_cart.sent_time ?: '' }}</td>
-                  <td><strong>{{ (abandoned_cart.is_sent == '1' ? text_sent : text_pending)|upper }}</strong></td>
+                  <td><strong>{{ (abandoned_cart.is_sent == '1' ? t.text_sent : t.text_pending)|upper }}</strong></td>
                 </td>
               </tr>
             {% endfor %}
@@ -372,7 +373,7 @@
     </div>
 
     <div class="col-sm-12 help-block text-right">
-      {{ heading_title }}
+      {{ t.heading_title }}
       <strong>v{{ settings.db_version }}</strong>
     </div>
   </div><!-- /.container-fluid -->

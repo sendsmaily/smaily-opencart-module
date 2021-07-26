@@ -18,8 +18,8 @@ $_['text_ascending'] = 'Ascending';
 $_['text_descending'] = 'Descending';
 $_['text_minutes'] = 'minutes';
 $_['text_module'] = 'Modules';
-$_['text_products'] = 'products';
 $_['text_never'] = 'Never';
+$_['text_products'] = 'products';
 
 // Connection status.
 $_['heading_connection_status'] = 'Connection status';
@@ -53,6 +53,7 @@ $_['help_customer_sync_cron_url'] = 'Use this URL to run Customer Synchronizatio
 $_['label_customer_sync_cron_url'] = 'Cron URL';
 
 $_['label_customer_sync_fields'] = 'Synchronization fields';
+$_['help_customer_sync_fields'] = 'Select fields you wish to synchronize to Smaily.';
 
 $_['text_reset_customer_sync_cron_token'] = 'Reset cron token';
 
