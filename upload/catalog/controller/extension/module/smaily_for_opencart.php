@@ -6,7 +6,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 		$config_model = $this->model_extension_smailyforopencart_config->initialize();
 
 		// Output nothing if module is disabled.
-		if ($config_model->get('enabled') === false) {
+		if ($config_model->get('status') === false) {
 			return;
 		}
 
