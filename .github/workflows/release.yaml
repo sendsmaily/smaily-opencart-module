@@ -21,7 +21,18 @@ jobs:
         uses: TheDoctor0/zip-release@v0.3.0
         with:
           filename: release.zip
-          exclusions: "*.git* /*.sandbox/* /*assets/* upload/modman docker-compose.yaml Dockerfile CONTRIBUTING.md"
+          exclusions: >
+            /.git*
+            /.sandbox*
+            /assets*
+            /upload/modman
+            /vendor*
+            composer.json
+            composer.lock
+            CONTRIBUTING.md
+            docker-compose.yaml
+            Dockerfile
+            phpcs.xml
 
       - name: Get release
         id: get_release_url
