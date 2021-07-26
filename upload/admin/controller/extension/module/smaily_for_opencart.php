@@ -309,7 +309,7 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 				'rss_category' => 0,
 				'rss_limit' => 50,
 				'rss_sort_by' => 'pd.name',
-				'rss_sort_order' => 'ASC',
+				'rss_sort_order' => 'asc',
 				'status' => 0,
 				'validated' => 0,
 			))
@@ -493,13 +493,13 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 		$data['sort_order_options'] = array(
 			array(
 				'label' => $this->language->get('text_ascending'),
-				'selected' => $selected_sort_order === 'ASC',
-				'value' => 'ASC',
+				'selected' => $selected_sort_order === 'asc',
+				'value' => 'asc',
 			),
 			array(
 				'label' => $this->language->get('text_descending'),
-				'selected' => $selected_sort_order === 'DESC',
-				'value' => 'DESC',
+				'selected' => $selected_sort_order === 'desc',
+				'value' => 'desc',
 			),
 		);
 

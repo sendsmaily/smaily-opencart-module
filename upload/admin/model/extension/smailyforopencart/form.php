@@ -113,7 +113,7 @@ class ModelExtensionSmailyForOpencartForm extends Model {
 			? $input['rss_sort_by']
 			: null;
 
-		$sanitized['rss_sort_order'] = (isset($input['rss_sort_order']) and in_array($input['rss_sort_order'], array('ASC', 'DESC'), true))
+		$sanitized['rss_sort_order'] = (isset($input['rss_sort_order']) and in_array($input['rss_sort_order'], array('asc', 'desc'), true))
 			? $input['rss_sort_order']
 			: null;
 
