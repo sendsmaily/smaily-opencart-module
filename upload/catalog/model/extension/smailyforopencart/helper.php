@@ -1,182 +1,207 @@
 <?php
 
 class ModelExtensionSmailyForOpencartHelper extends Model {
+
 	/**
-	 * Get all subscribed customers.
+	 * Get all customers subscribed to newsletter.
 	 *
-	 * @param int $offset Id counter
-	 * @return array $customers All subscribed customers in array.
+	 * @param string $since_at
+	 * @param int $since_customer_id
+	 * @return array $customers
 	 */
-	public function getSubscribedCustomers($offset, $sync_time) {
-		$query = $this->db->query(
-			"SELECT * FROM " . DB_PREFIX . "customer
-			WHERE (`customer_id` > " . (int)$offset . " AND `newsletter` = '1'
-			AND `date_added` > " . "'" . $this->db->escape($sync_time) . "')" .
-			" LIMIT 2500"
-		);
-		return $query->rows;
+	public function listNewsletterSubscribers($since_at, $since_customer_id) {
+		$db_prefix = DB_PREFIX;
+		$since_customer_id = (int)$since_customer_id;
+
+		$escaped_since_at = new DateTime($since_at);
+		$escaped_since_at = $this->db->escape($escaped_since_at->format('Y-m-d H:i:s'));
+
+		$sql = <<<EOT
+		SELECT
+			customer_id,
+			email,
+			firstname,
+			lastname,
+			telephone,
+			date_added
+		FROM ${db_prefix}customer
+		WHERE
+			customer_id > ${since_customer_id} AND
+			newsletter = 1 AND
+			date_added > "${escaped_since_at}"
+		LIMIT 2500
+		EOT;
+
+		return $this->db->query($sql)->rows;
 	}
 
 	/**
-	 * Sets newsletter status to 0 in customer table.
+	 * Change newsletter status to 0 in OpenCart.
 	 *
-	 * @param array $emails Emails to unsubscribe.
+	 * @param array $emails
 	 * @return void
 	 */
-	public function unsubscribeCustomers($emails) {
-		// Split email array to chunks of 500, in case query is too long.
-		$chunks = array_chunk($emails, 500);
-		foreach ($chunks as $chunk) {
-			$binds = array();
-			foreach ($chunk as $email) {
-				$binds[] = $this->db->escape($email);
-			}
-			// Add all emails to long string seperated by commas.
-			$this->db->query(
-				"UPDATE " . DB_PREFIX . "customer SET newsletter = '0' WHERE `email` IN ('" . implode("','", $binds) . "')");
-		}
+	public function optOutCustomers($emails) {
+		$db_prefix = DB_PREFIX;
+
+		$escaped_emails = array_map(array($this->db, 'escape'), $emails);
+		$escaped_emails = implode("','", $escaped_emails);
+
+		$sql = "UPDATE " . DB_PREFIX . "customer SET newsletter = 0 WHERE email IN ('" . $escaped_emails . "')";
+		$this->db->query($sql);
 	}
 
 	/**
-	 * Get additional sync fields from settings table.
+	 * Mark Abandoned Cart sent.
 	 *
-	 * @return array $sync_additional Fields to sync.
-	 */
-	public function getSyncFields() {
-		$this->load->model('setting/setting');
-		// Null if no additional fields provided.
-		$sync_additional = $this->config->get('smaily_for_opencart_syncronize_additional');
-		$sync_additional[] = 'email';
-		return $sync_additional;
-	}
-
-	/**
-	 * Get abandoned cart additional fields from settings table
-	 *
-	 * @return array $cart_additional Additional fields to sync.
-	 */
-	public function getAbandonedSyncFields() {
-		$fields = [];
-		$this->load->model('setting/setting');
-		// Null if no additional fields provided.
-		$cart_additional = $this->config->get('smaily_for_opencart_abandoned_additional');
-		if ($cart_additional) {
-			$fields = $cart_additional;
-		}
-		return $fields;
-	}
-
-	/**
-	 * Get carts from db before delay time.
-	 *
+	 * @param int $cart_id
 	 * @return void
 	 */
-	public function getAbandonedCarts() {
-		$this->load->model('setting/setting');
-		$this->load->model('catalog/product');
-		// Get delay time.
-		$delay_time = $this->config->get('smaily_for_opencart_cart_delay');
-		// Get abandoned cart activation time.
-		$start_time = $this->config->get('smaily_for_opencart_abandoned_cart_time');
-		$abandoned_carts = [];
-		// Select all customers with abandoned carts. Last cart item addition time - delay time.
-		// And customer doesn't have record in smaily_abandoned_carts table.
-		// Customer data available id, email, firstname, lastname, last_date_added.
-		$customers = $this->db->query(
-			"SELECT cart.customer_id, customer.email, customer.firstname, customer.lastname, " .
-			"MAX(cart.date_added) AS last_date_added " .
-			"FROM " . DB_PREFIX . "cart AS cart " .
-			"LEFT JOIN " . DB_PREFIX . "customer AS customer " .
-			"ON cart.customer_id = customer.customer_id " .
-			"LEFT JOIN " . DB_PREFIX . "smaily_abandoned_carts AS smaily " .
-			"ON cart.customer_id = smaily.customer_id " .
-			"WHERE smaily.customer_id IS NULL " .
-			"AND cart.customer_id > '0' " .
-			"GROUP BY cart.customer_id " .
-			"HAVING last_date_added <= DATE_SUB(NOW(), INTERVAL " . (int)$delay_time . " MINUTE) " .
-			"AND last_date_added >= '" . $this->db->escape($start_time) . "'"
-		);
+	public function markAbandonedCartSent($cart_id) {
+		$cart_id = (int)$cart_id;
+		$db_prefix = DB_PREFIX;
 
-		// Select all products and quantities for customer.
-		foreach ($customers->rows as $customer) {
-			$products = $this->db->query(
-				"SELECT product_id, quantity " .
-				"FROM " . DB_PREFIX . "cart " .
-				"WHERE customer_id = '" . (int)$customer['customer_id'] . "'"
-			);
+		$sql = <<<EOT
+			INSERT INTO ${db_prefix}smaily_abandoned_carts
+			SET
+				customer_id = ${cart_id},
+				sent_time = NOW()
+		EOT;
 
-			// Prepare products array.
-			$products_list = [];
-			foreach ($products->rows as $product) {
-				// Get product data by id.
-				$prod_data = $this->model_catalog_product->getProduct($product['product_id']);
-				array_push($products_list, array(
-					'product_id' => $product['product_id'],
-					'data' => $prod_data,
-					'quantity' => $product['quantity']
-				));
-			}
+		$this->db->query($sql);
+	}
 
-			// Add customer info and products data to abandoned_carts array.
+	/**
+	 * List pending Abandoned Carts.
+	 *
+	 * @param int $delay
+	 * @param string $enabled_at
+	 * @return array
+	 */
+	public function listPendingAbandonedCarts($delay, $enabled_at) {
+		$db_prefix = DB_PREFIX;
+		$escaped_enabled_at = $this->db->escape($enabled_at);
+
+		$sql = <<<EOT
+		SELECT
+			cart.customer_id,
+			customer.email,
+			customer.firstname,
+			customer.lastname,
+			MAX(cart.date_added) AS last_date_added
+		FROM ${db_prefix}cart AS cart
+		LEFT JOIN ${db_prefix}customer AS customer ON cart.customer_id = customer.customer_id
+		LEFT JOIN ${db_prefix}smaily_abandoned_carts AS smaily ON cart.customer_id = smaily.customer_id
+		WHERE
+			smaily.customer_id IS NULL AND
+			cart.customer_id > 0
+		GROUP BY cart.customer_id
+		HAVING
+			last_date_added <= DATE_SUB(NOW(), INTERVAL ${delay} MINUTE) AND
+			last_date_added >= "${escaped_enabled_at}"
+		EOT;
+
+		$abandoned_carts = array();
+		foreach ($this->db->query($sql)->rows as $abandoned_cart) {
+			$customer_id = (int)$abandoned_cart['customer_id'];
+
 			$abandoned_carts[] = array(
-				'customer_id' => $customer['customer_id'],
-				'email' => $customer['email'],
-				'firstname' => $customer['firstname'],
-				'lastname' => $customer['lastname'],
-				'products' => $products_list
+				'customer_id' => $customer_id,
+				'email' => $abandoned_cart['email'],
+				'firstname' => $abandoned_cart['firstname'],
+				'lastname' => $abandoned_cart['lastname'],
+				'products' => $this->fetchCartProducts($customer_id),
 			);
 		}
 
 		return $abandoned_carts;
 	}
 
-	public function addSentCart($customer_id) {
-		$this->db->query(
-			"INSERT INTO " . DB_PREFIX . "smaily_abandoned_carts (customer_id, sent_time)" .
-			"VALUES (" . "'" . (int)$customer_id . "', NOW())"
-		);
+	/**
+	 * Fetch products of a cart.
+	 *
+	 * @param int $cart
+	 * @return array
+	 */
+	protected function fetchCartProducts($cart_id) {
+		$customer_group_id = (int)$this->config->get('config_customer_group_id');
+		$db_prefix = DB_PREFIX;
+		$language_id = (int)$this->config->get('config_language_id');
+
+		$sql = <<<EOT
+		SELECT
+			c.product_id,
+			c.quantity,
+			p.price,
+			(
+				SELECT price
+				FROM ${db_prefix}product_special ps
+				WHERE
+					ps.product_id = c.product_id AND
+					ps.customer_group_id = ${customer_group_id} AND
+					(
+						(ps.date_start = '0000-00-00' OR ps.date_start < NOW()) AND
+						(ps.date_end = '0000-00-00' OR ps.date_end > NOW())
+					)
+				ORDER BY
+					ps.priority ASC,
+					ps.price ASC
+				LIMIT 1
+			) AS special,
+			p.sku,
+			p.tax_class_id,
+			pd.name,
+			pd.description
+		FROM ${db_prefix}cart AS c
+		LEFT JOIN ${db_prefix}product AS p ON c.product_id = p.product_id
+		LEFT JOIN ${db_prefix}product_description AS pd ON c.product_id = pd.product_id AND pd.language_id = ${language_id}
+		WHERE customer_id = ${cart_id}
+		EOT;
+
+		return $this->db->query($sql)->rows;
 	}
 
 	/**
-	 * Get UTC sync time from settings.
+	 * Update Customer Synchronization last run time.
 	 *
-	 * @return string $sync_time Time of last sync
+	 * @param string $dt
+	 * @return void
 	 */
-	public function getSyncTime() {
-		$this->load->model('setting/setting');
-		$settings = $this->model_setting_setting->getSetting('smaily_for_opencart');
-		$sync_time = date('c', 0); // Failsafe for first sync.
-		if (array_key_exists('smaily_for_opencart_sync_time', $settings)) {
-			$sync_time = $settings['smaily_for_opencart_sync_time'];
-		}
-		return $sync_time;
-	}
+	public function editCustomerSyncLastRunAt($dt) {
+		$db_prefix = DB_PREFIX;
+		$escaped_dt = $this->db->escape($dt);
 
-	public function editSettingValue($code = '', $key = '', $value = '', $store_id = 0) {
-		if (!is_array($value)) {
-			$this->db->query("UPDATE " . DB_PREFIX . "setting SET `value` = '" . $this->db->escape($value) . "', serialized = '0'  WHERE `code` = '" . $this->db->escape($code) . "' AND `key` = '" . $this->db->escape($key) . "' AND store_id = '" . (int)$store_id . "'");
-		} else {
-			$this->db->query("UPDATE " . DB_PREFIX . "setting SET `value` = '" . $this->db->escape(json_encode($value)) . "', serialized = '1' WHERE `code` = '" . $this->db->escape($code) . "' AND `key` = '" . $this->db->escape($key) . "' AND store_id = '" . (int)$store_id . "'");
-		}
+		$sql = <<<EOT
+		UPDATE ${db_prefix}setting
+		SET
+			`value` = "${escaped_dt}"
+		WHERE
+			`code` = "module_smaily_for_opencart" AND
+			`key` = "module_smaily_for_opencart_customer_sync_last_run_at" AND
+			`store_id` = 0
+		EOT;
+
+		$this->db->query($sql);
 	}
 
 	/**
 	 * Checks if customer cart is empty.
 	 *
-	 * @param int $customer_id
+	 * @param int $cart_id
 	 * @return boolean
 	 */
-	public function isCartEmpty($customer_id) {
-		$query = $this->db->query(
-			"SELECT COUNT(*) AS cart_items FROM " . DB_PREFIX . "cart " .
-			"WHERE customer_id='" . $this->db->escape($customer_id) ."'"
-		);
+	public function isCartEmpty($cart_id) {
+		$cart_id = (int)$cart_id;
 
-		$data = $query->row;
-		if ((int)$data['cart_items'] != 0) {
-			return false;
+		$data = $this->db->query(
+			"SELECT COUNT(*) AS cart_items FROM " . DB_PREFIX . "cart WHERE customer_id = " . $cart_id
+		)->row;
+
+		if ((int)$data['cart_items'] > 0) {
+			return true;
 		};
 
-		return true;
+		return false;
 	}
+
 }
