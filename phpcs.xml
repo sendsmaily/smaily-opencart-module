@@ -7,6 +7,8 @@
     <arg name="parallel" value="8" />
     <arg value="np" />
 
+    <exclude-pattern>*/*\.tpl$</exclude-pattern>
+
     <rule ref="Generic.Classes.OpeningBraceSameLine" />
     <rule ref="Generic.Files.LowercasedFilename" />
     <rule ref="Generic.Formatting.NoSpaceAfterCast" />
