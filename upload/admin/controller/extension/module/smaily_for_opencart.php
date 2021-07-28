@@ -268,12 +268,12 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 
 		// Create Abandoned Cart table.
 		$this->db->query(<<<EOT
-			CREATE TABLE IF NOT EXISTS ${db_prefix}smaily_abandoned_carts (
-				customer_id int(11) NOT NULL,
-				sent_time datetime NOT NULL,
-				PRIMARY KEY (customer_id)
-			)
-		EOT);
+CREATE TABLE IF NOT EXISTS ${db_prefix}smaily_abandoned_carts (
+	customer_id int(11) NOT NULL,
+	sent_time datetime NOT NULL,
+	PRIMARY KEY (customer_id)
+)
+EOT);
 
 		// Register event listeners.
 		$this->load->model('extension_event');
