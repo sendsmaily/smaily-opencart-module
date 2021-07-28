@@ -8,10 +8,10 @@
 	<div class="page-header">
 		<div class="container-fluid">
 			<div class="pull-right">
-				<button type="submit" form="form-smaily_for_opencart" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary">
+				<button type="submit" form="form-smaily_for_opencart" data-toggle="tooltip" title="{{ t.button_save }}" class="btn btn-primary">
 					<i class="fa fa-save"></i>
 				</button>
-				<a href="{{ cancel_url }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default">
+				<a href="{{ cancel_url }}" data-toggle="tooltip" title="{{ t.button_cancel }}" class="btn btn-default">
 					<i class="fa fa-reply"></i>
 				</a>
 			</div>
@@ -60,8 +60,8 @@
               {{ t.help_connected|replace({ '%subdomain%': settings.api_subdomain, '%username%': settings.api_username})}}
             </div>
             <div class="col-sm-3">
-              <a href="{{ reset_credentials_url }}" title="{{ button_reset_credentials }}" class="btn btn-danger pull-right">
-                {{ button_reset_credentials }}
+              <a href="{{ reset_credentials_url }}" title="{{ t.button_reset_credentials }}" class="btn btn-danger pull-right">
+                {{ t.button_reset_credentials }}
               </a>
             </div>
           </div>

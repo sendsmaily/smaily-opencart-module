@@ -104,8 +104,8 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 		$data['success'] = isset($this->request->get['success']) ? $this->language->get('error_success') : '';
 		$data['errors'] = $this->error;
 
-		// Compile translation prases.
-		$data['t'] = $this->compileTranslationsPhrases();
+		// Compile translation phrases.
+		$data['t'] = $this->load->language('extension/module/smaily_for_opencart');
 
 		// Compile Customer Synchronization variables.
 		$data['customer_sync'] = $this->compileCustomerSyncVariables($config_model, $form_model);
@@ -359,93 +359,6 @@ class ControllerExtensionModuleSmailyForOpencart extends Controller {
 		$this->error = array_merge($this->error, $form_model->validate($input));
 
 		return !$this->error;
-	}
-
-	/**
-	 * Compile translation phrases.
-	 *
-	 * @return array
-	 */
-	protected function compileTranslationsPhrases() {
-		$phrases = array(
-			'button_reset_credentials',
-			'error_abandoned_cart_autoresponder_not_selected',
-			'error_abandoned_cart_delay_minimum',
-			'error_api_notfound',
-			'error_api_password_empty',
-			'error_api_subdomain_empty',
-			'error_api_unauthorized',
-			'error_api_unknown',
-			'error_api_username_empty',
-			'error_permission',
-			'error_rss_limit_exceeded',
-			'error_success',
-			'heading_abandoned_cart',
-			'heading_abandoned_carts',
-			'heading_connection_status',
-			'heading_customer_sync',
-			'heading_edit',
-			'heading_rss',
-			'heading_title',
-			'help_abandoned_cart_autoresponder',
-			'help_abandoned_cart_cron_url',
-			'help_abandoned_cart_delay',
-			'help_abandoned_cart_fields',
-			'help_api_password',
-			'help_connected',
-			'help_customer_sync_cron_url',
-			'help_customer_sync_fields',
-			'help_disconnected',
-			'help_rss_feed_url',
-			'help_rss_limit',
-			'label_abandoned_cart_autoresponder',
-			'label_abandoned_cart_cron_url',
-			'label_abandoned_cart_delay',
-			'label_abandoned_cart_fields',
-			'label_abandoned_cart_table_cart',
-			'label_abandoned_cart_table_date',
-			'label_abandoned_cart_table_email',
-			'label_abandoned_cart_table_id',
-			'label_abandoned_cart_table_name',
-			'label_abandoned_cart_table_status',
-			'label_api_password',
-			'label_api_subdomain',
-			'label_api_username',
-			'label_customer_sync_cron_url',
-			'label_customer_sync_fields',
-			'label_enabled',
-			'label_rss_category',
-			'label_rss_feed_url',
-			'label_rss_limit',
-			'label_rss_sort_by',
-			'label_rss_sort_order',
-			'placeholder_api_password',
-			'placeholder_api_subdomain',
-			'placeholder_api_username',
-			'text_all_products',
-			'text_ascending',
-			'text_connected',
-			'text_descending',
-			'text_disconnected',
-			'text_minutes',
-			'text_missing_automation_workflows',
-			'text_module',
-			'text_never',
-			'text_no',
-			'text_pending',
-			'text_products',
-			'text_reset_abandoned_cart_cron_token',
-			'text_reset_customer_sync_cron_token',
-			'text_sent',
-			'text_yes',
-		);
-
-		$dictionary = array();
-		foreach ($phrases as $phrase) {
-			$dictionary[$phrase] = $this->language->get($phrase);
-		}
-
-		return $dictionary;
 	}
 
 	/**
