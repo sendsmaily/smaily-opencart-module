@@ -1,8 +1,5 @@
 <?php
 
-// Title for newsletter form.
-$_['newsletter_title'] = 'Subscribe to newsletter';
-
 // Response messages.
 $_['newsletter_success_response'] = 'You have been successfully subscribed!';
 $_['newsletter_error_response']   = 'Something went wrong with subscription!';
