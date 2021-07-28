@@ -76,7 +76,7 @@ class ModelExtensionSmailyForOpencartForm extends Model {
 			: null;
 
 		$sanitized['customer_sync_fields'] = (isset($input['customer_sync_fields']) and is_array($input['customer_sync_fields']))
-			? array_intersect($this->getAvailableCustomerSyncFields(), $input['customer_sync_fields'])
+			? array_values(array_intersect($this->getAvailableCustomerSyncFields(), $input['customer_sync_fields']))
 			: null;
 
 		$sanitized['customer_sync_token'] = isset($input['customer_sync_token'])
@@ -97,7 +97,7 @@ class ModelExtensionSmailyForOpencartForm extends Model {
 			: null;
 
 		$sanitized['abandoned_cart_fields'] = (isset($input['abandoned_cart_fields']) and is_array($input['abandoned_cart_fields']))
-			? array_intersect($this->getAvailableAbandonedCartFields(), $input['abandoned_cart_fields'])
+			? array_values(array_intersect($this->getAvailableAbandonedCartFields(), $input['abandoned_cart_fields']))
 			: null;
 
 		$sanitized['abandoned_cart_token'] = isset($input['abandoned_cart_token'])
