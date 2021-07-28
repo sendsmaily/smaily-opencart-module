@@ -177,7 +177,7 @@ class ModelExtensionSmailyForOpencartHelper extends Model {
 			`value` = "${escaped_dt}"
 		WHERE
 			`code` = "module_smaily_for_opencart" AND
-			`key` = "module_smaily_for_opencart_sync_time" AND
+			`key` = "module_smaily_for_opencart_customer_sync_last_run_at" AND
 			`store_id` = 0
 		EOT;
 
