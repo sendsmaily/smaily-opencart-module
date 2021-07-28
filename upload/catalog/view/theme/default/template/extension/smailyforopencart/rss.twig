@@ -1,23 +1,23 @@
 <rss xmlns:smly="https://sendsmaily.net/schema/editor/rss.xsd" version="2.0">
 <channel>
-<title>Store</title>
-<link>{{ store_url }}</link>
-<description>Product Feed</description>
-<lastBuildDate>{{ last_build_date }}</lastBuildDate>
-{% for item in items %}
+  <title>Store</title>
+  <link>{{ store_url }}</link>
+  <description>Product Feed</description>
+  <lastBuildDate>{{ last_build_date }}</lastBuildDate>
+  {% for item in items %}
     <item>
-    <title><![CDATA[ {{ item.title|raw }} ]]></title>
+    <title><![CDATA[{{ item.title|raw }}]]></title>
     <link>{{ item.link }}</link>
     <guid isPermalink="True">{{ item.link }}</guid>
-    <pubDate>{{ item.pubDate }}</pubDate>
-    <description><![CDATA[ {{ item.description|raw }} ]]></description>
-    <enclosure url="{{ item.enclosure }}"/>
-    <smly:price>{{ item.price }}{{ currency }}</smly:price>
+    <pubDate>{{ item.published_at }}</pubDate>
+    <description><![CDATA[{{ item.description|raw }}]]></description>
+    <enclosure url="{{ item.image }}"/>
+    <smly:price>{{ item.price }}</smly:price>
     {% if item.discount %}
-        <smly:old_price>{{ item.old_price }}{{ currency }}</smly:old_price>
-        <smly:discount>{{ item.discount }} % </smly:discount>
+        <smly:old_price>{{ item.old_price }}</smly:old_price>
+        <smly:discount>{{ item.discount }}%</smly:discount>
     {% endif %}
     </item>
-{% endfor %}
+  {% endfor %}
 </channel>
 </rss>

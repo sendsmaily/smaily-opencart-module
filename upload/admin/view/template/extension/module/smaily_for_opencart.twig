@@ -1,468 +1,380 @@
 {{ header }}{{ column_left }}
 <div id="content">
-  <div class="page-header">
-    <div class="container-fluid">
-      <div class="pull-right">
-        <button type="submit" form="form-smaily_for_opencart" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
-        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
-      <h1>{{ heading_title }}</h1>
-      <ul class="breadcrumb">
-        {% for breadcrumb in breadcrumbs %}
-        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-  <div class="container-fluid">
-    {% if error_warning %}
-    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
-      <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
-    </div>
-    {% endif %}
-    {% if error_validate %}
-      <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>{{ error_validate }}
-      <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
-    </div>
-    {% endif %}
-    {% if error_autoresponder %}
-      <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>{{ error_autoresponder }}
-      <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
-    </div>
-    {% endif %}
-    {% if error_delay %}
-      <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>{{ error_delay }}
-      <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
-    </div>
-    {% endif %}
-    {% if error_limit %}
-      <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>{{ error_limit }}
-      <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
-    </div>
-    {% endif %}
+  <script type="text/javascript">var smailyforopencart_settings = {
+    'rss_base_url': '{{ rss.feed_base_url }}'
+  };</script>
+  <link rel="stylesheet" type="text/css" href="view/stylesheet/smailyforopencart/smaily_admin.css"/>
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form-smaily_for_opencart" data-toggle="tooltip" title="{{ t.button_save }}" class="btn btn-primary">
+					<i class="fa fa-save"></i>
+				</button>
+				<a href="{{ cancel_url }}" data-toggle="tooltip" title="{{ t.button_cancel }}" class="btn btn-default">
+					<i class="fa fa-reply"></i>
+				</a>
+			</div>
+			<h1>{{ t.heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li>
+						<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
     {% if success %}
-    <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }}
-      <button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
-    </div>
-    {% endif %}
-    <div class="alert" id="validate-alert" hidden>
-      <i class="fa fa-exclamation-circle"></i><span id="validate-message"></span>
-      <button type="button" class="close" area-label="Close">&times;</button>
-    </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+			<div class="alert alert-success">
+				<i class="fa fa-exclamation-circle"></i>
+				{{ success }}
+				<button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+    {% if errors %}
+    {% for error in errors %}
+			<div class="alert alert-danger">
+				<i class="fa fa-exclamation-circle"></i>
+				{{ error }}
+				<button type="button" class="close" area-label="Close" data-dismiss="alert">&times;</button>
+			</div>
+    {% endfor %}
+		{% endif %}
+
+    <form action="{{ action_url }}" autocomplete="off" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+      {% if settings.validated %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <i class="fa fa-plug"></i>
+            {{ t.heading_connection_status }}</h3>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">&nbsp;</label>
+            <div class="col-sm-7">
+              <strong class="text-success text-uppercase">{{ t.text_connected }}</strong><br/>
+              {{ t.help_connected|replace({ '%subdomain%': settings.api_subdomain, '%username%': settings.api_username})}}
+            </div>
+            <div class="col-sm-3">
+              <a href="{{ reset_credentials_url }}" title="{{ t.button_reset_credentials }}" class="btn btn-danger pull-right">
+                {{ t.button_reset_credentials }}
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="panel-body">
-      <input id="user_token" type="hidden" name="user_token" value="{{ user_token }}" />
-        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-smaily_for_opencart" class="form-horizontal">
-          <!-- Generate tab nav for sections -->
-          <div class="tab-pane">
-            <ul class="nav nav-tabs" id="sections">
-              {% for section in sections %}
-              <li>
-                <a href="#section{{ section.section_id }}" data-toggle="tab">{{ section.name }}</a>
-              </li>
-              {% endfor %}
-            </ul>
-            <div class="tab-content">
-            <!-- Generate form content for each section -->
-            <div id="section1" class="tab-pane fade in active">
-            <div class="form-group">
-            <label class="col-sm-2 control-label" for="input-status">{{ entry_enable_module_title }}</label>
+      {% else %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <i class="fa fa-pencil"></i>
+            {{ t.heading_connection_status }}</h3>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">&nbsp;</label>
             <div class="col-sm-10">
-              <select name="module_smaily_for_opencart_status" id="input-status" class="form-control">
-                {% if module_status %}
-                <option value="1" selected="selected">{{ text_enabled }}</option>
-                <option value="0">{{ text_disabled }}</option>
-                {% else %}
-                <option value="1">{{ text_enabled }}</option>
-                <option value="0" selected="selected">{{ text_disabled }}</option>
-                {% endif %}
+              <p>
+                <strong class="text-danger text-uppercase">{{ t.text_disconnected }}</strong><br/>
+                {{ t.help_disconnected }}
+                <a href="https://smaily.com/help/api/general/create-api-user/" target="_blank">{{ t.help_api_password }}</a>
+              </p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="api-subdomain">
+              {{ t.label_api_subdomain }}
+            </label>
+            <div class="col-sm-10">
+              <input class="form-control" id="api-subdomain" name="api_subdomain" placeholder="{{ t.placeholder_api_subdomain }}" type="text" value="{{ settings.api_subdomain }}"/>
+
+              {% if errors.api_subdomain %}
+              <div class="text-danger">{{ errors.api_subdomain }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="api-username">
+              {{ t.label_api_username }}
+            </label>
+            <div class="col-sm-10">
+              <input class="form-control" id="api-username" name="api_username" placeholder="{{ t.placeholder_api_username }}" type="text" value="{{ settings.api_username }}"/>
+
+              {% if errors.api_username %}
+              <div class="text-danger">{{ errors.api_username }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="api-password">
+              {{ t.label_api_password }}
+            </label>
+            <div class="col-sm-10">
+              <input class="form-control" id="api-password" name="api_password" placeholder="{{ t.placeholder_api_password }}" type="password" value="{{ settings.api_password }}"/>
+
+              {% if errors.api_password %}
+              <div class="text-danger">{{ errors.api_password }}</div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<i class="fa fa-pencil"></i>
+						{{ t.heading_edit }}</h3>
+				</div>
+				<div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ t.label_enabled }}</label>
+            <div class="col-sm-10">
+              <select name="status" id="input-status" class="form-control">
+                <option value="1"{% if settings.status == true %} selected{% endif %}>{{ t.text_yes }}</option>
+                <option value="0"{% if settings.status == false %} selected{% endif %}>{{ t.text_no }}</option>
               </select>
             </div>
           </div>
-            <div class="form-group {{ validated ? 'has-success' : '' }} ">
-              <label class="col-sm-2 control-label" for="module_smaily_for_opencart_subdomain">{{ subdomain_title }}</label>
-              <div class="col-sm-10">
-                <input type="text"
-                       name="module_smaily_for_opencart_subdomain"
-                       placeholder="{{ subdomain_placeholder }}"
-                       id="subdomain"
-                       value="{{ subdomain }}"
-                       class="form-control" />
-                <small>{{ small_subdomain }}</small>
-                {% if error_subdomain %}
-                    <div class="text-danger">{{ error_subdomain }}</div>
-                {% endif %}
-              </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<i class="fa fa-pencil"></i>
+						{{ t.heading_customer_sync }}</h3>
+				</div>
+				<div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="customer-sync-enabled">{{ t.label_enabled }}</label>
+            <div class="col-sm-10">
+              <select name="customer_sync_enabled" id="customer-sync-enabled" class="form-control">
+                <option value="1"{% if settings.customer_sync_enabled == true %} selected{% endif %}>{{ t.text_yes }}</option>
+                <option value="0"{% if settings.customer_sync_enabled == false %} selected{% endif %}>{{ t.text_no }}</option>
+              </select>
             </div>
-            <div class="form-group {{ validated ? 'has-success':'' }}">
-              <label class="col-sm-2 control-label" for="module_smaily_for_opencart_username">{{ username_title }}</label>
-              <div class="col-sm-10">
-                <input type="text"
-                       name="module_smaily_for_opencart_username"
-                       placeholder="{{ username_placeholder }}"
-                       id="username"
-                       value="{{ username }}"
-                       class="form-control" />
-                {% if error_username %}
-                    <div class="text-danger">{{ error_username }}</div>
-                {% endif %}
-              </div>
-            </div>
-            <div class="form-group {{ validated ? 'has-success' : '' }}">
-              <label class="col-sm-2 control-label" for="module_smaily_for_opencart_password">{{ password_title }}</label>
-              <div class="col-sm-10">
-                <input type="password"
-                       name="module_smaily_for_opencart_password"
-                       placeholder="{{ password_placeholder }}"
-                       id="password"
-                       value="{{ password }}"
-                       class="form-control" />
-                <small><a href="http://help.smaily.com/en/support/solutions/articles/16000062943-create-api-user" target="_blank">{{ small_password }}</a> </small>
-                {% if error_password %}
-                    <div class="text-danger">{{ error_password }}</div>
-                {% endif %}
-              </div>
-            </div>
-            <div class="form-group">
-              <label
-                class="col-sm-2 control-label"
-                id="validate-title"
-                {% if validated %} style="display: none;" {% endif %}
-                >
-                {{ validate_title }}
-              </label>
-              <label
-                class="col-sm-2 control-label"
-                id="reset-title"
-                {% if not validated %} style="display: none;" {% endif %}
-                >
-                {{ reset_credentials_title }}
-              </label>
-              <div class="col-sm-10">
-                <button
-                  id="validate"
-                  type="button"
-                  title="{{ button_validate }}"
-                  class="btn btn-primary"
-                  {% if validated%} style="display: none;" {% endif %}
-                >
-                  {{ button_validate }}
-                  <span id="smaily-validate-loader" hidden>
-                    <i class="fa fa-spinner fa-spin" hidden></i>
-                  </span>
-                </button>
-                <button
-                  id="reset-credentials"
-                  type="button"
-                  title="{{ button_reset_credentials }}"
-                  class="btn btn-primary"
-                  {% if not validated%} style="display: none;" {% endif %}
-                >
-                  {{ button_reset_credentials }}
-                  <span id="smaily-reset-loader" hidden>
-                    <i class="fa fa-spinner fa-spin" hidden></i>
-                  </span>
-                </button>
-              </div>
-            </div>
-            </div>
-            <!-- Customer sync -->
-            <div id="section2" class="tab-pane fade in">
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-subscriber-status">{{ entry_enable_subscriber_title }}</label>
-                <div class="col-sm-10">
-                  <select name="module_smaily_for_opencart_enable_subscribe" id="input-subscriber-status" class="form-control">
-                    {% if subscribe_status %}
-                    <option value="1" selected="selected">{{ text_enabled }}</option>
-                    <option value="0">{{ text_disabled }}</option>
-                    {% else %}
-                    <option value="1">{{ text_enabled }}</option>
-                    <option value="0" selected="selected">{{ text_disabled }}</option>
-                    {% endif %}
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="customer_sync_fields">{{ entry_customer_sync_fields_title }}</label>
-                <div class="col-sm-10">
-                  <select class="form-control" name="module_smaily_for_opencart_syncronize_additional[]" id="customer_sync_fields" multiple="multiple">
-                    {# All available options #}
-                    {% set sync_options = {
-                      'firstname' : firstname,
-                      'lastname' : lastname,
-                      'telephone' : telephone,
-                      'date_added' : date_added
-                      }
-                    %}
-                    {# Add options for select  #}
-                    {% for key, value in sync_options %}
-                      {% if key in syncronize_additional %}
-                        {% set selected = 'selected' %}
-                      {% else %}
-                        {% set selected = '' %}
-                      {% endif %}
-                      <option value='{{ key }}' {{ selected }}> {{ value }} </option>
-                    {% endfor %}
-                    </select>
-                  <small>{{ small_sync_additional }}</small>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="module_smaily_for_opencart_sync_token">{{ sync_token_title }}</label>
-                <div class="col-sm-10">
-                  <input type="text"
-                        name="module_smaily_for_opencart_sync_token"
-                        placeholder="{{ sync_token_placeholder }}"
-                        id="sync-token"
-                        value="{{ sync_token }}"
-                        class="form-control" />
-                  <small>{{ small_token }}</small>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">{{ sync_customer_url_title }}</label>
-                <div class="col-sm-10">
-                <p><strong>{{ customer_cron_url }}</strong></p>
-                <p>{{ customer_cron_text }}</p>
-                </div>
-              </div>
           </div>
-          <!-- Abandoned cart -->
-            <div id="section3" class="tab-pane fade in">
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-abandoned-status">{{ entry_enable_abandoned_title }}</label>
-                <div class="col-sm-10">
-                  <select name="module_smaily_for_opencart_enable_abandoned" id="input-abandoned-status" class="form-control">
-                    {% if abandoned_status %}
-                    <option value="1" selected="selected">{{ text_enabled }}</option>
-                    <option value="0">{{ text_disabled }}</option>
-                    {% else %}
-                    <option value="1">{{ text_enabled }}</option>
-                    <option value="0" selected="selected">{{ text_disabled }}</option>
-                   {% endif %}
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="abandoned-autoresponder">{{ entry_autoresponder_title }}</label>
-                <div class="col-sm-10">
-                  <select name="module_smaily_for_opencart_abandoned_autoresponder" id="abandoned-autoresponder" class="form-control">
-                    {% if abandoned_autoresponder %}
-                      <option value='{{ abandoned_autoresponder|json_encode() }}'>
-                        {{ abandoned_autoresponder.name }} - (selected)
-                      </option>
-                    {% else %}
-                      <option value="">Select autoresponder</option>
-                    {% endif %}
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="abandoned_sync_fields">{{ abandoned_sync_fields_title }}</label>
-                <div class="col-sm-10">
-                  <select class="form-control" name="module_smaily_for_opencart_abandoned_additional[]" id="abandoned_sync_fields" multiple="multiple">
-                    {# All available options #}
-                    {% set cart_options = {
-                      'first_name'  : customer_first_name,
-                      'last_name'   : customer_last_name,
-                      'name'        : product_name,
-                      'description' : product_description,
-                      'sku'         : product_sku,
-                      'quantity'    : product_quantity,
-                      'price'       : product_price,
-                      'base_price'  : product_base_price
-                    } %}
-                    {# Add options for select #}
-                    {% for key, value in cart_options %}
-                      {% if key in abandoned_additional %}
-                        {% set selected = 'selected' %}
-                      {% else %}
-                        {% set selected = '' %}
-                      {% endif %}
-                      <option value='{{ key }}' {{ selected }}> {{ value }} </option>
-                    {% endfor %}
-                    </select>
-                    <small>{{ small_cart_additional }}</small>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="module_smaily_for_opencart_cart_delay">{{ delay_title }}</label>
-                <div class="col-sm-10">
-                  <div class="input-group">
-                    <input type="number"
-                          name="module_smaily_for_opencart_cart_delay"
-                          min="15"
-                          id="module_smaily_for_opencart_cart_delay"
-                          value="{{ cart_delay }}"
-                          class="form-control" />
-                    <span class="input-group-addon">{{ abandoned_minutes }}</span>
-                  </div>
-                  <small>{{ small_cart_delay }}</small>
-                  {% if error_delay %}
-                      <div class="text-danger">{{ error_delay }}</div>
-                  {% endif %}
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="module_smaily_for_opencart_cart_token">{{ cart_token_title }}</label>
-                <div class="col-sm-10">
-                  <input type="text"
-                        name="module_smaily_for_opencart_cart_token"
-                        placeholder="{{ cart_token_placeholder }}"
-                        id="cart-token"
-                        value="{{ cart_token }}"
-                        class="form-control" />
-                  <small>{{ small_token }}</small>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">{{ sync_cart_url_title }}</label>
-                <div class="col-sm-10">
-                <p><strong>{{ cart_cron_url }}</strong></p>
-                <p>{{ cart_cron_text }}</p>
-                </div>
-              </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="customer-sync-fields">{{ t.label_customer_sync_fields }}</label>
+            <div class="col-sm-10">
+              <select class="form-control" name="customer_sync_fields[]" id="customer-sync-fields" multiple="multiple" size="4">
+                {% for option in customer_sync.field_options %}
+                  <option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>
+                {% endfor %}
+              </select>
+
+              <div class="help-block">{{ t.help_customer_sync_fields }}</div>
             </div>
-            <!-- RSS -->
-            <div id="section4" class="tab-pane fade in">
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="rss-category">{{ rss_category_title }}</label>
-                <div class="col-sm-10">
-                  <select name="module_smaily_for_opencart_rss_category" id="rss-category" class="form-control smaily-rss-options">
-                    <option value="">All Products</option>
-                    {% for category in rss_categories %}
-                      {% if category.category_id in rss_category %}
-                        {% set selected = 'selected' %}
-                      {% else %}
-                        {% set selected = '' %}
-                      {% endif %}
-                      <option value='{{ category.category_id }}' {{ selected }}> {{ category.name }} </option>
-                    {% endfor %}
-                    </select>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="rss-sort-by">{{ rss_sort_by_title }}</label>
-                <div class="col-sm-10">
-                  <select name="module_smaily_for_opencart_rss_sort_by" id="rss-sort-by" class="form-control smaily-rss-options">
-                  {# All available options #}
-                    {% set sort_options = {
-                      'pd.name' : name,
-                      'p.model' : model,
-                      'p.price' : price,
-                      'p.status' : status,
-                      'p.sort_order' : sort_order
-                    } %}
-                    {# Add options for select #}
-                    {% for key, value in sort_options %}
-                      {% if key in rss_sort_by %}
-                        {% set selected = 'selected' %}
-                      {% else %}
-                        {% set selected = '' %}
-                      {% endif %}
-                      <option value='{{ key }}' {{ selected }}> {{ value }} </option>
-                    {% endfor %}
-                    </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="rss-sort-order">{{ rss_sort_order_title }}</label>
-                <div class="col-sm-10">
-                  <select name="module_smaily_for_opencart_rss_sort_order" id="rss-sort-order" class="form-control smaily-rss-options">
-                    {% if rss_sort_order == 'ASC' %}
-                      <option value="ASC" selected="selected">{{ text_ascending }}</option>
-                      <option value="DESC">{{ text_descending }}</option>
-                      {% else %}
-                      <option value="ASC">{{ text_ascending }}</option>
-                      <option value="DESC" selected="selected">{{ text_descending }}</option>
-                    {% endif %}
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="module_smaily_for_opencart_rss_limit">{{ rss_limit_title }}</label>
-                <div class="col-sm-10">
-                  <div class="input-group">
-                    <input type="number"
-                          name="module_smaily_for_opencart_rss_limit"
-                          min="1"
-                          max="250"
-                          id="rss-limit"
-                          value="{{ rss_limit }}"
-                          class="form-control smaily-rss-options" />
-                    <span class="input-group-addon">{{ rss_limit_products }}</span>
-                  </div>
-                  {% if error_limit %}
-                      <div class="text-danger">{{ error_limit }}</div>
-                  {% endif %}
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">{{ rss_feed_title }}</label>
-                <div class="col-sm-10">
-                  <p><strong id="smaily-rss-feed-url" name="rss_feed_url">{{ smaily_rss_url }}</strong></p>
-                  <p>{{ rss_feed_text }}</p>
-                </div>
-              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ t.label_customer_sync_cron_url }}</label>
+            <div class="col-sm-8">
+              <strong>{{ customer_sync.cron_url }}</strong><br>
+              <span class="text-muted">{{ t.help_customer_sync_cron_url }}</span>
             </div>
-            <div id="section5" class="tab-pane fade in">
-              <div class="form-group">
-                <table class="table table-bordered table-hover SmailyAbandonedCartsTable">
-                  <thead>
-                    <tr>
-                      <th scope="col">{{ cart_status_table_header_id }}</th>
-                      <th class="text-left">{% if sort == 'lastname' %}<a href="{{ sort_name }}" class="{{ order|lower }}">{{ cart_status_table_header_name }}</a>{% else %}<a href="{{ sort_name }}">{{ cart_status_table_header_name }}</a>{% endif %}</th>
-                      <th class="text-left">{% if sort == 'email' %}<a href="{{ sort_email }}" class="{{ order|lower }}">{{ cart_status_table_header_email }}</a>{% else %}<a href="{{ sort_email }}">{{ cart_status_table_header_email }}</a>{% endif %}</th>
-                      <th class="text-left">{{ cart_status_table_header_cart }}</th>
-                      <th class="text-left">{% if sort == 'sent_time' %}<a href="{{ sort_date }}" class="{{ order|lower }}">{{ cart_status_table_header_date }}</a>{% else %}<a href="{{ sort_date }}">{{ cart_status_table_header_date }}</a>{% endif %}</th>
-                      <th class="text-left">{% if sort == 'is_sent' %}<a href="{{ sort_status }}" class="{{ order|lower }}">{{ cart_status_table_header_status }}</a>{% else %}<a href="{{ sort_status }}">{{ cart_status_table_header_status }}</a>{% endif %}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for abandoned_cart in abandoned_cart_list %}
-                    <tr>
-                      <th scope="row">{{ abandoned_cart.customer_id }}</th>
-                        <td>{{ abandoned_cart.firstname ~ " " ~ abandoned_cart.lastname}}</td>
-                        <td>{{ abandoned_cart.email }}</td>
-                      <td>
-                        <table class="table table-bordered" >
-                          <tbody >
-                            {% for product in abandoned_cart.products %}
-                            <tr>
-                              <td width="70%"><a href={{ product_url_without_id ~ product.data.product_id }} /a>{{ product.data.name }}</td>
-                              <td width="15%">{{ "x " ~ product.quantity }}</td>
-                              <td width="15%">{{ "$" ~ product.data.price }}</td>
-                            </tr>
-                            {% endfor %}
-                          </tbody>
-                        </table>
-                      </td>
-                      <td>{{ abandoned_cart.sent_time ?: '' }}<br></td>
-                      <td><b>{{ abandoned_cart.is_sent == '1' ? 'SENT' : 'PENDING' }}<b></td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-                <div class="row">
-                  <div class="col-sm-6 text-left">{{ pagination }}</div>
-                  <div class="col-sm-6 text-right">{{ results }}</div>
-                </div>
+            <div class="col-sm-2">
+              <a class="btn btn-danger pull-right" href="{{ customer_sync.reset_token_url }}">{{ t.text_reset_customer_sync_cron_token }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<i class="fa fa-pencil"></i>
+						{{ t.heading_abandoned_cart }}</h3>
+				</div>
+				<div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="abandoned-cart-enabled">{{ t.label_enabled }}</label>
+            <div class="col-sm-10">
+              <select name="abandoned_cart_enabled" id="abandoned-cart-enabled" class="form-control">
+                <option value="1"{% if settings.abandoned_cart_enabled == true %} selected{% endif %}>{{ t.text_yes }}</option>
+                <option value="0"{% if settings.abandoned_cart_enabled == false %} selected{% endif %}>{{ t.text_no }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group{% if errors.abandoned_cart_autoresponder %} has-error{% endif %}">
+            <label class="col-sm-2 control-label" for="abandoned-cart-autoresponder">{{ t.label_abandoned_cart_autoresponder }}</label>
+            <div class="col-sm-10">
+              <select name="abandoned_cart_autoresponder" id="abandoned-cart-autoresponder" class="form-control">
+                {% if abandoned_cart.automation_options %}
+                  {% for option in abandoned_cart.automation_options %}
+                  <option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>
+                  {% endfor %}
+                {% else %}
+                  <option value="">{{ t.text_missing_automation_workflows }}</option>
+                {% endif %}
+              </select>
+
+              <div class="help-block">{{ t.help_abandoned_cart_autoresponder }}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="abandoned-cart-fields">{{ t.label_abandoned_cart_fields }}</label>
+            <div class="col-sm-10">
+              <select class="form-control" name="abandoned_cart_fields[]" id="abandoned-cart-fields" multiple="multiple" size="8">
+                {% for option in abandoned_cart.field_options %}
+                  <option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>
+                {% endfor %}
+              </select>
+              <div class="help-block">{{ t.help_abandoned_cart_fields }}</div>
+            </div>
+          </div>
+          <div class="form-group{% if errors.abandoned_cart_delay %} has-error{% endif %}">
+            <label class="col-sm-2 control-label" for="abandoned-cart-delay">{{ t.label_abandoned_cart_delay }}</label>
+            <div class="col-sm-10">
+              <div class="input-group">
+                <input class="form-control" id="abandoned-cart-delay" min="15" name="abandoned_cart_delay" type="number" value="{{ settings.abandoned_cart_delay }}"/>
+                <span class="input-group-addon">{{ t.text_minutes }}</span>
               </div>
+
+              <div class="help-block">{{ t.help_abandoned_cart_delay }}</div>
             </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ t.label_abandoned_cart_cron_url }}</label>
+            <div class="col-sm-8">
+              <strong>{{ abandoned_cart.cron_url }}</strong><br/>
+              <span class="text-muted">{{ t.help_abandoned_cart_cron_url }}</span>
             </div>
-            </div> <!-- .tab-content -->
-            </div> <!-- .tab-pane -->
-          </form>
-        </div> <!-- .panel-body -->
+            <div class="col-sm-2">
+              <a class="btn btn-danger pull-right" href="{{ abandoned_cart.reset_token_url }}">{{ t.text_reset_abandoned_cart_cron_token }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="smaily-rss-options" class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<i class="fa fa-pencil"></i>
+						{{ t.heading_rss }}</h3>
+				</div>
+				<div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="rss-category">{{ t.label_rss_category }}</label>
+            <div class="col-sm-10">
+              <select name="rss_category" id="rss-category" class="form-control smaily-rss-options">
+                <option value="">{{ t.text_all_products }}</option>
+                {% for category in rss.categories %}
+                  <option value="{{ category.value }}"{% if category.selected %} selected{% endif %}>{{ category.label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="rss-sort-by">{{ t.label_rss_sort_by }}</label>
+            <div class="col-sm-10">
+              <select name="rss_sort_by" id="rss-sort-by" class="form-control smaily-rss-options">
+                {% for option in rss.sort_by_options %}
+                  <option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="rss-sort-order">{{ t.label_rss_sort_order }}</label>
+            <div class="col-sm-10">
+              <select name="rss_sort_order" id="rss-sort-order" class="form-control smaily-rss-options">
+                {% for option in rss.sort_order_options %}
+                  <option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group{% if errors.rss_limit %} has-error{% endif %}">
+            <label class="col-sm-2 control-label" for="rss-limit">{{ t.label_rss_limit }}</label>
+            <div class="col-sm-10">
+              <div class="input-group">
+                <input class="form-control smaily-rss-options" id="rss-limit" max="250" min="1" name="rss_limit" type="number" value="{{ settings.rss_limit }}"/>
+                <span class="input-group-addon">{{ t.text_products }}</span>
+              </div>
+
+              <div class="help-block">{{ t.help_rss_limit }}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="rss-url" class="col-sm-2 control-label">{{ t.label_rss_feed_url }}</label>
+            <div class="col-sm-10">
+              <strong id="rss-url">{{ rss.feed_url }}</strong><br/>
+              <span class="text-muted">{{ t.help_rss_feed_url }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 id="abandoned-carts" class="panel-title">
+          <i class="fa fa-list"></i>
+          {{ t.heading_abandoned_carts }}</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table table-bordered table-hover smaily-abandoned-carts-table">
+          <thead>
+            <tr>
+              <th scope="col">{{ t.label_abandoned_cart_table_id }}</th>
+              <th class="text-left">
+                <a href="{{ abandoned_carts_table.sort_name_url }}"{% if abandoned_carts_table.current_sort_by == 'lastname' %} class="{{ abandoned_carts_table.current_sort_order }}"{% endif %}>{{ t.label_abandoned_cart_table_name }}</a>
+              </th>
+              <th class="text-left">
+                <a href="{{ abandoned_carts_table.sort_email_url }}"{% if abandoned_carts_table.current_sort_by == 'email' %} class="{{ abandoned_carts_table.current_sort_order }}"{% endif %}>{{ t.label_abandoned_cart_table_email }}</a>
+              </th>
+              <th class="text-left">{{ t.label_abandoned_cart_table_cart }}</th>
+              <th class="text-left">
+                <a href="{{ abandoned_carts_table.sort_date_url }}"{% if abandoned_carts_table.current_sort_by == 'sent_time' %} class="{{ abandoned_carts_table.current_sort_order }}"{% endif %}>{{ t.label_abandoned_cart_table_date }}</a>
+              </th>
+              <th class="text-left">
+                <a href="{{ abandoned_carts_table.sort_status_url }}"{% if abandoned_carts_table.current_sort_by == 'is_sent' %} class="{{ abandoned_carts_table.current_sort_order }}"{% endif %}>{{ t.label_abandoned_cart_table_status }}</a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for abandoned_cart in abandoned_carts_table.collection %}
+              <tr>
+                <td scope="row">{{ abandoned_cart.customer_id }}</td>
+                <td>{{ abandoned_cart.firstname ~ " " ~ abandoned_cart.lastname}}</td>
+                <td>{{ abandoned_cart.email }}</td>
+                <td>
+                  <table class="table table-bordered">
+                    <tbody>
+                      {% for product in abandoned_cart.products %}
+                        <tr>
+                          <td width="70%"><a href="{{ abandoned_cart_table_product_base_url ~ product.product_id }}" target="_blank" rel="noopener">{{ product.name }}</a></td>
+                          <td width="15%">{{ "x " ~ product.quantity }}</td>
+                          <td width="15%">{{ "$" ~ product.price }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                  <td>{{ abandoned_cart.sent_time ?: '' }}</td>
+                  <td><strong>{{ (abandoned_cart.is_sent == '1' ? t.text_sent : t.text_pending)|upper }}</strong></td>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ abandoned_carts_table.pagination }}</div>
+          <div class="col-sm-6 text-muted text-right">{{ abandoned_carts_table.results }}</div>
+        </div>
       </div>
     </div>
-  </div>
-  <script type="text/javascript">
-    var smaily_rss_url_base = '{{ smaily_rss_url_base }}';
-  </script>
-  <link rel="stylesheet" type="text/css" href="view/stylesheet/smailyforopencart/abandoned_carts_table.css" />
-{{ footer }}
+
+    <div class="col-sm-12 help-block text-right">
+      {{ t.heading_title }}
+      <strong>v{{ settings.db_version }}</strong>
+    </div>
+  </div><!-- /.container-fluid -->
 </div>
+{{ footer }}

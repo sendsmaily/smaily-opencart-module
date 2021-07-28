@@ -8,8 +8,6 @@
     <arg value="np" />
 
     <rule ref="Generic.Classes.OpeningBraceSameLine" />
-    <rule ref="Generic.Files.EndFileNewline" />
-    <rule ref="Generic.Files.LineEndings" />
     <rule ref="Generic.Files.LowercasedFilename" />
     <rule ref="Generic.Formatting.NoSpaceAfterCast" />
     <rule ref="Generic.PHP.DisallowShortOpenTag" />

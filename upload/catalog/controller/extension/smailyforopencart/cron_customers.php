@@ -3,48 +3,49 @@
 require_once DIR_SYSTEM . 'library/smailyforopencart/request.php';
 
 class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
-
 	public function index() {
-		// Customer model.
-		$this->load->model('account/customer');
-		// Load Smaily settings.
-		$this->load->model('setting/setting');
-		// Load Smaily helper.
+		$this->load->model('extension/smailyforopencart/config');
+		$config_model = $this->model_extension_smailyforopencart_config->initialize();
+
+		// Ensure user has access to run the CRON job.
+		if (
+			!isset($this->request->get['token']) ||
+			$config_model->get('customer_sync_token') !== $this->request->get['token']
+		) {
+			echo "Unauthorized";
+			die(1);
+		}
+
+		// Ensure Abandoned Cart feature is enabled.
+		if ($config_model->get('customer_sync_enabled') === false) {
+			echo "Customer Synchronization disabled!";
+			die(1);
+		}
+
+		$benchmark_start = microtime(true);
+		$metric_synced_optouts = 0;
+		$metric_synced_subscribers = 0;
+
+		// Initialize Smaily API client.
+		$http_client = (new \SmailyForOpenCart\Request)
+			->setSubdomain($config_model->get('api_subdomain'))
+			->setCredentials($config_model->get('api_username'), $config_model->get('api_password'));
+
+		// Initialize helper model.
 		$this->load->model('extension/smailyforopencart/helper');
+		$helper_model = $this->model_extension_smailyforopencart_helper;
 
-		$settings = $this->model_setting_setting->getSetting('module_smaily_for_opencart');
-
-		// Validate cron token.
-		if (!array_key_exists('module_smaily_for_opencart_sync_token', $settings) ||
-			empty($this->request->get['token']) ||
-			$settings['module_smaily_for_opencart_sync_token'] !== $this->request->get['token']
-		) {
-			die('Unauthorized');
-		}
-
-		if (array_key_exists('module_smaily_for_opencart_enable_subscribe', $settings) &&
-			(int)$settings['module_smaily_for_opencart_enable_subscribe'] !== 1
-		) {
-			die('Enable Customer Sync to continue');
-		}
-		$offset_unsub = 0;
-		$unsubscribers = array();
-		// Fetch credentials from DB.
-		$subdomain = $settings['module_smaily_for_opencart_subdomain'];
-		$username = $settings['module_smaily_for_opencart_username'];
-		$password = $settings['module_smaily_for_opencart_password'];
+		// Synchronize opt-outs from Smaily to OpenCart.
+		$offset = 0;
 		while (true) {
-			$query = array(
-				'list' => 2,
-				'offset' => $offset_unsub,
-				'limit' => 2500,
-			);
+			$optouts = array();
 
 			try {
-				$unsubscribers = (new \SmailyForOpenCart\Request)
-					->setSubdomain($subdomain)
-					->setCredentials($username, $password)
-					->get('contact', $query);
+				$optouts = $http_client->get('contact', array(
+					'list' => 2,
+					'offset' => $offset,
+					'limit' => 2500,
+				));
 			} catch (SmailyForOpenCart\HTTPError $error) {
 				$this->log->write($error);
 				die($error);
@@ -53,54 +54,65 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
 				die($error);
 			}
 
-			// Exit while loop if api returns no unsubscribers.
-			if (empty($unsubscribers)) {
+			// Exit loop, if no opt-outs where returned.
+			if (empty($optouts)) {
 				break;
 			}
-			// Collect unsubscriber emails.
-			$unsubscribers_emails = [];
-			foreach ($unsubscribers as $unsubscriber) {
-				array_push($unsubscribers_emails, $unsubscriber['email']);
+
+			$emails = array();
+			foreach ($optouts as $optout) {
+				$emails[] = $optout['email'];
+				$metric_synced_optouts += 1;
 			}
 
-			// unsubscribeCustomers method would compile a single update query.
-			$this->model_extension_smailyforopencart_helper->unsubscribeCustomers($unsubscribers_emails);
-			$offset_unsub += 1;
+			$helper_model->optOutCustomers($emails);
+
+			$offset++;
 		}
 
-		$response = 'No customers to sync in OpenCart database';
-		$offset_sub = 0;
-		$last_sync = $this->model_extension_smailyforopencart_helper->getSyncTime();
-		$sync_time = date('c');
+		// Synchronize newsletter subscribers to Smaily.
+		$last_run_at = $config_model->get('customer_sync_last_run_at');
+		$now_at = date('c');
+
+		$fields = $config_model->get('customer_sync_fields');
+
+		$last_customer_id = 0;
 		while (true) {
-			$subscribers = $this->model_extension_smailyforopencart_helper->getSubscribedCustomers($offset_sub, $last_sync);
+			$subscribers = $helper_model->listNewsletterSubscribers($last_run_at, $last_customer_id);
+
+			// Exit loop, if no (more) subscribers returned.
 			if (empty($subscribers)) {
 				break;
 			}
-			$list = [];
+
+			$payload = array();
 			foreach ($subscribers as $subscriber) {
-				// Get customer info based of selected fields from admin.
-				$sync_fields = $this->model_extension_smailyforopencart_helper->getSyncFields();
-				$customer = [];
-				foreach ($sync_fields as $from_field) {
-					$to_field = $from_field;
-					if ($from_field === 'firstname') {
-						$to_field = 'first_name';
-					} elseif ($from_field === 'lastname') {
-						$to_field = 'last_name';
+				$dataset = array();
+
+				foreach ($fields as $from) {
+					$to = $from;
+
+					if ($from === 'firstname') {
+						$to = 'first_name';
+					} elseif ($from === 'lastname') {
+						$to = 'last_name';
 					}
-					$customer[$to_field] = $subscriber[$from_field];
+
+					$dataset[$to] = $subscriber[$from];
 				}
-				$offset_sub = $subscriber['customer_id'];
-				$customer['is_unsubscribed'] = "0";
-				array_push($list, $customer);
+
+				$payload[] = array_merge($dataset, array(
+					'email' => $subscriber['email'],
+					'is_unsubscribed' => '0',
+				));
+
+				$metric_synced_subscribers += 1;
+
+				$last_customer_id = (int)$subscriber['customer_id'];
 			}
-			// Send subscribers to smaily.
+
 			try {
-				$response = (new \SmailyForOpenCart\Request)
-					->setSubdomain($subdomain)
-					->setCredentials($username, $password)
-					->post('contact', $list);
+				$http_client->post('contact', $payload);
 			} catch (SmailyForOpenCart\HTTPError $error) {
 				$this->log->write($error);
 				die($error);
@@ -113,13 +125,14 @@ class ControllerExtensionSmailyForOpencartCronCustomers extends Controller {
 				}
 			}
 		}
-		$this->model_extension_smailyforopencart_helper->editSettingValue(
-			'module_smaily_for_opencart',
-			'module_smaily_for_opencart_sync_time',
-			$sync_time
-		);
 
-		$this->log->write('smaily subscriber sync finished: ' . json_encode($response));
-		echo 'Smaily subscriber sync finished.';
+		$helper_model->editCustomerSyncLastRunAt($now_at);
+
+		printf(
+			"Finished in %f seconds. Synchronized %d opt-outs and %d newsletter subscribers.",
+			microtime(true) - $benchmark_start,
+			$metric_synced_optouts,
+			$metric_synced_subscribers
+		);
 	}
 }
