@@ -26,7 +26,6 @@
 		</div>
 	</div>
 	<div class="container-fluid">
-    <!-- Rework errors messages -->
     <?php if ($success): ?>
 			<div class="alert alert-success">
 				<i class="fa fa-exclamation-circle"></i>

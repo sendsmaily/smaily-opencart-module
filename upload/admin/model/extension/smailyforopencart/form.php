@@ -106,7 +106,7 @@ class ModelExtensionSmailyForOpencartForm extends Model {
 
 		// Sanitize RSS settings.
 		$sanitized['rss_category'] = isset($input['rss_category'])
-			? trim($input['rss_category']) // TODO: Check if is one of categories.
+			? trim($input['rss_category'])
 			: null;
 
 		$sanitized['rss_sort_by'] = (isset($input['rss_sort_by']) and in_array($input['rss_sort_by'], $this->getAvailableRssSortFields(), true))
