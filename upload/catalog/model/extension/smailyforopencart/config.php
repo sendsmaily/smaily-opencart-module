@@ -1,7 +1,7 @@
 <?php
 
 class ModelExtensionSmailyForOpencartConfig extends Model {
-	const NAMESPACE = 'module_smaily_for_opencart';
+	const SETTINGS_NAMESPACE = 'module_smaily_for_opencart';
 
 	protected $settings = null;
 
@@ -14,11 +14,11 @@ class ModelExtensionSmailyForOpencartConfig extends Model {
 
 	public function initialize() {
 		if ($this->settings === null) {
-			$stored = $this->model_setting_setting->getSetting(self::NAMESPACE);
+			$stored = $this->model_setting_setting->getSetting(self::SETTINGS_NAMESPACE);
 
 			$settings = array();
 			foreach ($stored as $from => $value) {
-				$to = ltrim(str_replace(self::NAMESPACE, '', $from), '_');
+				$to = ltrim(str_replace(self::SETTINGS_NAMESPACE, '', $from), '_');
 				$settings[$to] = $value;
 			}
 
