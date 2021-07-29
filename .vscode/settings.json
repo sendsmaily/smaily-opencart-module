@@ -2,6 +2,9 @@
     "files.trimFinalNewlines": true,
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
+    "files.associations": {
+        "*.tpl": "php"
+    },
     "phpSniffer.run": "onType",
     "phpSniffer.onTypeDelay": 250,
     "phpSniffer.executablesFolder": "./vendor/bin",
@@ -12,12 +15,12 @@
         "editor.tabSize": 4,
     },
     "[php]": {
+        "editor.defaultFormatter": "wongjn.php-sniffer",
         "editor.detectIndentation": false,
         "editor.insertSpaces": false,
         "editor.tabSize": 4,
     },
     "[twig]": {
-        "editor.defaultFormatter": "wongjn.php-sniffer",
         "editor.detectIndentation": false,
         "editor.insertSpaces": true,
         "editor.tabSize": 2,
