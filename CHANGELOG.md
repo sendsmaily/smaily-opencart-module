@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.5.3
+
+- Update user manual links - [[#211](https://github.com/sendsmaily/smaily-opencart-module/pull/211)]
+
 ### 1.5.2
 
 - Fix validation error not showing if RSS product limit higher than 250 - [[#195](https://github.com/sendsmaily/smaily-opencart-module/pull/195)]
