@@ -121,7 +121,7 @@
                         value="<?php echo $password; ?>"
                         class="form-control" />
                   <small>
-                    <a href="http://help.smaily.com/en/support/solutions/articles/16000062943-create-api-user" target="_blank">
+                    <a href="https://smaily.com/help/api/general/create-api-user/" target="_blank">
                       <?php echo $small_password ?>
                     </a>
                   </small>
