@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.5.3
+
+- Update user manual links - [[#217](https://github.com/sendsmaily/smaily-opencart-module/pull/217)]
+
 ### 1.5.2
 
 - Fix undefined index error for RSS product limit - [[#190](https://github.com/sendsmaily/smaily-opencart-module/issues/190)]
