@@ -83,6 +83,15 @@ You can run the environment by executing:
 
 > **Note!** Make sure you do not have any other process(es) listening on ports 8080 and 8888.
 
+## Accessing admin panel
+
+Username and password for the administrator account are set during the installation of OpenCart. These default credentials reside in the `.sandbox/entrypont.sh` file.
+
+- **Username:** `admin`
+- **Password:** `smailydev1`
+
+Admin panel is accessible at `localhost:8080/admin`.
+
 ## Stopping the environment
 
 Environment can be stopped by executing:

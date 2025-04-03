@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.5.4
+
+- Adds is_abandoned_cart field to request payload for better contact filtering in Smaily.
+- Stops subscribing unsubscribed customers in case of receiving abandoned cart emails.
+
 ### 1.5.3
 
 - Update user manual links - [[#217](https://github.com/sendsmaily/smaily-opencart-module/pull/217)]
