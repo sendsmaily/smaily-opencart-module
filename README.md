@@ -18,7 +18,7 @@ Automatically synchronize subscribed customers to Smaily, generate RSS-feed base
 
 - Generate RSS-feed with 50 latest updated products for easy import to Smaily template
 - Option to customize generated RSS-feed based on products categories
-- Option to limit generated RSS-feed products amount with prefered value
+- Option to limit generated RSS-feed products amount with preferred value
 
 ### Opt-in subscription form
 
@@ -29,11 +29,11 @@ Automatically synchronize subscribed customers to Smaily, generate RSS-feed base
 
 - Automatically notify customers about their abandoned cart
 - Send abandoned cart information to smaily for easy use on templates
-- Set delay time when cart is considered abadoned
+- Set delay time when cart is considered abandoned
 
 ## Requirements
 
-- OpenCart 3.0.0.0 to 3.0.3.6
+- OpenCart 3.x
 
 ## Documentation & Support
 
@@ -77,7 +77,7 @@ Before starting the installation process, download the version of the module you
 5. Select autoresponder for customer synchronization and extra fields you would like to add. Cron token must be added for security.
 6. Select if you want to use Cron for sending abandoned cart emails.
 7. Select autoresponder for abandoned carts, extra fields you would like to add to template and delay for abandoned carts. Cron token required for security.
-8. To add subscription form to your homepage go to **Design** &rarr; **Layouts** &rarr; **Home** and add `Smaily for OpenCart` to your prefered position.
+8. To add subscription form to your homepage go to **Design** &rarr; **Layouts** &rarr; **Home** and add `Smaily for OpenCart` to your preferred position.
 9. That's it, your OpenCart store is now integrated with Smaily!
 
 ## Using Cron to Automate Customer Synchronization and Sending Abandoned Carts Emails
@@ -114,7 +114,9 @@ List of all parameters available in Smaily email templating engine:
 
 - Customer last name: `{{ last_name }}`.
 
-Up to 10 products can be received in Smaily templating engine. You can refrence each product with number 1-10 behind parameter name.
+- Is abandoned cart: `{{ is_abandoned_cart }}`.
+
+Up to 10 products can be received in Smaily templating engine. You can reference each product with number 1-10 behind parameter name.
 
 - Product name: `{{ product_name_[1-10] }}`.
 
@@ -135,7 +137,7 @@ Also you can determine if customer had more than 10 items in cart
 ## Screenshots found in /assets
 
 1. OpenCart Smaily general settings screen.
-2. OpenCart Smaily customer synchronisation settings screen.
-3. OpenCart Smaily abadoned cart settings screen.
+2. OpenCart Smaily customer synchronization settings screen.
+3. OpenCart Smaily abandoned cart settings screen.
 4. OpenCart Smaily RSS-feed screen.
 5. OpenCart Smaily form screen.

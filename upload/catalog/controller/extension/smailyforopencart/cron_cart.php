@@ -55,6 +55,8 @@ class ControllerExtensionSmailyForOpencartCronCart extends Controller {
 			// Address array for smaily api call.
 			$address = array(
 				'email' => $cart['email'],
+				'is_abandoned_cart' => 'true',
+				'force_opt_in' => false,
 			);
 
 			// Add customer fields.

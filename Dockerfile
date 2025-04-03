@@ -1,6 +1,6 @@
 FROM php:7.3-apache
 
-ENV OPENCART_VERSION 3.0.3.6
+ENV OPENCART_VERSION 3.0.4.0
 
 # Install packages required for OpenCart.
 RUN apt-get update && apt-get install -y --no-install-recommends \
